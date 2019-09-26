@@ -1,78 +1,118 @@
-import React from 'react';
-import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import React from "react";
+import { Platform } from "react-native";
+import {
+    createStackNavigator,
+    createBottomTabNavigator
+} from "react-navigation";
 
-import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import TabBarIcon, { iconTypes } from "../components/TabBarIcon";
+import MarketScreen from "../screens/home/MarketScreen";
+import TradingScreen from "../screens/home/TradingScreen";
+import NewsScreen from "../screens/home/NewsScreen";
+import NotificationScreen from "../screens/home/NotificationScreen";
+import SettingsScreen from "../screens/home/SettingsScreen";
+
+import TabBarLabel from "../components/TabBarLabel";
 
 const config = Platform.select({
-  web: { headerMode: 'screen' },
-  default: {},
+    web: { headerMode: "screen" },
+    default: {}
 });
 
-const HomeStack = createStackNavigator(
-  {
-    Home: HomeScreen,
-  },
-  config
+const MarketStack = createStackNavigator(
+    {
+        Home: MarketScreen
+    },
+    config
 );
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
-    />
-  ),
+MarketStack.navigationOptions = {
+    tabBarLabel: ({ focused }) => (
+        <TabBarLabel focused={focused} label={"Thị trường"} />
+    ),
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon focused={focused} type={iconTypes.TYPE_MARKET} />
+    )
 };
 
-HomeStack.path = '';
+MarketStack.path = "";
 
-const LinksStack = createStackNavigator(
-  {
-    Links: LinksScreen,
-  },
-  config
+const TradingStack = createStackNavigator(
+    {
+        Links: TradingScreen
+    },
+    config
 );
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
-  ),
+TradingStack.navigationOptions = {
+    tabBarLabel: ({ focused }) => (
+        <TabBarLabel focused={focused} label={"Giao dịch"} />
+    ),
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon focused={focused} type={iconTypes.TYPE_TRADE} />
+    )
 };
 
-LinksStack.path = '';
+TradingStack.path = "";
+
+const NewsStack = createStackNavigator(
+    {
+        Settings: NewsScreen
+    },
+    config
+);
+
+NewsStack.navigationOptions = {
+    tabBarLabel: ({ focused }) => (
+        <TabBarLabel focused={focused} label={"Tin tức"} />
+    ),
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon focused={focused} type={iconTypes.TYPE_NEWS} />
+    )
+};
+
+const NotificationStack = createStackNavigator(
+    {
+        Settings: NotificationScreen
+    },
+    config
+);
+
+NotificationStack.navigationOptions = {
+    tabBarLabel: ({ focused }) => (
+        <TabBarLabel focused={focused} label={"Thông báo"} />
+    ),
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon focused={focused} type={iconTypes.TYPE_NOTI} />
+    )
+};
 
 const SettingsStack = createStackNavigator(
-  {
-    Settings: SettingsScreen,
-  },
-  config
+    {
+        Settings: SettingsScreen
+    },
+    config
 );
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
-  ),
+    tabBarLabel: ({ focused }) => (
+        <TabBarLabel focused={focused} label={"Cá nhân"} />
+    ),
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon focused={focused} type={iconTypes.TYPE_SETTINGS} />
+    )
 };
 
-SettingsStack.path = '';
+SettingsStack.path = "";
 
 const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
-  SettingsStack,
+    MarketStack,
+    TradingStack,
+    NewsStack,
+    NotificationStack,
+    SettingsStack
 });
 
-tabNavigator.path = '';
+tabNavigator.path = "";
 
 export default tabNavigator;
