@@ -7,6 +7,7 @@ import {
 
 import TabBarIcon, { iconTypes } from "../components/TabBarIcon";
 import MarketScreen from "../screens/home/MarketScreen";
+import MarketTabNavigator from "./MarketTabNavigator";
 import TradingScreen from "../screens/home/TradingScreen";
 import NewsScreen from "../screens/home/NewsScreen";
 import NotificationScreen from "../screens/home/NotificationScreen";
