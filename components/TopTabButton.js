@@ -4,7 +4,7 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { MonoText } from "./StyledText";
+import { RegularText, LightText } from "./common/StyledText";
 import Colors from "../constants/Colors";
 import {
     TouchableHighlight,
@@ -22,7 +22,7 @@ export default function(props) {
             <TouchableWithoutFeedback
                 onPress={() => props.onPress(props.identifier)}
             >
-                <MonoText
+                <RegularText
                     style={[
                         styles.text,
                         {
@@ -33,7 +33,7 @@ export default function(props) {
                     ]}
                 >
                     {props.title}
-                </MonoText>
+                </RegularText>
             </TouchableWithoutFeedback>
         </View>
     );

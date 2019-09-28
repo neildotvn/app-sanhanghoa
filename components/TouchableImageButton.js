@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, TouchableNativeFeedback, StyleSheet } from "react-native";
-import { MonoText } from "./StyledText";
+import { RegularText } from "./common/StyledText";
 import Colors from "../constants/Colors";
 
 class TouchableImageButton extends React.Component {
@@ -18,7 +18,9 @@ class TouchableImageButton extends React.Component {
                     />
                 </TouchableNativeFeedback>
                 {this.props.label ? (
-                    <MonoText style={styles.label}>{this.props.label}</MonoText>
+                    <RegularText style={styles.label}>
+                        {this.props.label}
+                    </RegularText>
                 ) : null}
             </View>
         );

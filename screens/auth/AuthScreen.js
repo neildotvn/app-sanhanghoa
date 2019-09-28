@@ -16,7 +16,7 @@ import {
 } from "react-native-responsive-screen";
 import { connect } from "react-redux";
 
-import Input from "../../components/Input";
+import Input from "../../components/common/Input";
 import { LinearGradient } from "expo-linear-gradient";
 import backgroundSource from "../../assets/images/auth-background.jpg";
 import logoSource from "../../assets/images/app-logo.png";
