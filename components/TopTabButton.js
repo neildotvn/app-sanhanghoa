@@ -27,7 +27,7 @@ export default function(props) {
                         styles.text,
                         {
                             color: props.isActive
-                                ? Colors.darkBlue
+                                ? Colors.midBlue
                                 : Colors.black3
                         }
                     ]}
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         borderBottomColor: "white"
     },
     active: {
-        borderBottomColor: Colors.darkBlue
+        borderBottomColor: Colors.midBlue
     },
     text: {
         fontSize: 12,

@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 
-import MarketTabScreen from "../screens/market/MarketTabScreen";
+import MarketTabScreen from "../components/market/MarketTab";
 import Colors from "../constants/Colors";
 
 const marketTabNavigator = createMaterialTopTabNavigator(

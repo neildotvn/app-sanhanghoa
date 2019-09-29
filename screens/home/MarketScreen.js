@@ -1,4 +1,3 @@
-import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import {
     Image,
@@ -11,25 +10,30 @@ import {
     View
 } from "react-native";
 import { ExpoConfigView } from "@expo/samples";
-import MarketTabScreen from "../market/MarketTabScreen";
+import MarketTabScreen from "../../components/market/MarketTab";
 import TopBar from "../../components/TopBar";
 import TopTabBar from "../../components/TopTabBar";
+import Strings from "../../constants/Strings";
 
-export default function MarketScreen(props) {
-    const topBarConfig = {
-        title: "Thị trường",
-        rightButtonLabel: "Tin báo",
+class MarketScreen extends React.Component {
+    topBarConfig = {
+        title: Strings.HEADER_MARKET,
+        rightButtonLabel: Strings.HEADER_BUTTON_ALERT,
         rightImageSource: require("../../assets/images/icons/ic-alert.png")
     };
 
-    return (
-        <View style={styles.container}>
-            <TopBar {...topBarConfig} />
-            <TopTabBar />
-            <MarketTabScreen />
-        </View>
-    );
+    render() {
+        return (
+            <View style={styles.container}>
+                <TopBar {...this.topBarConfig} />
+                <TopTabBar />
+                <MarketTabScreen />
+            </View>
+        );
+    }
 }
+
+export default MarketScreen;
 
 MarketScreen.navigationOptions = {
     header: null

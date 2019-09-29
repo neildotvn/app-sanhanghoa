@@ -1,5 +1,11 @@
 export default {
     HEADER_MARKET: "Thị trường",
+    HEADER_TRADING: "Giao dịch",
+    HEADER_NEWS: "Tin tức",
+    HEADER_NOTI: "Thông báo",
+    HEADER_SETTINGS: "Cá nhân",
+    HEADER_BUTTON_ALERT: "Tin báo",
+    HEADER_BUTTON_HISTORY: "Lịch sử",
     TAB_FAVORITE: "Ưa thích",
     TAB_AGRICULTURE: "Nông sản",
     TAB_METAL: "Kim loại",
@@ -7,5 +13,17 @@ export default {
     TAB_ENERGY: "Năng lượng",
     MARKTET_TITLE: "Mặt hàng",
     MARKET_PRICE: "Giá khớp",
-    MARKET_CHANGE: "Thay đổi"
+    MARKET_CHANGE: "Thay đổi",
+    PRODUCT_TERM: "Kỳ hạn",
+    PRODUCT_CHANGE: "Thay đổi",
+    PRODUCT_OPEN_PRICE: "Mở cửa",
+    PRODUCT_CLOSE_PRICE: "Đóng cửa",
+    PRODUCT_HIGH_PRICE: "Cao nhất",
+    PRODUCT_LOW_PRICE: "Thấp nhất",
+    TRADING_BALANCE: "Tài khoản (USD)",
+    TRADING_CREDIT: "Tín dụng",
+    TRADING_RESIDUAL_DEPOSIT: "Ký quỹ còn dư",
+    TRADING_LEVERAGE: "Đòn bẩy",
+    TRADING_FREE_MARGIN: "Ký quỹ miễn phí",
+    TRADING_OPEN_ORDER: "Lệnh đang giao dịch"
 };

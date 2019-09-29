@@ -5,10 +5,10 @@ import ChangeCell from "../market/ChangeCell";
 import Colors from "../../constants/Colors";
 import Strings from "../../constants/Strings";
 
-class MarketRow extends React.Component {
+class ProductDetailRow extends React.Component {
     render() {
         const props = this.props;
-        return !props.isTitle ? (
+        return props.isTitle ? (
             <View style={styles.container}>
                 <View style={styles.first}>
                     <RegularText style={styles.title}>
@@ -29,17 +29,32 @@ class MarketRow extends React.Component {
             </View>
         ) : (
             <View style={styles.titleContainer}>
-                <View style={styles.first}>
+                <View style={styles.column}>
                     <LightText style={styles.titleText}>
                         {Strings.MARKTET_TITLE}
                     </LightText>
                 </View>
-                <View style={styles.second}>
+                <View style={styles.column}>
                     <LightText style={styles.titleText}>
                         {Strings.MARKET_PRICE}
                     </LightText>
                 </View>
-                <View style={styles.third}>
+                <View style={styles.column}>
+                    <LightText style={styles.titleText}>
+                        {Strings.MARKET_CHANGE}
+                    </LightText>
+                </View>
+                <View style={styles.column}>
+                    <LightText style={styles.titleText}>
+                        {Strings.MARKET_CHANGE}
+                    </LightText>
+                </View>
+                <View style={styles.column}>
+                    <LightText style={styles.titleText}>
+                        {Strings.MARKET_CHANGE}
+                    </LightText>
+                </View>
+                <View style={styles.column}>
                     <LightText style={styles.titleText}>
                         {Strings.MARKET_CHANGE}
                     </LightText>
@@ -71,22 +86,10 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: Colors.darkBlueOpacity(0.5)
     },
-    first: {
-        flex: 4,
+    column: {
+        flex: 1,
         flexDirection: "row",
         justifyContent: "flex-start",
-        alignItems: "center"
-    },
-    second: {
-        flex: 2,
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    third: {
-        flex: 4,
-        flexDirection: "row",
-        justifyContent: "flex-end",
         alignItems: "center"
     },
     title: {
@@ -99,4 +102,4 @@ const styles = StyleSheet.create({
     change: { fontSize: 12 }
 });
 
-export default MarketRow;
+export default ProductDetailRow;

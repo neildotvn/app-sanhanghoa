@@ -4,7 +4,8 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import MarketRow from "../../components/market/MarketRow";
+import MarketRow from "./MarketRow";
+import ProductDetailRow from "./ProductDetailRow";
 
 export default function(props) {
     return (
