@@ -1,27 +1,40 @@
 import React from "react";
-import { ScrollView, StyleSheet } from "react-native";
-import { ExpoLinksView } from "@expo/samples";
+import {
+    Platform,
+    StatusBar,
+    ScrollView,
+    StyleSheet,
+    View
+} from "react-native";
+import TopBar from "../../components/TopBar";
+import NotificationRow from "../../components/noti/NotificationRow";
+import Strings from "../../constants/Strings";
 
 export default function NotificationScreen() {
     return (
-        <ScrollView style={styles.container}>
-            {/**
-             * Go ahead and delete ExpoLinksView and replace it with your content;
-             * we just wanted to provide you with some helpful links.
-             */}
-            <ExpoLinksView />
-        </ScrollView>
+        <View style={styles.container}>
+            <TopBar title={Strings.HEADER_NOTI} />
+            <ScrollView style={styles.notiContainer}>
+                <NotificationRow />
+                <NotificationRow />
+                <NotificationRow />
+                <NotificationRow />
+            </ScrollView>
+        </View>
     );
 }
 
 NotificationScreen.navigationOptions = {
-    title: "Links"
+    header: null
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 15,
+        marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
         backgroundColor: "#fff"
+    },
+    notiContainer: {
+        padding: 12
     }
 });

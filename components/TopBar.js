@@ -11,7 +11,7 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp
 } from "react-native-responsive-screen";
-import { RegularText } from "./common/StyledText";
+import { RegularText, MediumText } from "./common/StyledText";
 import CustomImageButton from "./TouchableImageButton";
 import Colors from "../constants/Colors";
 
@@ -23,7 +23,7 @@ export default function(props) {
                 imageSource={props.leftImageSource} //
                 onPress={props.onPress}
             />
-            <RegularText style={styles.title}>{props.title}</RegularText>
+            <MediumText style={styles.title}>{props.title}</MediumText>
             <CustomImageButton
                 label={props.rightButtonLabel}
                 imageSource={props.rightImageSource}

@@ -10,12 +10,13 @@ import { Ionicons } from "@expo/vector-icons";
 import authReducer from "./store/reducers/AuthReducer";
 
 import AppNavigator from "./navigation/AppNavigator";
+import LoadingReducer from "./store/reducers/LoadingReducer";
 
 export default function App(props) {
     const [isLoadingComplete, setLoadingComplete] = useState(false);
 
     const store = createStore(
-        combineReducers({ auth: authReducer }),
+        combineReducers({ auth: authReducer, loading: LoadingReducer }),
         window.__REDUX_DEVTOOLS_EXTENSION__ &&
             window.__REDUX_DEVTOOLS_EXTENSION__()
     );

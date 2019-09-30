@@ -8,6 +8,6 @@ export const updateObject = (oldObject, updatedValues) => {
 export const createAction = (type, payload) => {
     return {
         type,
-        payload
+        payload: { ...payload }
     };
 };

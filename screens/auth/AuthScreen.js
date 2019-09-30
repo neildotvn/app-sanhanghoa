@@ -15,13 +15,14 @@ import {
     heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { connect } from "react-redux";
-
+import Toast from "react-native-simple-toast";
 import Input from "../../components/common/Input";
 import { LinearGradient } from "expo-linear-gradient";
 import backgroundSource from "../../assets/images/auth-background.jpg";
 import logoSource from "../../assets/images/app-logo.png";
 import colors from "../../constants/Colors";
 import * as actions from "../../store/actions/Auth";
+import Strings from "../../constants/Strings";
 
 class AuthScreen extends Component {
     state = {
@@ -40,6 +41,38 @@ class AuthScreen extends Component {
         }
     };
 
+    componentWillReceiveProps(props) {
+        console.log("From AuthScreen");
+        console.log(props.auth);
+        if (this.props.auth.error) {
+            let message = "";
+            switch (this.props.auth.error.status) {
+                case 406:
+                    message = Strings.ERROR_INVALID_AUTH_INFO;
+                    break;
+                case 409:
+                    message = Strings.ERROR_EXISTED_AUTH_INFO;
+                    break;
+                default:
+                    message = Strings.ERROR_DEFAULT_TRY_AGAIN;
+                    break;
+            }
+            Toast.show(message);
+        }
+
+        const that = this;
+        if (props.auth.user.token) {
+            Toast.show(Strings.AUTH_SUCCESS);
+            setTimeout(function() {
+                that.onAuthSuccess();
+            }, 0);
+        }
+    }
+
+    onAuthSuccess() {
+        this.props.navigation.navigate("Main");
+    }
+
     onTextChangedHandler(text, title) {
         const copiedState = { ...this.state };
         copiedState.inputs[title].text = text;
@@ -49,7 +82,17 @@ class AuthScreen extends Component {
     setIsSignUp(isSignup) {
         console.log(isSignup);
         this.setState({ isSignup });
-        this.props.login();
+        // this.props.login();
+    }
+
+    onAuth() {
+        const payload = {
+            phone: this.state.inputs.phone.text,
+            password: this.state.inputs.password.text
+        };
+        this.state.isSignup
+            ? this.props.register(payload)
+            : this.props.login(payload);
     }
 
     render() {
@@ -77,6 +120,7 @@ class AuthScreen extends Component {
             >
                 <View style={styles.secondaryContainer}>
                     {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+                    {/* <Toast ref={c => (this.toastify = c)} /> */}
                     <View style={[styles.logoAndInformation]}>
                         <View style={{ flex: 1 }}>
                             <View style={[styles.logoContainer]}>
@@ -84,7 +128,11 @@ class AuthScreen extends Component {
                                     style={styles.logo}
                                     source={logoSource}
                                 />
-                                <Text style={styles.title}>Đăng nhập</Text>
+                                <Text style={styles.title}>
+                                    {this.state.isSignup
+                                        ? "Đăng ký"
+                                        : "Đăng nhập"}
+                                </Text>
                             </View>
                         </View>
                         <View style={styles.infoContainer}>
@@ -93,6 +141,7 @@ class AuthScreen extends Component {
                                 activeOpacity={0.7}
                                 anima
                                 style={styles.mainButton}
+                                onPress={() => this.onAuth()}
                             >
                                 <LinearGradient
                                     colors={[
@@ -265,7 +314,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        login: () => actions.login(dispatch)
+        register: payload => actions.register(dispatch, payload),
+        login: payload => actions.login(dispatch, payload)
     };
 };
 

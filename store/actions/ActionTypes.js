@@ -1,5 +1,5 @@
-export const TYPE_LOG_IN = "TYPE_LOG_IN";
-export const TYPE_REGISTER = "TYPE_REGISTER";
+export const LOADING_ON = "LOADING_ON";
+export const LOADING_OFF = "LOADING_OFF";
 
 export const AUTH_START = "AUTH_START";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
