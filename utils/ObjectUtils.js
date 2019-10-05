@@ -11,3 +11,7 @@ export const createAction = (type, payload) => {
         payload: { ...payload }
     };
 };
+
+export const buildAction = (type, payload) => {
+    return { type, ...payload };
+};

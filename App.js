@@ -4,19 +4,26 @@ import * as Font from "expo-font";
 import React, { useState } from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { Provider } from "react-redux";
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 import { Ionicons } from "@expo/vector-icons";
 
 import authReducer from "./store/reducers/AuthReducer";
 
 import AppNavigator from "./navigation/AppNavigator";
-import LoadingReducer from "./store/reducers/LoadingReducer";
+import loadingReducer from "./store/reducers/LoadingReducer";
+import accountReduer from "./store/reducers/AccountReducer";
 
 export default function App(props) {
     const [isLoadingComplete, setLoadingComplete] = useState(false);
 
     const store = createStore(
-        combineReducers({ auth: authReducer, loading: LoadingReducer }),
+        combineReducers({
+            auth: authReducer,
+            accountStore: accountReduer,
+            loading: loadingReducer
+        }),
+        applyMiddleware(thunk),
         window.__REDUX_DEVTOOLS_EXTENSION__ &&
             window.__REDUX_DEVTOOLS_EXTENSION__()
     );

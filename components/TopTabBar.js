@@ -53,7 +53,6 @@ class TopTabBar extends React.Component {
         let tabButtons = [];
         for (key in this.state.tabButtons) {
             let button = this.state.tabButtons[key];
-            console.log(key);
             tabButtons.push(
                 <TopTabButton
                     key={key}

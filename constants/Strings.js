@@ -29,5 +29,7 @@ export default {
     ERROR_INVALID_AUTH_INFO: "Thông tin đăng nhập không hợp lệ!",
     ERROR_DEFAULT_TRY_AGAIN: "Có lỗi xảy ra, vui lòng thử lại sau!",
     ERROR_EXISTED_AUTH_INFO: "Tài khoản đã tồn tại!",
-    AUTH_SUCCESS: "Thành công"
+    AUTH_SUCCESS: "Thành công",
+    AUTH_LOGOUT: "Đăng xuất",
+    AUTH_LOGOUT_FAIL: "Đăng xuất thất bại, vui lòng thử lại sau"
 };

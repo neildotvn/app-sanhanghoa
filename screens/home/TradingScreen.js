@@ -6,13 +6,14 @@ import {
     Platform,
     StatusBar
 } from "react-native";
-import { ExpoLinksView } from "@expo/samples";
 import TopBar from "../../components/TopBar";
 import BalanceInfo from "../../components/trading/BalanceInfo";
 import Strings from "../../constants/Strings";
 import { MediumText } from "../../components/common/StyledText";
+import { connect } from "react-redux";
 import OpenOrder from "../../components/trading/OpenOrder";
 import Colors from "../../constants/Colors";
+import { fetchAccountInfo } from "../../store/actions/Account";
 
 class TradingScreen extends React.Component {
     state = {
@@ -39,21 +40,27 @@ class TradingScreen extends React.Component {
         rightImageSource: require("../../assets/images/icons/ic-history.png")
     };
 
+    componentDidMount() {
+        this.props.fetchAccount("88d4ec0f-4e36-473c-9f2f-f3b963c2c825");
+    }
+
     render() {
+        const account = this.props.accountStore.account;
         const balanceInfo = [];
-        for (key in this.state.balanceInfo) {
+        for (key in account) {
+            if (key === "account_uid") continue;
             balanceInfo.push(
                 <BalanceInfo
                     key={key}
                     title={this.infoNames[key]}
-                    value={this.state.balanceInfo[key]}
+                    value={account[key]}
                 />
             );
         }
         return (
             <View style={styles.container}>
-                <ScrollView>
-                    <TopBar {...this.topBarConfig} />
+                <TopBar {...this.topBarConfig} />
+                <ScrollView style={styles.scrollView}>
                     <View style={styles.balanceInfoContainer}>
                         {balanceInfo}
                     </View>
@@ -74,16 +81,34 @@ class TradingScreen extends React.Component {
     }
 }
 
-export default TradingScreen;
+const mapStateToProps = state => {
+    return {
+        user: state.auth.user,
+        accountStore: state.accountStore
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        fetchAccount: user_uid => dispatch(fetchAccountInfo(user_uid))
+    };
+};
 
 TradingScreen.navigationOptions = {
     header: null
 };
 
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TradingScreen);
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
+        marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
+    },
+    scrollView: {
         paddingStart: 12,
         paddingEnd: 12
     },

@@ -20,7 +20,7 @@ export default function(props) {
         <View style={styles.container}>
             <CustomImageButton
                 label={props.leftButtonLabel}
-                imageSource={props.leftImageSource} //
+                imageSource={props.leftImageSource}
                 onPress={props.onPress}
             />
             <MediumText style={styles.title}>{props.title}</MediumText>

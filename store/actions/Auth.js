@@ -57,7 +57,7 @@ export const login = (dispatch, payload) => {
 
 const saveToken = token => {
     return new Promise((resolve, reject) => {
-        AsyncStorage.setItem(storeai8geKeys.KEY_USER_TOKEN, token).then(
+        AsyncStorage.setItem(storeageKeys.KEY_USER_TOKEN, token).then(
             () => resolve(),
             err => reject(err)
         );

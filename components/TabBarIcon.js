@@ -13,8 +13,6 @@ import icNotiActive from "../assets/images/tab-icons/ic-noti-active.png";
 import icSettings from "../assets/images/tab-icons/ic-settings.png";
 import icSettingsActive from "../assets/images/tab-icons/ic-settings-active.png";
 
-import Colors from "../constants/Colors";
-
 const iconStyle = {
     width: 28,
     height: 28,
@@ -30,8 +28,6 @@ export const iconTypes = {
 };
 
 export default function TabBarIcon({ focused, type }) {
-    console.log(type);
-
     let iconSource;
     switch (type) {
         case iconTypes.TYPE_MARKET:
