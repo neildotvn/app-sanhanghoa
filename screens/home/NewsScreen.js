@@ -1,27 +1,36 @@
 import React from "react";
-import { ScrollView, StyleSheet } from "react-native";
-import { ExpoLinksView } from "@expo/samples";
+import { StyleSheet, WebView, Platform, StatusBar, View } from "react-native";
+import TopBar from "../../components/TopBar";
+import Strings from "app/constants/Strings";
 
 export default function NewsScreen() {
+    topBarConfig = {
+        title: Strings.HEADER_NEWS
+    };
+
     return (
-        <ScrollView style={styles.container}>
-            {/**
-             * Go ahead and delete ExpoLinksView and replace it with your content;
-             * we just wanted to provide you with some helpful links.
-             */}
-            <ExpoLinksView />
-        </ScrollView>
+        <View style={styles.container}>
+            <TopBar {...this.topBarConfig} />
+            <WebView
+                style={styles.flex}
+                source={{
+                    uri: "https://sanhanghoa24h.com/tin-tuc-thi-truong/"
+                }}
+            />
+        </View>
     );
 }
 
 NewsScreen.navigationOptions = {
-    title: "Links"
+    header: null
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 15,
-        backgroundColor: "#fff"
+        marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
+    },
+    webview: {
+        flex: 1
     }
 });

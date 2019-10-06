@@ -1,9 +1,5 @@
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp
-} from "react-native-responsive-screen";
 import { MediumText, LightText } from "../common/StyledText";
 import icNotiUnread from "../../assets/images/icons/ic-noti-unread.png";
 import icNotiRead from "../../assets/images/icons/ic-noti-read.png";
@@ -18,10 +14,20 @@ export default function(props) {
                 source={props.read ? icNotiRead : icNotiUnread}
             />
             <View style={styles.textContainer}>
-                <MediumText>
-                    Tham gia thị trường hàng hoá triệu người tin
+                <MediumText
+                    numberOfLines={1}
+                    ellipsizeMode={"tail"}
+                    style={styles.title}
+                >
+                    {props.title}
                 </MediumText>
-                <LightText>Được hàng triệu người tin tưởng </LightText>
+                <LightText
+                    numberOfLines={2}
+                    ellipsizeMode={"tail"}
+                    style={styles.description}
+                >
+                    {props.description}
+                </LightText>
             </View>
             <Image style={styles.iconArrow} source={icArrow} />
         </View>
@@ -50,5 +56,11 @@ const styles = StyleSheet.create({
     iconArrow: {
         width: 16,
         height: 16
+    },
+    title: {
+        fontSize: 12
+    },
+    description: {
+        fontSize: 10
     }
 });
