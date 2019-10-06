@@ -8,9 +8,17 @@ import {
     Text,
     Platform
 } from "react-native";
+import { connect } from "react-redux";
+import * as actions from "../../store/actions/Auth";
 import * as storageKeys from "../../store/storage/StorageKeys";
 
 class AuthLoadingScreen extends React.Component {
+    componentDidUpdate() {
+        if (this.props.user.user_uid) {
+            this.props.navigation.navigate("Main");
+        }
+    }
+
     componentDidMount() {
         this._bootstrapAsync();
     }
@@ -20,13 +28,9 @@ class AuthLoadingScreen extends React.Component {
         const userToken = await AsyncStorage.getItem(
             storageKeys.KEY_USER_TOKEN
         );
-
-        const that = this;
-        // This will switch to the App screen or Auth screen and this loading
-        // screen will be unmounted and thrown away.
-        setTimeout(function() {
-            that.props.navigation.navigate(userToken ? "Main" : "Auth");
-        }, 0);
+        userToken
+            ? this.props.verifyMe()
+            : this.props.navigation.navigate("Auth");
     };
 
     // Render any loading content that you like here
@@ -50,4 +54,19 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AuthLoadingScreen;
+const mapStateToProps = state => {
+    return {
+        user: state.auth.user
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        verifyMe: () => dispatch(actions.verify())
+    };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AuthLoadingScreen);

@@ -4,6 +4,25 @@ import { createAction } from "../../utils/ObjectUtils";
 import { AsyncStorage } from "react-native";
 import * as storeageKeys from "../storage/StorageKeys";
 
+export const verify = () => {
+    return dispatch => {
+        dispatch({ type: actionTypes.AUTH_START });
+        axios
+            .get("users/me")
+            .then(res => {
+                console.log(this, res.data);
+                dispatch(
+                    createAction(actionTypes.AUTH_SUCCESS, { user: res.data })
+                );
+            })
+            .catch(err =>
+                dispatch(
+                    createAction(actionTypes.AUTH_FAIL, { error: err.response })
+                )
+            );
+    };
+};
+
 export const register = (dispatch, payload) => {
     dispatch(createAction(actionTypes.LOADING_ON));
     dispatch(createAction(actionTypes.AUTH_START));
