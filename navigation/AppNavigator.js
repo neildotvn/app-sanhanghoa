@@ -17,19 +17,6 @@ const AppContainer = createAppContainer(
 );
 
 class HigherAppContainer extends React.Component {
-    state = {
-        loading: false
-    };
-
-    componentDidMount() {
-        // this.setState({ loading: this.props.loading });
-        // setInterval(() => {
-        //     this.setState({
-        //         spinner: !this.state.loading
-        //     });
-        // }, 3000);
-    }
-
     render() {
         return (
             <React.Fragment>

@@ -9,7 +9,9 @@ export default function(props) {
         <View style={styles.container}>
             <RegularText style={styles.title}>{props.title}</RegularText>
             <View style={styles.line} />
-            <MediumText style={styles.value}>{props.value}</MediumText>
+            <MediumText style={styles.value}>
+                {props.value ? props.value : Strings.SETTINGS_NOT_YET_UPDATED}
+            </MediumText>
         </View>
     );
 }

@@ -14,6 +14,7 @@ import NotificationScreen from "../screens/home/NotificationScreen";
 import SettingsScreen from "../screens/home/SettingsScreen";
 
 import TabBarLabel from "../components/TabBarLabel";
+import UpdateProfileScreen from "../screens/settings/UpdateProfileScreen";
 
 const config = Platform.select({
     web: { headerMode: "screen" },
@@ -90,7 +91,8 @@ NotificationStack.navigationOptions = {
 
 const SettingsStack = createStackNavigator(
     {
-        Settings: SettingsScreen
+        Settings: SettingsScreen,
+        EditProfile: UpdateProfileScreen
     },
     config
 );

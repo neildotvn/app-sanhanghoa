@@ -6,6 +6,7 @@ export default {
     HEADER_SETTINGS: "Cá nhân",
     HEADER_BUTTON_ALERT: "Tin báo",
     HEADER_BUTTON_HISTORY: "Lịch sử",
+    HEADER_BUTTON_BACK: "Trở về",
     TAB_FAVORITE: "Ưa thích",
     TAB_AGRICULTURE: "Nông sản",
     TAB_METAL: "Kim loại",
@@ -31,5 +32,19 @@ export default {
     ERROR_EXISTED_AUTH_INFO: "Tài khoản đã tồn tại!",
     AUTH_SUCCESS: "Thành công",
     AUTH_LOGOUT: "Đăng xuất",
-    AUTH_LOGOUT_FAIL: "Đăng xuất thất bại, vui lòng thử lại sau"
+    AUTH_LOGOUT_FAIL: "Đăng xuất thất bại, vui lòng thử lại sau",
+    SETTINGS_EDIT_PROFILE: "Chỉnh sửa thông tin",
+    SETTINGS_NOT_YET_UPDATED: "Chưa cập nhật",
+    SETTINGS_PHONE: "Số điện thoại",
+    SETTINGS_NAME: "Họ tên",
+    SETTINGS_EMAIL: "Email",
+    SETTINGS_ADDRESS: "Địa chỉ",
+    SETTINGS_SEX: "Giới tính",
+    SETTINGS_DATE_OF_BIRTH: "Ngày sinh",
+    SETTINGS_GENDER_MALE: "Nam",
+    SETTINGS_GENDER_FEMALE: "Nữ",
+    SETTINGS_EDIT_PROFILE: "Cập nhật thông tin",
+    SETTINGS_FINISH_UPDATE: "Hoàn thành",
+    SETTINGS_UPDATE_SUCCESS: "Cập nhật thành công",
+    SETTINGS_UPDATE_FAIL: "Cập nhật thất bại"
 };

@@ -16,12 +16,18 @@ import Toast from "react-native-simple-toast";
 import icArrow from "../../assets/images/icons/ic-arrow-forward.png";
 import { BoldText, RegularText } from "../../components/common/StyledText";
 import * as StorageKeys from "../../store/storage/StorageKeys";
+import { connect } from "react-redux";
+import { TouchableNativeFeedback } from "react-native-gesture-handler";
 
-export default class NotificationScreen extends React.Component {
+class NotificationScreen extends React.Component {
+    openEditProfile = () => {
+        this.props.navigation.navigate("EditProfile");
+    };
+
     logout = () => {
         AsyncStorage.removeItem(StorageKeys.KEY_USER_TOKEN)
             .then(() => {
-                this.props.navigation.navigate("AuthLoading");
+                this.props.navigation.push("AuthLoading");
             })
             .catch(err => {
                 console.log(err);
@@ -37,38 +43,51 @@ export default class NotificationScreen extends React.Component {
                 <View style={styles.infoContainer}>
                     <View style={styles.avatarContainer}>
                         <Image style={styles.avatar} source={imAvatar} />
-                        <View style={styles.nameContainer}>
-                            <BoldText style={styles.name}>
-                                Nguyen Ca Phe
-                            </BoldText>
-                            <View style={styles.editContainer}>
-                                <RegularText style={styles.edit}>
-                                    Chinh sua thong tin
-                                </RegularText>
-                                <Image
-                                    style={styles.icArrow}
-                                    source={icArrow}
-                                />
+                        <TouchableNativeFeedback
+                            onPress={() => this.openEditProfile()}
+                        >
+                            <View style={styles.nameContainer}>
+                                <BoldText style={styles.name}>
+                                    {this.props.user.full_name}
+                                </BoldText>
+                                <View style={styles.editContainer}>
+                                    <RegularText style={styles.edit}>
+                                        {Strings.SETTINGS_EDIT_PROFILE}
+                                    </RegularText>
+                                    <Image
+                                        style={styles.icArrow}
+                                        source={icArrow}
+                                    />
+                                </View>
                             </View>
-                        </View>
+                        </TouchableNativeFeedback>
                     </View>
                     <View style={styles.detailsContainer}>
                         <PersonalInfo
-                            title={"Ho ten"}
-                            value={"Nguyen Ca Phe"}
+                            title={Strings.SETTINGS_PHONE}
+                            value={this.props.user.phone}
                         />
                         <PersonalInfo
-                            title={"Ho ten"}
-                            value={"Nguyen Ca Phe"}
+                            title={Strings.SETTINGS_NAME}
+                            value={this.props.user.full_name}
                         />
                         <PersonalInfo
-                            title={"Ho ten"}
-                            value={"Nguyen Ca Phe"}
+                            title={Strings.SETTINGS_EMAIL}
+                            value={this.props.user.email}
                         />
                         <PersonalInfo
-                            title={"Ho ten"}
-                            value={"Nguyen Ca Phe"}
+                            title={Strings.SETTINGS_SEX}
+                            value={processGender(this.props.user.gender)}
                         />
+                        <PersonalInfo
+                            title={Strings.SETTINGS_ADDRESS}
+                            value={processAddress(this.props.user.address)}
+                        />
+                        {/* <PersonalInfo
+                            title={Strings.SETTINGS_DATE_OF_BIRTH}
+                            value={this.props.user.date_of_birth}
+                        /> */}
+                        <View style={{ marginBottom: 10 }} />
                         <Button
                             style={{ marginTop: 20 }}
                             onPress={() => this.logout()}
@@ -81,9 +100,50 @@ export default class NotificationScreen extends React.Component {
     }
 }
 
+const processGender = gender => {
+    switch (gender) {
+        case "male":
+            return Strings.SETTINGS_GENDER_MALE;
+        case "female":
+            return Strings.SETTINGS_GENDER_FEMALE;
+        default:
+            return Strings.SETTINGS_NOT_YET_UPDATED;
+    }
+};
+
+const processAddress = address => {
+    var words = address.split(" ");
+    var wordsCount = words.length;
+    if (wordsCount < 8) return address;
+    else {
+        let result = "";
+        for (let i = 0; i < 7; i++) {
+            result += " ";
+            result += words[i];
+        }
+        result += "...";
+        return result;
+    }
+};
+
 NotificationScreen.navigationOptions = {
     header: null
 };
+
+const mapStateToProps = state => {
+    return {
+        user: state.auth.user
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {};
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(NotificationScreen);
 
 const styles = StyleSheet.create({
     container: {
@@ -100,7 +160,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     nameContainer: {
-        marginStart: 16
+        margin: 16
     },
     avatar: {
         height: 80,
@@ -121,7 +181,8 @@ const styles = StyleSheet.create({
     icArrow: {
         height: 12,
         width: 12,
-        marginTop: 2
+        marginTop: 2,
+        marginStart: 3
     },
     detailsContainer: {
         marginTop: 30

@@ -74,6 +74,29 @@ export const login = (dispatch, payload) => {
         .finally(() => dispatch(createAction(actionTypes.LOADING_OFF)));
 };
 
+export const updateProfile = user => {
+    return dispatch => {
+        dispatch(createAction(actionTypes.AUTH_UPDATE_START));
+        axios
+            .put("users/me", user)
+            .then(response => {
+                console.log(response.data);
+                dispatch(
+                    createAction(actionTypes.AUTH_UPDATE_SUCCESS, {
+                        user: response.data
+                    })
+                );
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(createAction(actionTypes.AUTH_UPDATE_FAIL, { error }));
+            })
+            .finally(() =>
+                dispatch(createAction(actionTypes.AUTH_UPDATE_FINISH))
+            );
+    };
+};
+
 const saveToken = token => {
     return new Promise((resolve, reject) => {
         AsyncStorage.setItem(storeageKeys.KEY_USER_TOKEN, token).then(

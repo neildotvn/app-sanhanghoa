@@ -9,7 +9,6 @@ import {
     StatusBar,
     View
 } from "react-native";
-import { ExpoConfigView } from "@expo/samples";
 import MarketTabScreen from "../../components/market/MarketTab";
 import TopBar from "../../components/TopBar";
 import TopTabBar from "../../components/TopTabBar";
