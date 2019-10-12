@@ -46,5 +46,13 @@ export default {
     SETTINGS_EDIT_PROFILE: "Cập nhật thông tin",
     SETTINGS_FINISH_UPDATE: "Hoàn thành",
     SETTINGS_UPDATE_SUCCESS: "Cập nhật thành công",
-    SETTINGS_UPDATE_FAIL: "Cập nhật thất bại"
+    SETTINGS_UPDATE_FAIL: "Cập nhật thất bại",
+    ORDER_PLACE_ORDER: "Đặt lệnh",
+    ORDER_SELL: "Bán",
+    ORDER_BUY: "Mua",
+    ORDER_BY_MARKET: "Giá thị trường"
+};
+
+export const commodityNames = {
+    KHO_DAU_TUONG: "KHÔ ĐẬU TƯƠNG"
 };

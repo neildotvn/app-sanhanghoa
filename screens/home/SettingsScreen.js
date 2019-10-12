@@ -112,6 +112,7 @@ const processGender = gender => {
 };
 
 const processAddress = address => {
+    if (address === null) return Strings.SETTINGS_NOT_YET_UPDATED;
     var words = address.split(" ");
     var wordsCount = words.length;
     if (wordsCount < 8) return address;

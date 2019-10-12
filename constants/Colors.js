@@ -23,5 +23,6 @@ export default {
     buy: "#287E9E",
     midBlueOpacity: opacity => `rgba(40,126,158,${opacity.toString()})`,
     darkBlueOpacity: opacity => `rgba(15,69,94,${opacity.toString()})`,
-    whiteOpacity: opacity => `rgba(255,255,255,${opacity.toString()})`
+    whiteOpacity: opacity => `rgba(255,255,255,${opacity.toString()})`,
+    blackOpacity: opacity => `rgba(0,0,0,${opacity.toString()})`
 };

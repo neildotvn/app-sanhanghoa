@@ -30,9 +30,20 @@ export const register = (dispatch, payload) => {
         .post("register", payload)
         .then(response => {
             console.log(this, response.data);
-            dispatch(
-                createAction(actionTypes.AUTH_SUCCESS, { user: response.data })
-            );
+            saveToken(response.data.token)
+                .then(() => {
+                    dispatch(
+                        createAction(actionTypes.AUTH_SUCCESS, {
+                            user: response.data
+                        })
+                    );
+                })
+                .catch(err => {
+                    console.log(err);
+                    dispatch(
+                        createAction(actionTypes.AUTH_FAIL, { error: err })
+                    );
+                });
         })
         .catch(err => {
             dispatch(
