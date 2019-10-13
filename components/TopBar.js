@@ -7,7 +7,7 @@ import {
     View,
     Text
 } from "react-native";
-import { RegularText, MediumText } from "./common/StyledText";
+import { MediumText } from "./common/StyledText";
 import CustomImageButton from "./TouchableImageButton";
 import Colors from "../constants/Colors";
 

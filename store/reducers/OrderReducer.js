@@ -2,7 +2,7 @@ import * as actionTypes from "../actions/ActionTypes";
 import { updateObject } from "../../utils/ObjectUtils";
 
 const initialState = {
-    orders: [
+    activeOrders: [
         // order_uid UUID NOT NULL PRIMARY KEY,
         // exchange CHAR(3) NOT NULL,
         // order_type INT NOT NULL, /* 0 for buy, 1 for sell, 2 for buy limit, 3 for sell limit, 4 for buy stop, 5 for sell stop */
@@ -17,21 +17,33 @@ const initialState = {
         // result BIGINT,
         // account_uid UUID REFERENCES account(account_uid) NOT NULL
     ],
-    loading: false,
+    orderHistory: [],
+    active_loading: false,
+    history_loading: false,
     create_loading: false,
     create_success: false,
     error: null
 };
 
 export default orderReducer = (state = initialState, action) => {
+    console.log("ORDER REDUCER", action.type, action.payload);
     switch (action.type) {
-        case actionTypes.ORDER_FETCH_ALL_START:
-            return updateObject(state, { loading: true });
-        case actionTypes.ORDER_FETCH_ALL_SUCCESS:
-            return fetchAllOrdersSuccess(state, action.payload.orders);
-        case actionTypes.ORDER_FETCH_ALL_FAIL:
+        case actionTypes.ORDER_FETCH_ALL_ACTIVE_START:
+            return updateObject(state, { active_loading: true });
+        case actionTypes.ORDER_FETCH_ALL_ACTIVE_SUCCESS:
+            return fetchActiveOrdersSuccess(state, action.payload.activeOrders);
+        case actionTypes.ORDER_FETCH_ALL_ACTIVE_FAIL:
             return updateObject(state, {
-                loading: false,
+                active_loading: false,
+                error: action.payload.error
+            });
+        case actionTypes.ORDER_FETCH_ALL_HISTORY_START:
+            return updateObject(state, { history_loading: true });
+        case actionTypes.ORDER_FETCH_ALL_HISTORY_SUCCESS:
+            return fetchOrderHistorySucess(state, action.payload.orderHistory);
+        case actionTypes.ORDER_FETCH_ALL_HISTORY_FAIL:
+            return updateObject(state, {
+                history_loading: false,
                 error: action.payload.error
             });
         case actionTypes.ORDER_CREATE_START:
@@ -50,13 +62,17 @@ export default orderReducer = (state = initialState, action) => {
     }
 };
 
-const fetchAllOrdersSuccess = (state, notifications) => {
-    return updateObject(state, { notifications, loading: false });
+const fetchActiveOrdersSuccess = (state, activeOrders) => {
+    return updateObject(state, { activeOrders, active_loading: false });
+};
+
+const fetchOrderHistorySucess = (state, orderHistory) => {
+    return updateObject(state, { orderHistory, history_loading: false });
 };
 
 const createOrderSuccess = (state, order) => {
     const copiedState = { ...state };
-    copiedState.orders.unshift(order);
+    copiedState.activeOrders.unshift(order);
     copiedState.create_loading = false;
     copiedState.create_success = true;
     return copiedState;

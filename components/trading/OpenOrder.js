@@ -2,26 +2,27 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { RegularText, MediumText, BoldText } from "../common/StyledText";
 import Colors from "../../constants/Colors";
+import { orderTypes } from "../../constants/Strings";
 
 export default function(props) {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <BoldText style={styles.title}>Kho dau tuong</BoldText>
-                <RegularText style={styles.date}>
-                    2019.08.08 13:10:05
-                </RegularText>
+                <RegularText style={styles.date}>{props.createdAt}</RegularText>
             </View>
             <View style={styles.infoContainer}>
                 <View>
                     <View style={styles.exchangeContainer}>
-                        <BoldText style={styles.exchange}>ZME</BoldText>
+                        <BoldText style={styles.exchange}>
+                            {props.exchange}
+                        </BoldText>
                         <MediumText style={styles.typeAndLot}>
-                            Ban 1.0
+                            {orderTypes[props.orderType]} {props.volume}
                         </MediumText>
                     </View>
                     <RegularText style={styles.range}>
-                        12331 -> 12376
+                        {props.placingPrice} -> 12376
                     </RegularText>
                 </View>
                 <View style={styles.valueContainer}>

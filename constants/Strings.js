@@ -4,6 +4,7 @@ export default {
     HEADER_NEWS: "Tin tức",
     HEADER_NOTI: "Thông báo",
     HEADER_SETTINGS: "Cá nhân",
+    HEADER_ORDER_HISTORY: "Lich sử giao dịch",
     HEADER_BUTTON_ALERT: "Tin báo",
     HEADER_BUTTON_HISTORY: "Lịch sử",
     HEADER_BUTTON_BACK: "Trở về",
@@ -57,4 +58,13 @@ export default {
 
 export const commodityNames = {
     KHO_DAU_TUONG: "KHÔ ĐẬU TƯƠNG"
+};
+
+export const orderTypes = {
+    0: "Bán",
+    1: "Mua",
+    2: "Mua giới hạn",
+    3: "Bán giới hạn",
+    4: "Mua dừng",
+    5: "Bán dừng"
 };

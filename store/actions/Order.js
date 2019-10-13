@@ -26,3 +26,47 @@ export const createOrder = order => {
             );
     };
 };
+
+export const fetchAllActiveOrders = () => {
+    return dispatch => {
+        dispatch(createAction(actionTypes.ORDER_FETCH_ALL_ACTIVE_START));
+        axios
+            .get("orders/active")
+            .then(response => {
+                dispatch(
+                    createAction(actionTypes.ORDER_FETCH_ALL_ACTIVE_SUCCESS, {
+                        activeOrders: response.data
+                    })
+                );
+            })
+            .catch(error =>
+                dispatch(
+                    createAction(actionTypes.ORDER_FETCH_ALL_ACTIVE_FAIL, {
+                        error
+                    })
+                )
+            );
+    };
+};
+
+export const fetchOrderHistory = () => {
+    return dispatch => {
+        dispatch(createAction(actionTypes.ORDER_FETCH_ALL_HISTORY_START));
+        axios
+            .get("orders/history")
+            .then(response => {
+                dispatch(
+                    createAction(actionTypes.ORDER_FETCH_ALL_HISTORY_SUCCESS, {
+                        orderHistory: response.data
+                    })
+                );
+            })
+            .catch(error =>
+                dispatch(
+                    createAction(actionTypes.ORDER_FETCH_ALL_HISTORY_FAIL, {
+                        error
+                    })
+                )
+            );
+    };
+};

@@ -24,7 +24,7 @@ const config = Platform.select({
 
 const MarketStack = createStackNavigator(
     {
-        Home: CreateOrderScreen //MarketScreen
+        Home: MarketScreen // CreateOrderScreen //
     },
     config
 );
@@ -110,8 +110,8 @@ SettingsStack.navigationOptions = {
 SettingsStack.path = "";
 
 const tabNavigator = createBottomTabNavigator({
-    MarketStack,
     TradingStack,
+    MarketStack,
     NewsStack,
     NotificationStack,
     SettingsStack
