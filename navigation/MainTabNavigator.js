@@ -13,9 +13,7 @@ import TradingScreen from "../screens/home/TradingScreen";
 import NewsScreen from "../screens/home/NewsScreen";
 import NotificationScreen from "../screens/home/NotificationScreen";
 import SettingsScreen from "../screens/home/SettingsScreen";
-
 import TabBarLabel from "../components/TabBarLabel";
-import UpdateProfileScreen from "../screens/settings/UpdateProfileScreen";
 
 const config = Platform.select({
     web: { headerMode: "screen" },
@@ -92,8 +90,7 @@ NotificationStack.navigationOptions = {
 
 const SettingsStack = createStackNavigator(
     {
-        Settings: SettingsScreen,
-        EditProfile: UpdateProfileScreen
+        Settings: SettingsScreen
     },
     config
 );
@@ -110,8 +107,8 @@ SettingsStack.navigationOptions = {
 SettingsStack.path = "";
 
 const tabNavigator = createBottomTabNavigator({
-    TradingStack,
     MarketStack,
+    TradingStack,
     NewsStack,
     NotificationStack,
     SettingsStack

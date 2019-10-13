@@ -30,13 +30,13 @@ class UpdateProfileScreen extends React.Component {
                     value: "",
                     placeholder: Strings.SETTINGS_ADDRESS
                 }
-            },
-            date_of_birth: {
-                config: {
-                    value: "",
-                    placeholder: Strings.SETTINGS_DATE_OF_BIRTH
-                }
             }
+            // date_of_birth: {
+            //     config: {
+            //         value: "",
+            //         placeholder: Strings.SETTINGS_DATE_OF_BIRTH
+            //     }
+            // }
         },
         genderOptions: [
             {
@@ -68,10 +68,13 @@ class UpdateProfileScreen extends React.Component {
         for (let key in copiedState.inputs) {
             copiedState.inputs[key].config.value = this.props.user[key];
         }
-        copiedState.genderOptions = copiedState.genderOptions.map(
-            gender =>
-                (gender.selected = gender.value === this.props.user.gender)
-        );
+        for (let i = 0; i < 2; i++) {
+            if (copiedState.genderOptions[i].value === this.props.user.gender) {
+                copiedState.genderOptions[i].selected = true;
+            } else {
+                copiedState.genderOptions[i].selected = false;
+            }
+        }
         this.setState(copiedState);
     }
 

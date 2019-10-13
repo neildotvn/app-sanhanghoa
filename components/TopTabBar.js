@@ -17,51 +17,48 @@ import Colors from "../constants/Colors";
 
 class TopTabBar extends React.Component {
     state = {
-        tabButtons: {
-            favorite: {
+        tabButtons: [
+            {
                 title: Strings.TAB_FAVORITE,
                 isActive: true
             },
-            agri: {
+            {
                 title: Strings.TAB_AGRICULTURE,
                 isActive: false
             },
-            metal: {
+            {
                 title: Strings.TAB_METAL,
                 isActive: false
             },
-            fuel: {
+            {
                 title: Strings.TAB_FUEL,
                 isActive: false
             },
-            energy: {
+            {
                 title: Strings.TAB_ENERGY,
                 isActive: false
             }
-        }
+        ]
     };
 
-    onTopButtonPress = identifier => {
+    onTopButtonPress = position => {
         const cState = { ...this.state };
-        for (key in cState.tabButtons) {
-            cState.tabButtons[key].isActive = key === identifier;
+        for (let i = 0; i < cState.tabButtons.length; ++i) {
+            cState.tabButtons[i].isActive = i === position;
         }
         this.setState(cState);
+        this.props.onTabChanged(position);
     };
 
     render() {
-        let tabButtons = [];
-        for (key in this.state.tabButtons) {
-            let button = this.state.tabButtons[key];
-            tabButtons.push(
-                <TopTabButton
-                    key={key}
-                    identifier={key}
-                    {...button}
-                    onPress={this.onTopButtonPress}
-                />
-            );
-        }
+        const tabButtons = this.state.tabButtons.map((button, position) => (
+            <TopTabButton
+                key={button.title}
+                {...button}
+                onPress={this.onTopButtonPress}
+                position={position}
+            />
+        ));
 
         return <View style={styles.container}>{tabButtons}</View>;
     }

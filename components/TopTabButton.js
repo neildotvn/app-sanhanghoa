@@ -20,7 +20,7 @@ export default function(props) {
             ]}
         >
             <TouchableWithoutFeedback
-                onPress={() => props.onPress(props.identifier)}
+                onPress={() => props.onPress(props.position)}
             >
                 <RegularText
                     style={[

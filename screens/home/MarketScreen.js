@@ -1,20 +1,15 @@
 import React from "react";
-import {
-    Image,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    StatusBar,
-    View
-} from "react-native";
+import { Platform, StyleSheet, StatusBar, View } from "react-native";
 import MarketTabScreen from "../../components/market/MarketTab";
 import TopBar from "../../components/TopBar";
 import TopTabBar from "../../components/TopTabBar";
 import Strings from "../../constants/Strings";
 
 class MarketScreen extends React.Component {
+    onTabChanged = position => {
+        console.log(position);
+    };
+
     topBarConfig = {
         title: Strings.HEADER_MARKET,
         rightButtonLabel: Strings.HEADER_BUTTON_ALERT,
@@ -25,7 +20,7 @@ class MarketScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <TopBar {...this.topBarConfig} />
-                <TopTabBar />
+                <TopTabBar onTabChanged={this.onTabChanged} />
                 <MarketTabScreen />
             </View>
         );
