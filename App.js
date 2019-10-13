@@ -14,6 +14,7 @@ import AppNavigator from "./navigation/AppNavigator";
 import loadingReducer from "./store/reducers/LoadingReducer";
 import accountReduer from "./store/reducers/AccountReducer";
 import notificationReducer from "./store/reducers/NotificationReducer";
+import orderReducer from "./store/reducers/OrderReducer";
 
 export default function App(props) {
     const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -23,7 +24,8 @@ export default function App(props) {
             auth: authReducer,
             accountStore: accountReduer,
             loading: loadingReducer,
-            notiStore: notificationReducer
+            notiStore: notificationReducer,
+            orderStore: orderReducer
         }),
         applyMiddleware(thunk),
         window.__REDUX_DEVTOOLS_EXTENSION__ &&

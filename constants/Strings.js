@@ -50,7 +50,9 @@ export default {
     ORDER_PLACE_ORDER: "Đặt lệnh",
     ORDER_SELL: "Bán",
     ORDER_BUY: "Mua",
-    ORDER_BY_MARKET: "Giá thị trường"
+    ORDER_BY_MARKET: "Giá thị trường",
+    ORDER_CREATE_SUCESS: "Đặt lệnh thành công",
+    ORDER_CREATE_FAIL: "Đặt lệnh thất bại, thử lại sau!"
 };
 
 export const commodityNames = {

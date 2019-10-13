@@ -14,6 +14,8 @@ export default function(props) {
 
 const styles = StyleSheet.create({
     container: {
+        paddingStart: 40,
+        paddingEnd: 40,
         flexDirection: "row",
         justifyContent: "space-around"
     },

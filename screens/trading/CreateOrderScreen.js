@@ -4,18 +4,24 @@ import {
     StatusBar,
     StyleSheet,
     View,
-    Picker,
+    Image,
     TouchableNativeFeedback
 } from "react-native";
 import TopBar from "../../components/TopBar";
 import { connect } from "react-redux";
 import LotChooser from "../../components/trading/LotChooser";
 import OrderPrices from "../../components/trading/OderPrices";
-import PlaceOrderButtons from "../../components/trading/PlaceOrderButtons";
 import { MediumText, RegularText } from "../../components/common/StyledText";
 import Strings, { commodityNames } from "../../constants/Strings";
 import Colors from "../../constants/Colors";
 import MultipleSelect from "../../components/common/MultipleSelect";
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp
+} from "react-native-responsive-screen";
+import { createOrder } from "../../store/actions/Order";
+import Toast from "react-native-simple-toast";
+import Spinner from "react-native-loading-spinner-overlay";
 
 class CreateOrderScreen extends React.Component {
     state = {
@@ -42,6 +48,28 @@ class CreateOrderScreen extends React.Component {
             }
         ],
         selectedOption: 0
+    };
+
+    componentDidUpdate() {
+        if (this.props.orderStore.create_success) {
+            Toast.show(Strings.ORDER_CREATE_SUCESS);
+        }
+        if (this.props.orderStore.error) {
+            Toast.show(Strings.ORDER_CREATE_FAIL);
+        }
+    }
+
+    onPlaceOrder = () => {
+        const order = {
+            exchange: "zme",
+            order_status: 0,
+            order_type: 0,
+            placing_price: 314,
+            volume: 123.32,
+            take_profit_price: 3443,
+            stop_loss_price: 342
+        };
+        this.props.createOrder(order);
     };
 
     onOptionSelect = position => {
@@ -76,10 +104,64 @@ class CreateOrderScreen extends React.Component {
                         sellPrice={73612}
                         buyPrice={87162}
                     />
+                    {this.state.selectedOption === 0 ? null : (
+                        <View style={styles.orderPriceContainer}>
+                            <View style={styles.orderPrice}>
+                                <TouchableNativeFeedback>
+                                    <Image
+                                        style={styles.volumnAdjustImage}
+                                        source={require("../../assets/images/icons/ic-subtract.png")}
+                                    />
+                                </TouchableNativeFeedback>
+                                <MediumText>1234</MediumText>
+                                <TouchableNativeFeedback>
+                                    <Image
+                                        style={styles.volumnAdjustImage}
+                                        source={require("../../assets/images/icons/ic-add.png")}
+                                    />
+                                </TouchableNativeFeedback>
+                            </View>
+                            <View style={styles.bottomLine} />
+                        </View>
+                    )}
+                    <View style={styles.slAndTpSection}>
+                        <View style={[styles.slAndTp, styles.stopLoss]}>
+                            <TouchableNativeFeedback>
+                                <Image
+                                    style={styles.volumnAdjustImage}
+                                    source={require("../../assets/images/icons/ic-subtract.png")}
+                                />
+                            </TouchableNativeFeedback>
+                            <MediumText>1234</MediumText>
+                            <TouchableNativeFeedback>
+                                <Image
+                                    style={styles.volumnAdjustImage}
+                                    source={require("../../assets/images/icons/ic-add.png")}
+                                />
+                            </TouchableNativeFeedback>
+                        </View>
+                        <View style={[styles.slAndTp, styles.takeProfit]}>
+                            <TouchableNativeFeedback>
+                                <Image
+                                    style={styles.volumnAdjustImage}
+                                    source={require("../../assets/images/icons/ic-subtract.png")}
+                                />
+                            </TouchableNativeFeedback>
+                            <MediumText>5343</MediumText>
+                            <TouchableNativeFeedback>
+                                <Image
+                                    style={styles.volumnAdjustImage}
+                                    source={require("../../assets/images/icons/ic-add.png")}
+                                />
+                            </TouchableNativeFeedback>
+                        </View>
+                    </View>
                 </View>
                 <View style={styles.orderButtonsContainer}>
                     {this.state.selectedOption !== 0 ? (
-                        <TouchableNativeFeedback>
+                        <TouchableNativeFeedback
+                            onPress={() => this.onPlaceOrder()}
+                        >
                             <View style={styles.placeOrderButton}>
                                 <MediumText style={styles.placeOrderButtonText}>
                                     {Strings.ORDER_PLACE_ORDER}
@@ -158,6 +240,44 @@ const styles = StyleSheet.create({
     orderPrices: {
         marginTop: 20
     },
+    orderPriceContainer: {
+        marginTop: 20,
+        flexDirection: "column",
+        alignItems: "center"
+    },
+    orderPrice: {
+        width: wp(65),
+        flexDirection: "row",
+        justifyContent: "space-between"
+    },
+    bottomLine: {
+        width: wp(55),
+        backgroundColor: Colors.midBlueOpacity(0.5),
+        height: 1,
+        marginTop: 8
+    },
+    slAndTpSection: {
+        marginTop: 20,
+        flexDirection: "row",
+        alignSelf: "stretch",
+        height: 48
+    },
+    slAndTp: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center"
+    },
+    stopLoss: {
+        backgroundColor: Colors.redOpacity(0.15)
+    },
+    takeProfit: {
+        backgroundColor: Colors.midBlueOpacity(0.15)
+    },
+    volumnAdjustImage: {
+        height: 28,
+        width: 28
+    },
     orderButtonsContainer: {
         flex: 1,
         flexDirection: "column",
@@ -205,11 +325,15 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-    return {};
+    return {
+        orderStore: state.orderStore
+    };
 };
 
 const mapDispatchToProps = dispatch => {
-    return {};
+    return {
+        createOrder: order => dispatch(createOrder(order))
+    };
 };
 
 export default connect(
