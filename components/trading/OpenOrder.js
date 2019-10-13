@@ -5,11 +5,21 @@ import Colors from "../../constants/Colors";
 import { orderTypes } from "../../constants/Strings";
 
 export default function(props) {
+    const date = new Date(props.createdAt.replace(" ", "T"));
+    const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+    const month =
+        date.getMonth() < 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hour = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+    const minutes =
+        date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+    const createdAt = `${day}/${month}/${year} - ${hour}:${minutes}`;
+
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
                 <BoldText style={styles.title}>Kho dau tuong</BoldText>
-                <RegularText style={styles.date}>{props.createdAt}</RegularText>
+                <RegularText style={styles.date}>{createdAt}</RegularText>
             </View>
             <View style={styles.infoContainer}>
                 <View>
