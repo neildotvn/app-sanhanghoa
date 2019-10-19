@@ -1,28 +1,22 @@
 import React from "react";
-import { Platform, StatusBar, StyleSheet, View } from "react-native";
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp
-} from "react-native-responsive-screen";
+import { StyleSheet, View, Button } from "react-native";
 import MarketRow from "./MarketRow";
-import ProductDetailRow from "./ProductDetailRow";
 
 export default function(props) {
+    const rows = props.rows.map((row, index) => (
+        <MarketRow
+            key={index}
+            title={row}
+            price={1234.56}
+            isIncrease={false}
+            change={3}
+            onOpenProductDetails={props.onOpenProductDetails}
+        />
+    ));
     return (
         <View style={styles.container}>
-            <MarketRow isTitle={true} />
-            <MarketRow
-                title={"khô đậu tương"}
-                price={1234.56}
-                isIncrease={true}
-                change={2}
-            />
-            <MarketRow
-                title={"DẦU ĐẬU TƯƠNG"}
-                price={1234.56}
-                isIncrease={false}
-                change={3}
-            />
+            <MarketRow onPress={() => console.log("idiot")} isTitle={true} />
+            {rows}
         </View>
     );
 }

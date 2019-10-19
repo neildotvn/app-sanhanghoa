@@ -13,7 +13,7 @@ const initialState = {
 };
 
 export default authReducer = (state = initialState, action) => {
-    console.log("action", action);
+    // console.log("ACCOUNT_REDUCER", action);
     switch (action.type) {
         case actionTypes.ACCOUNT_LOADING:
             return updateObject(state, { loading: true, error: null });

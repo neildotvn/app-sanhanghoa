@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableNativeFeedback } from "react-native";
 import { RegularText, LightText } from "../common/StyledText";
 import ChangeCell from "../market/ChangeCell";
 import Colors from "../../constants/Colors";
@@ -9,24 +9,28 @@ class MarketRow extends React.Component {
     render() {
         const props = this.props;
         return !props.isTitle ? (
-            <View style={styles.container}>
-                <View style={styles.first}>
-                    <RegularText style={styles.title}>
-                        {props.title}
-                    </RegularText>
+            <TouchableNativeFeedback
+                onPress={() => this.props.onOpenProductDetails(props.title)}
+            >
+                <View style={styles.container}>
+                    <View style={styles.first}>
+                        <RegularText style={styles.title}>
+                            {props.title}
+                        </RegularText>
+                    </View>
+                    <View style={styles.second}>
+                        <RegularText style={styles.price}>
+                            {props.price}
+                        </RegularText>
+                    </View>
+                    <View style={styles.third}>
+                        <ChangeCell
+                            isIncrease={props.isIncrease}
+                            value={props.change}
+                        />
+                    </View>
                 </View>
-                <View style={styles.second}>
-                    <RegularText style={styles.price}>
-                        {props.price}
-                    </RegularText>
-                </View>
-                <View style={styles.third}>
-                    <ChangeCell
-                        isIncrease={props.isIncrease}
-                        value={props.change}
-                    />
-                </View>
-            </View>
+            </TouchableNativeFeedback>
         ) : (
             <View style={styles.titleContainer}>
                 <View style={styles.first}>

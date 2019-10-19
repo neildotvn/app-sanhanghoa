@@ -16,7 +16,7 @@ const initialState = {
 };
 
 export default notiReducer = (state = initialState, action) => {
-    console.log("action", action);
+    // console.log("NOTI_REDUCER", action);
     switch (action.type) {
         case actionTypes.NOTIFICATION_LOADING:
             return updateObject(state, { loading: true });

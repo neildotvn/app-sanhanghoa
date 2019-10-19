@@ -57,7 +57,12 @@ export default {
 };
 
 export const commodityNames = {
-    KHO_DAU_TUONG: "KHÔ ĐẬU TƯƠNG"
+    KHO_DAU_TUONG: "KHÔ ĐẬU TƯƠNG",
+    CA_PHE: "CÀ PHÊ",
+    COTTON: "COTTON",
+    CAO_SU: "CAO SU",
+    CA_CAO: "CA CAO",
+    TIEU: "TIÊU"
 };
 
 export const orderTypes = {
@@ -68,3 +73,17 @@ export const orderTypes = {
     4: "Mua dừng",
     5: "Bán dừng"
 };
+
+export const priceColumns = [
+    "Kỳ hạn",
+    "Giá khớp",
+    "Thay đổi",
+    "Cao nhất",
+    "Thấp nhất",
+    "Đặt mua",
+    "Đặt bán"
+];
+
+export const priceTermsICE = ["11/19", "01/20", "03/20", "05/20"];
+
+export const priceTermsNYC = ["12/19", "03/20", "05/20", "07/20"];

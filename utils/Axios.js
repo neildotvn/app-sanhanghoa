@@ -3,7 +3,7 @@ import { AsyncStorage } from "react-native";
 import * as storageKeys from "../store/storage/StorageKeys";
 
 const instance = axios.create({
-    baseURL: "https://5532ffb0.ngrok.io/api/v1/",
+    baseURL: "https://b4d8004a.ngrok.io/api/v1/",
     timeout: 5000
 });
 
@@ -21,7 +21,7 @@ instance.interceptors.request.use(config => {
 });
 
 instance.interceptors.response.use(response => {
-    console.log("Response received!", response);
+    // console.log("Response received!", response);
     return response;
 });
 

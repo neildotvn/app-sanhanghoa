@@ -26,7 +26,7 @@ const initialState = {
 };
 
 export default orderReducer = (state = initialState, action) => {
-    console.log("ORDER REDUCER", action.type, action.payload);
+    // console.log("ORDER REDUCER", action.type, action.payload);
     switch (action.type) {
         case actionTypes.ORDER_FETCH_ALL_ACTIVE_START:
             return updateObject(state, { active_loading: true });
