@@ -1,51 +1,26 @@
 import React from "react";
-import { Platform, StatusBar, StyleSheet, View, Text } from "react-native";
+import {
+    Platform,
+    StatusBar,
+    StyleSheet,
+    View,
+    TouchableNativeFeedback,
+    Image
+} from "react-native";
 import { connect } from "react-redux";
 import TopBar from "../../components/TopBar";
 import Colors from "../../constants/Colors";
-import Strings, {
-    priceColumns,
-    priceTermsICE,
-    priceTermsNYC,
-    commodityNames
-} from "../../constants/Strings";
-import { RegularText, MediumText } from "../../components/common/StyledText";
-
-const commodityMap = [
-    {
-        name: commodityNames.CA_PHE,
-        ice: [15, 16, 17, 18],
-        nyb: [3, 4, 5, 6],
-        iceTerms: ["11/19", "01/20", "03/20", "05/20"],
-        nybTerms: ["12/19", "03/20", "05/20", "07/20"]
-    },
-    {
-        name: commodityNames.COTTON,
-        nyb: [9, 10, 11, 12],
-        nybTerms: ["12/19", "03/20", "05/20", "07/20"]
-    },
-    {
-        name: commodityNames.CA_CAO,
-        ice: [34, 35],
-        nyb: [36, 37],
-        iceTerms: ["12/19", "03/20"],
-        nybTerms: ["12/19", "03/20"]
-    },
-    {
-        name: commodityNames.TIEU,
-        ice: [0, 1, 2, 3],
-        nyb: [0, 1, 2, 3]
-    },
-    {
-        name: commodityNames.CAO_SU,
-        nyb: [42, 43, 44, 45],
-        nybTerms: ["11/19", "12/19", "01/20", "02/20"]
-    }
-];
+import Strings, { priceColumns } from "../../constants/Strings";
+import { commodityMap } from "../../constants/CommodityMap";
+import {
+    RegularText,
+    MediumText,
+    LightText
+} from "../../components/common/StyledText";
 
 class MarketPricesScreen extends React.Component {
-    // magic numbers: 0,2,6,7,11,13 - map data from tincaphe.com
-    magicNumbers = [0, 2, 6, 7, 11, 13];
+    // magic numbers: 1,2,6,7,11,13 - map data from tincaphe.com
+    magicNumbers = [1, 2, 6, 7, 11, 13];
 
     mapData() {
         const prices = this.props.pricesStore.prices;
@@ -54,6 +29,7 @@ class MarketPricesScreen extends React.Component {
         for (const commodity of commodityMap) {
             if (commodity.name === name) {
                 thisCom = { ...commodity };
+                break;
             }
         }
         let dataICE = [];
@@ -98,6 +74,16 @@ class MarketPricesScreen extends React.Component {
     }
 
     onBackPressed = () => this.props.navigation.pop();
+
+    onCreateAlarm = () => {
+        console.log("alarm");
+    };
+
+    onCreateOrder = () => {
+        this.props.navigation.push("CreateOrder", {
+            product_name: this.props.navigation.getParam("product_name")
+        });
+    };
 
     topBarConfig = {
         title: this.props.navigation.getParam("product_name"),
@@ -170,6 +156,42 @@ class MarketPricesScreen extends React.Component {
                         {nycRows}
                     </View>
                 ) : null}
+                {iceRows.length === 0 && nycRows.length === 0 ? (
+                    <View style={styles.noDataWrapper}>
+                        <RegularText>Đang cập nhật...</RegularText>
+                    </View>
+                ) : (
+                    <View style={styles.bottomButtonsWrapper}>
+                        <View style={styles.bottomButtons}>
+                            {/* <TouchableNativeFeedback
+                                onPress={() => this.onCreateAlarm()}
+                            >
+                                <View style={styles.alarmButton}>
+                                    <Image
+                                        style={styles.bottomButtonImage}
+                                        source={require("../../assets/images/icons/ic-bottom-alarm.png")}
+                                    />
+                                    <LightText style={styles.buttonText}>
+                                        {Strings.PRICES_PLACE_ALARM}
+                                    </LightText>
+                                </View>
+                            </TouchableNativeFeedback> */}
+                            <TouchableNativeFeedback
+                                onPress={() => this.onCreateOrder()}
+                            >
+                                <View style={[styles.createOrderButton]}>
+                                    <Image
+                                        style={styles.bottomButtonImage}
+                                        source={require("../../assets/images/icons/ic-place-order.png")}
+                                    />
+                                    <LightText style={styles.buttonText}>
+                                        {Strings.PRICES_PLACE_ORDER}
+                                    </LightText>
+                                </View>
+                            </TouchableNativeFeedback>
+                        </View>
+                    </View>
+                )}
             </View>
         );
     }
@@ -272,6 +294,51 @@ const styles = StyleSheet.create({
     },
     changeText: {
         color: "white"
+    },
+    noDataWrapper: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    noDataText: {
+        fontSize: 14,
+        color: Colors.blackOpacity(0.5)
+    },
+    bottomButtonsWrapper: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "flex-end"
+    },
+    bottomButtons: {
+        height: 48,
+        backgroundColor: Colors.grey,
+        flexDirection: "row",
+        justifyContent: "flex-start"
+    },
+    alarmButton: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    createOrderButton: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    divider: {
+        width: 0,
+        backgroundColor: "white"
+    },
+    bottomButtonImage: {
+        height: 30,
+        width: 30
+    },
+    buttonText: {
+        fontSize: 8,
+        color: Colors.midBlue
     }
 });
 

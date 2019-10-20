@@ -12,47 +12,37 @@ import {
 import Colors from "../../constants/Colors";
 
 export default class LotChooser extends React.Component {
-    state = {
-        lot: 1.0
-    };
-
-    onLotChanged = changed => {
-        const copiedState = { ...this.state };
-        copiedState.lot = copiedState.lot += changed;
-        this.setState(copiedState);
-    };
-
     render() {
         return (
             <View style={[styles.container, this.props.style]}>
                 <View style={styles.lotContainer}>
                     <TouchableNativeFeedback
-                        onPress={() => this.onLotChanged(-0.1)}
+                        onPress={() => this.props.onVolumeChange(-1.0)}
+                    >
+                        <RegularText style={styles.modifier}>-1.0</RegularText>
+                    </TouchableNativeFeedback>
+                    <TouchableNativeFeedback
+                        onPress={() => this.props.onVolumeChange(-0.1)}
                     >
                         <RegularText style={styles.modifier}>-0.1</RegularText>
                     </TouchableNativeFeedback>
-                    <TouchableNativeFeedback
-                        onPress={() => this.onLotChanged(-0.01)}
-                    >
-                        <RegularText style={styles.modifier}>-0.01</RegularText>
-                    </TouchableNativeFeedback>
-                    <TextInput
+                    <RegularText
                         autoCompleteType="off"
                         keyboardType="numeric"
                         type
                         style={styles.lot}
                     >
-                        {this.state.lot.toFixed(2)}
-                    </TextInput>
+                        {this.props.volume.toFixed(1)}
+                    </RegularText>
                     <TouchableNativeFeedback
-                        onPress={() => this.onLotChanged(0.01)}
-                    >
-                        <RegularText style={styles.modifier}>+0.01</RegularText>
-                    </TouchableNativeFeedback>
-                    <TouchableNativeFeedback
-                        onPress={() => this.onLotChanged(0.1)}
+                        onPress={() => this.props.onVolumeChange(0.1)}
                     >
                         <RegularText style={styles.modifier}>+0.1</RegularText>
+                    </TouchableNativeFeedback>
+                    <TouchableNativeFeedback
+                        onPress={() => this.props.onVolumeChange(1.0)}
+                    >
+                        <RegularText style={styles.modifier}>+1.0</RegularText>
                     </TouchableNativeFeedback>
                 </View>
                 <View style={styles.bottomLine} />

@@ -70,3 +70,23 @@ export const fetchOrderHistory = () => {
             );
     };
 };
+
+export const closeOrder = (order_uid, price) => {
+    return dispatch => {
+        dispatch(createAction(actionTypes.ORDER_CLOSE_START));
+        axios
+            .post("orders/close", { order_uid, price })
+            .then(response => {
+                console.log(response.data);
+                dispatch(fetchAllActiveOrders());
+                dispatch(createAction(actionTypes.ORDER_CLOSE_SUCCESS));
+            })
+            .catch(error => {
+                console.log(error);
+                dispatch(createAction(actionTypes.ORDER_CLOSE_FAIL));
+            })
+            .finally(() =>
+                dispatch(createAction(actionTypes.ORDER_CLOSE_FINISH))
+            );
+    };
+};

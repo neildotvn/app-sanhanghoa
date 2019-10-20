@@ -18,8 +18,12 @@ import Colors from "../constants/Colors";
 class TopTabBar extends React.Component {
     state = {
         tabButtons: [
+            // {
+            //     title: Strings.TAB_FAVORITE,
+            //     isActive: true
+            // },
             {
-                title: Strings.TAB_FAVORITE,
+                title: Strings.TAB_FUEL,
                 isActive: true
             },
             {
@@ -28,10 +32,6 @@ class TopTabBar extends React.Component {
             },
             {
                 title: Strings.TAB_METAL,
-                isActive: false
-            },
-            {
-                title: Strings.TAB_FUEL,
                 isActive: false
             },
             {

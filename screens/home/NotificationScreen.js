@@ -11,6 +11,8 @@ import NotificationRow from "../../components/noti/NotificationRow";
 import * as actions from "../../store/actions/Notifications";
 import Strings from "../../constants/Strings";
 import { connect } from "react-redux";
+import { RegularText } from "../../components/common/StyledText";
+import Colors from "../../constants/Colors";
 
 class NotificationScreen extends React.Component {
     componentDidMount() {
@@ -33,7 +35,12 @@ class NotificationScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <TopBar title={Strings.HEADER_NOTI} />
-                <ScrollView style={styles.notiContainer}>{notiRows}</ScrollView>
+                {/* <ScrollView style={styles.notiContainer}>{notiRows}</ScrollView> */}
+                <View style={styles.textContainer}>
+                    <RegularText style={styles.text}>
+                        Chưa có thông báo!
+                    </RegularText>
+                </View>
             </View>
         );
     }
@@ -68,5 +75,15 @@ const styles = StyleSheet.create({
     },
     notiContainer: {
         padding: 12
+    },
+    textContainer: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    text: {
+        fontSize: 14,
+        color: Colors.blackOpacity(0.8)
     }
 });

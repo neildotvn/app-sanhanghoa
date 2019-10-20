@@ -27,7 +27,7 @@ class NotificationScreen extends React.Component {
     logout = () => {
         AsyncStorage.removeItem(StorageKeys.KEY_USER_TOKEN)
             .then(() => {
-                this.props.navigation.push("AuthLoading");
+                this.props.navigation.navigate("AuthLoading");
             })
             .catch(err => {
                 console.log(err);
@@ -68,7 +68,11 @@ class NotificationScreen extends React.Component {
                             value={this.props.user.phone}
                         />
                         <PersonalInfo
-                            title={Strings.SETTINGS_NAME}
+                            title={
+                                Strings.SETTINGS_NAME
+                                    ? Strings.SETTINGS_NAME
+                                    : Strings.SETTINGS_NOT_YET_UPDATED
+                            }
                             value={this.props.user.full_name}
                         />
                         <PersonalInfo

@@ -31,6 +31,10 @@ class TradingScreen extends React.Component {
         this.props.navigation.push("OrderHistory");
     };
 
+    onOrderPress = order => {
+        this.props.navigation.push("OrderDetail", { order });
+    };
+
     infoNames = {
         balance: Strings.TRADING_BALANCE,
         credit: Strings.TRADING_CREDIT,
@@ -69,11 +73,8 @@ class TradingScreen extends React.Component {
         const orderList = orders.map((order, position) => (
             <OpenOrder
                 key={position}
-                volume={order.volume}
-                createdAt={order.created_at}
-                orderType={order.order_type}
-                exchange={order.exchange}
-                placingPrice={order.placing_price}
+                order={order}
+                onPress={this.onOrderPress}
             />
         ));
 

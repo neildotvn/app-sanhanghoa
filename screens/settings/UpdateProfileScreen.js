@@ -68,11 +68,18 @@ class UpdateProfileScreen extends React.Component {
         for (let key in copiedState.inputs) {
             copiedState.inputs[key].config.value = this.props.user[key];
         }
-        for (let i = 0; i < 2; i++) {
-            if (copiedState.genderOptions[i].value === this.props.user.gender) {
-                copiedState.genderOptions[i].selected = true;
-            } else {
-                copiedState.genderOptions[i].selected = false;
+        if (!this.props.user.gender) {
+            copiedState.genderOptions[0].selected = true;
+        } else {
+            for (let i = 0; i < 2; i++) {
+                if (
+                    copiedState.genderOptions[i].value ===
+                    this.props.user.gender
+                ) {
+                    copiedState.genderOptions[i].selected = true;
+                } else {
+                    copiedState.genderOptions[i].selected = false;
+                }
             }
         }
         this.setState(copiedState);

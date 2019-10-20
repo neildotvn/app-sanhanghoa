@@ -64,5 +64,5 @@ const updateFail = (state, error) => {
 };
 
 const updateFinished = state => {
-    return updateObject(state, { updateSuccess: false });
+    return updateObject(state, { updateSuccess: false, error: null });
 };

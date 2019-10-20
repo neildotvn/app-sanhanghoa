@@ -22,6 +22,8 @@ const initialState = {
     history_loading: false,
     create_loading: false,
     create_success: false,
+    close_loading: false,
+    close_success: false,
     error: null
 };
 
@@ -57,6 +59,20 @@ export default orderReducer = (state = initialState, action) => {
             });
         case actionTypes.ORDER_CREATE_FINISH:
             return updateObject(state, { create_success: false });
+        case actionTypes.ORDER_CLOSE_START:
+            return updateObject(state, { close_loading: true });
+        case actionTypes.ORDER_CLOSE_SUCCESS:
+            return updateObject(state, {
+                close_loading: false,
+                close_success: true
+            });
+        case actionTypes.ORDER_CLOSE_FAIL:
+            return updateObject(state, {
+                close_loading: false,
+                error: action.payload.error
+            });
+        case actionTypes.ORDER_CLOSE_FINISH:
+            return updateObject(state, { close_success: false });
         default:
             return state;
     }

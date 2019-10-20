@@ -17,22 +17,35 @@ export default class MultipleSelect extends React.Component {
         this.setState({ isOptionsShowed: !this.state.isOptionsShowed });
     };
 
-    onOptionChosen = position => {
+    onOptionChosen = (position, value) => {
         this.toggleOptions();
-        this.props.onSelect(position);
+        this.props.onSelect(position, value);
     };
 
     render() {
-        const items = this.props.options.map((option, position) => {
-            return (
-                <SelectItem
-                    key={position}
-                    label={option.label}
-                    onSelect={this.onOptionChosen}
-                    position={position}
-                />
-            );
-        });
+        let items;
+        try {
+            items = this.props.values.map((option, position) => {
+                return (
+                    <SelectItem
+                        key={position}
+                        label={option.label}
+                        onSelect={this.onOptionChosen}
+                        position={position}
+                        value={option.value}
+                    />
+                );
+            });
+        } catch (err) {
+            console.log(err);
+        }
+
+        let selectedValue;
+        try {
+            selectedValue = this.props.values[this.props.selected].label;
+        } catch (err) {
+            console.log(err);
+        }
 
         return (
             <View style={styles.container}>
@@ -43,7 +56,7 @@ export default class MultipleSelect extends React.Component {
                         }}
                     >
                         <MediumText style={{ color: Colors.midBlue }}>
-                            {this.props.options[this.props.selected].label}
+                            {selectedValue}
                         </MediumText>
                         <Image
                             style={styles.dropSign}
@@ -61,7 +74,9 @@ export default class MultipleSelect extends React.Component {
 
 const SelectItem = props => {
     return (
-        <TouchableNativeFeedback onPress={() => props.onSelect(props.position)}>
+        <TouchableNativeFeedback
+            onPress={() => props.onSelect(props.position, props.value)}
+        >
             <View style={styles.item}>
                 <RegularText style={styles.itemText}>{props.label}</RegularText>
             </View>

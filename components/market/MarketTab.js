@@ -15,7 +15,12 @@ export default function(props) {
     ));
     return (
         <View style={styles.container}>
-            <MarketRow onPress={() => console.log("idiot")} isTitle={true} />
+            {rows.length === 0 ? null : (
+                <MarketRow
+                    onPress={() => console.log("idiot")}
+                    isTitle={true}
+                />
+            )}
             {rows}
         </View>
     );

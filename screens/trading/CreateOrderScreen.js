@@ -5,7 +5,8 @@ import {
     StyleSheet,
     View,
     Image,
-    TouchableNativeFeedback
+    TouchableNativeFeedback,
+    TextInput
 } from "react-native";
 import TopBar from "../../components/TopBar";
 import { connect } from "react-redux";
@@ -22,6 +23,8 @@ import {
 import { createOrder } from "../../store/actions/Order";
 import Toast from "react-native-simple-toast";
 import Spinner from "react-native-loading-spinner-overlay";
+import { orderProductMap, commodityMap } from "../../constants/CommodityMap";
+import _ from "lodash";
 
 class CreateOrderScreen extends React.Component {
     state = {
@@ -47,33 +50,282 @@ class CreateOrderScreen extends React.Component {
                 value: 5
             }
         ],
-        selectedOption: 0
+        thisCom: {},
+        termOptions: [],
+        selectedTermOption: 0,
+        selectedOptionType: 0,
+        orderType: 0,
+        order: {
+            exchange: null,
+            lot: 1.0,
+            placing_price: 0,
+            volume: 1.0,
+            take_profit_price: null,
+            stop_loss_price: null
+        }
     };
+
+    componentDidMount() {
+        const name = this.props.navigation.getParam("product_name");
+        let thisCom;
+        for (const commodity of commodityMap) {
+            if (commodity.name === name) {
+                thisCom = { ...commodity };
+                break;
+            }
+        }
+        const iceTerms = thisCom.iceTerms
+            ? thisCom.iceTerms.map(term => {
+                  return { label: `ICE ${term}`, value: `ICE ${term}` };
+              })
+            : [];
+        const nybTerms = thisCom.nybTerms
+            ? thisCom.nybTerms.map(term => {
+                  return { label: `NYB ${term}`, value: `NYB ${term}` };
+              })
+            : [];
+        const termOptions = [...iceTerms, ...nybTerms];
+        const order = { ...this.state.order };
+        order.exchange = termOptions[0].value;
+        this.setState({ termOptions, thisCom, order });
+    }
 
     componentDidUpdate() {
         if (this.props.orderStore.create_success) {
             Toast.show(Strings.ORDER_CREATE_SUCESS);
+            this.props.navigation.pop();
         }
         if (this.props.orderStore.error) {
             Toast.show(Strings.ORDER_CREATE_FAIL);
         }
     }
 
-    onPlaceOrder = () => {
+    onVolumeChange = change => {
+        const order = { ...this.state.order };
+        order.volume += change;
+        if (order.volume < 0) {
+            order.volume = 0;
+        }
+        this.setState({ order: order });
+    };
+
+    onOrderPriceChange = text => {
+        const order = { ...this.state.order };
+        order.placing_price = text;
+        this.setState({ order: order });
+    };
+
+    onStopLossChange = text => {
+        const order = { ...this.state.order };
+        order.stop_loss_price = text == 0 ? null : text;
+        this.setState({ order: order });
+    };
+
+    onTakeProfitChange = text => {
+        const order = { ...this.state.order };
+        order.take_profit_price = text == 0 ? null : text;
+        this.setState({ order: order });
+    };
+
+    onPlaceOrderByMarket = isBuy => {
+        const checkResult = this.onCheckNumberInput(true, isBuy);
+        if (!checkResult.result) {
+            Toast.show(checkResult.message);
+            return;
+        }
+        const productName = this.props.navigation.getParam("product_name");
+        let productCode;
+        for (const product of orderProductMap) {
+            if (product.name === productName) {
+                productCode = product.productCode;
+            }
+        }
+        const { buyPrice, sellPrice } = this.mapPrice();
+        const orderPrice = isBuy ? buyPrice : sellPrice;
+        const volume = _.round(this.state.order.volume, 1);
         const order = {
-            exchange: "zme",
+            product: productCode,
+            exchange: this.state.order.exchange,
             order_status: 0,
-            order_type: 0,
-            placing_price: 314,
-            volume: 123.32,
-            take_profit_price: 3443,
-            stop_loss_price: 342
+            order_type: isBuy ? 0 : 1,
+            placing_price: orderPrice,
+            volume,
+            take_profit_price: this.state.order.take_profit_price,
+            stop_loss_price: this.state.order.stop_loss_price
         };
+        console.log(order);
         this.props.createOrder(order);
     };
 
-    onOptionSelect = position => {
-        this.setState({ selectedOption: position });
+    onPlaceOrder = () => {
+        const checkResult = this.onCheckNumberInput();
+        if (!checkResult.result) {
+            Toast.show(checkResult.message);
+            return;
+        }
+        const productName = this.props.navigation.getParam("product_name");
+        let productCode;
+        for (const product of orderProductMap) {
+            if (product.name === productName) {
+                productCode = product.productCode;
+            }
+        }
+        const volume = _.round(this.state.order.volume, 1);
+        const order = {
+            product: productCode,
+            exchange: this.state.order.exchange,
+            order_status: 0,
+            order_type: this.state.orderType,
+            placing_price: this.state.order.placing_price,
+            volume,
+            take_profit_price: this.state.order.take_profit_price,
+            stop_loss_price: this.state.order.stop_loss_price
+        };
+        console.log(order);
+        this.props.createOrder(order);
+    };
+
+    onCheckNumberInput = (isByMarket = false, isBuyByMarket = false) => {
+        const order = _.omit(this.state.order, ["exchange"]);
+        for (const orderInput of Object.values(order)) {
+            if (orderInput != null && isNaN(orderInput)) {
+                return { result: false, message: Strings.ERROR_NAN };
+            }
+        }
+        if (order.volume == 0) {
+            return { result: false, message: Strings.ERROR_LOT_ZERO };
+        }
+        const { buyPrice, sellPrice } = this.mapPrice();
+        const orderPrice = order.placing_price;
+        const slPrice = order.stop_loss_price;
+        const tpPrice = order.take_profit_price;
+        switch (this.state.orderType) {
+            case 2: // buy limit
+                if (orderPrice >= buyPrice)
+                    return { result: false, message: Strings.ERROR_BUY_LIMIT };
+                if (slPrice != null && slPrice >= orderPrice) {
+                    return {
+                        result: false,
+                        message: Strings.ERROR_BUY_STOP_LOSS
+                    };
+                }
+                if (tpPrice != null && tpPrice <= orderPrice) {
+                    return {
+                        result: false,
+                        message: Strings.ERROR_BUY_TAKE_PROFIT
+                    };
+                }
+                break;
+            case 3: // sell limit
+                if (orderPrice <= sellPrice)
+                    return { result: false, message: Strings.ERROR_SELL_LIMIT };
+                if (slPrice != null && slPrice <= orderPrice) {
+                    return {
+                        result: false,
+                        message: Strings.ERROR_SELL_STOP_LOSS
+                    };
+                }
+                if (tpPrice != null && tpPrice >= orderPrice) {
+                    return {
+                        result: false,
+                        message: Strings.ERROR_SELL_TAKE_PROFIT
+                    };
+                }
+                break;
+            case 4: // buy stop
+                if (orderPrice <= buyPrice)
+                    return { result: false, message: Strings.ERROR_BUY_STOP };
+                if (slPrice != null && slPrice >= orderPrice) {
+                    return {
+                        result: false,
+                        message: Strings.ERROR_BUY_STOP_LOSS
+                    };
+                }
+                if (tpPrice != null && tpPrice <= orderPrice) {
+                    return {
+                        result: false,
+                        message: Strings.ERROR_BUY_TAKE_PROFIT
+                    };
+                }
+                break;
+            case 5: // sell stop
+                if (orderPrice >= sellPrice)
+                    return { result: false, message: Strings.ERROR_SELL_STOP };
+                if (slPrice != null && slPrice <= orderPrice) {
+                    return {
+                        result: false,
+                        message: Strings.ERROR_SELL_STOP_LOSS
+                    };
+                }
+                if (tpPrice != null && tpPrice >= orderPrice) {
+                    return {
+                        result: false,
+                        message: Strings.ERROR_SELL_TAKE_PROFIT
+                    };
+                }
+                break;
+            default:
+                // by market
+                if (isByMarket) {
+                    if (isBuyByMarket) {
+                        if (slPrice != null && slPrice >= orderPrice) {
+                            return {
+                                result: false,
+                                message: Strings.ERROR_BUY_STOP_LOSS
+                            };
+                        }
+                        if (tpPrice != null && tpPrice <= orderPrice) {
+                            return {
+                                result: false,
+                                message: Strings.ERROR_BUY_TAKE_PROFIT
+                            };
+                        }
+                    } else {
+                        if (slPrice != null && slPrice <= orderPrice) {
+                            return {
+                                result: false,
+                                message: Strings.ERROR_SELL_STOP_LOSS
+                            };
+                        }
+                        if (tpPrice != null && tpPrice >= orderPrice) {
+                            return {
+                                result: false,
+                                message: Strings.ERROR_SELL_TAKE_PROFIT
+                            };
+                        }
+                    }
+                }
+                break;
+        }
+        return { result: true };
+    };
+
+    onOptionSelect = (position, value) => {
+        this.setState({ selectedOptionType: position, orderType: value });
+    };
+
+    onTermSelect = (position, value) => {
+        order = { ...this.state.order };
+        order.exchange = value;
+        this.setState({ selectedTermOption: position, order });
+    };
+
+    mapPrice = () => {
+        let buyPrice;
+        let sellPrice;
+        try {
+            const valueIndices = [
+                ...this.state.thisCom.ice,
+                ...this.state.thisCom.nyb
+            ];
+            const rowIndex = valueIndices[this.state.selectedTermOption];
+            const rowData = this.props.pricesStore.prices[rowIndex];
+            buyPrice = rowData.vs[11];
+            sellPrice = rowData.vs[13];
+        } catch (err) {
+            console.log(err);
+        }
+        return { buyPrice, sellPrice };
     };
 
     onBackPressed = () => {
@@ -81,30 +333,47 @@ class CreateOrderScreen extends React.Component {
     };
 
     topBarConfig = {
-        title: commodityNames.KHO_DAU_TUONG,
+        title: this.props.navigation.getParam("product_name"),
         leftButtonLabel: Strings.HEADER_BUTTON_BACK,
         leftImageSource: require("../../assets/images/icons/ic-back.png"),
         onLeftButtonPress: this.onBackPressed
     };
 
     render() {
+        const { buyPrice, sellPrice } = this.mapPrice();
         return (
             <View style={styles.container}>
                 {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+                <Spinner visible={this.props.orderStore.create_loading} />
                 <TopBar {...this.topBarConfig} />
                 <View style={styles.secondaryContainer}>
+                    <RegularText style={styles.titleText}>
+                        {Strings.ORDER_TERM}
+                    </RegularText>
                     <MultipleSelect
-                        options={this.state.orderTypes}
-                        selected={this.state.selectedOption}
+                        values={this.state.termOptions}
+                        selected={this.state.selectedTermOption}
+                        onSelect={this.onTermSelect}
+                    />
+                    <RegularText style={styles.titleText}>
+                        {Strings.ORDER_TYPE}
+                    </RegularText>
+                    <MultipleSelect
+                        values={this.state.orderTypes}
+                        selected={this.state.selectedOptionType}
                         onSelect={this.onOptionSelect}
                     />
-                    <LotChooser style={styles.lotChooser} />
+                    <LotChooser
+                        style={styles.lotChooser}
+                        volume={this.state.order.volume}
+                        onVolumeChange={this.onVolumeChange}
+                    />
                     <OrderPrices
                         style={styles.orderPrices}
-                        sellPrice={73612}
-                        buyPrice={87162}
+                        sellPrice={sellPrice}
+                        buyPrice={buyPrice}
                     />
-                    {this.state.selectedOption === 0 ? null : (
+                    {this.state.selectedOptionType === 0 ? null : (
                         <View style={styles.orderPriceContainer}>
                             <View style={styles.orderPrice}>
                                 <TouchableNativeFeedback>
@@ -113,7 +382,13 @@ class CreateOrderScreen extends React.Component {
                                         source={require("../../assets/images/icons/ic-subtract.png")}
                                     />
                                 </TouchableNativeFeedback>
-                                <MediumText>1234</MediumText>
+                                <TextInput
+                                    value={this.state.order.placing_price.toString()}
+                                    style={styles.input}
+                                    onChangeText={text =>
+                                        this.onOrderPriceChange(text)
+                                    }
+                                />
                                 <TouchableNativeFeedback>
                                     <Image
                                         style={styles.volumnAdjustImage}
@@ -132,7 +407,17 @@ class CreateOrderScreen extends React.Component {
                                     source={require("../../assets/images/icons/ic-subtract.png")}
                                 />
                             </TouchableNativeFeedback>
-                            <MediumText>1234</MediumText>
+                            <TextInput
+                                value={
+                                    this.state.order.stop_loss_price
+                                        ? this.state.order.stop_loss_price.toString()
+                                        : "0"
+                                }
+                                style={styles.input}
+                                onChangeText={text =>
+                                    this.onStopLossChange(text)
+                                }
+                            />
                             <TouchableNativeFeedback>
                                 <Image
                                     style={styles.volumnAdjustImage}
@@ -147,7 +432,17 @@ class CreateOrderScreen extends React.Component {
                                     source={require("../../assets/images/icons/ic-subtract.png")}
                                 />
                             </TouchableNativeFeedback>
-                            <MediumText>5343</MediumText>
+                            <TextInput
+                                value={
+                                    this.state.order.take_profit_price
+                                        ? this.state.order.take_profit_price.toString()
+                                        : "0"
+                                }
+                                style={styles.input}
+                                onChangeText={text =>
+                                    this.onTakeProfitChange(text)
+                                }
+                            />
                             <TouchableNativeFeedback>
                                 <Image
                                     style={styles.volumnAdjustImage}
@@ -158,7 +453,7 @@ class CreateOrderScreen extends React.Component {
                     </View>
                 </View>
                 <View style={styles.orderButtonsContainer}>
-                    {this.state.selectedOption !== 0 ? (
+                    {this.state.selectedOptionType !== 0 ? (
                         <TouchableNativeFeedback
                             onPress={() => this.onPlaceOrder()}
                         >
@@ -170,7 +465,9 @@ class CreateOrderScreen extends React.Component {
                         </TouchableNativeFeedback>
                     ) : (
                         <View style={styles.byMarketButtons}>
-                            <TouchableNativeFeedback>
+                            <TouchableNativeFeedback
+                                onPress={() => this.onPlaceOrderByMarket(false)}
+                            >
                                 <View style={styles.byMarketButton}>
                                     <MediumText
                                         style={[
@@ -191,7 +488,9 @@ class CreateOrderScreen extends React.Component {
                                 </View>
                             </TouchableNativeFeedback>
                             <View style={styles.divider} />
-                            <TouchableNativeFeedback>
+                            <TouchableNativeFeedback
+                                onPress={() => this.onPlaceOrderByMarket(true)}
+                            >
                                 <View style={[styles.byMarketButton]}>
                                     <MediumText
                                         style={[
@@ -230,7 +529,8 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     },
     secondaryContainer: {
-        padding: 20
+        padding: 20,
+        paddingTop: 10
     },
     lotChooser: {
         marginTop: 20,
@@ -321,12 +621,25 @@ const styles = StyleSheet.create({
     },
     buyText: {
         color: Colors.midBlue
+    },
+    input: {
+        flex: 1,
+        textAlign: "center"
+    },
+    titleText: {
+        alignSelf: "stretch",
+        textAlign: "center",
+        marginTop: 10,
+        marginBottom: 10,
+        fontSize: 14,
+        color: Colors.blackOpacity(0.8)
     }
 });
 
 const mapStateToProps = state => {
     return {
-        orderStore: state.orderStore
+        orderStore: state.orderStore,
+        pricesStore: state.pricesStore
     };
 };
 

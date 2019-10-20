@@ -19,15 +19,15 @@ class MarketRow extends React.Component {
                         </RegularText>
                     </View>
                     <View style={styles.second}>
-                        <RegularText style={styles.price}>
+                        {/* <RegularText style={styles.price}>
                             {props.price}
-                        </RegularText>
+                        </RegularText> */}
                     </View>
                     <View style={styles.third}>
-                        <ChangeCell
+                        {/* <ChangeCell
                             isIncrease={props.isIncrease}
                             value={props.change}
-                        />
+                        /> */}
                     </View>
                 </View>
             </TouchableNativeFeedback>
@@ -39,14 +39,14 @@ class MarketRow extends React.Component {
                     </LightText>
                 </View>
                 <View style={styles.second}>
-                    <LightText style={styles.titleText}>
+                    {/* <LightText style={styles.titleText}>
                         {Strings.MARKET_PRICE}
-                    </LightText>
+                    </LightText> */}
                 </View>
                 <View style={styles.third}>
-                    <LightText style={styles.titleText}>
+                    {/* <LightText style={styles.titleText}>
                         {Strings.MARKET_CHANGE}
-                    </LightText>
+                    </LightText> */}
                 </View>
             </View>
         );
