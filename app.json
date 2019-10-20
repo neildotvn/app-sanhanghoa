@@ -23,6 +23,9 @@
         "androidStatusBar": {
             "barStyle": "dark-content",
             "backgroundColor": "#0f455E"
+        },
+        "android": {
+            "package": "com.sanhanghoa24h.trading"
         }
     }
 }

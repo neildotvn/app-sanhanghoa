@@ -47,7 +47,7 @@ const authFail = (state, error) => {
 };
 
 const updateStart = state => {
-    return updateObject(state, { loading: true });
+    return updateObject(state, { loading: true, error: null });
 };
 
 const updateSuccess = (state, payload) => {
