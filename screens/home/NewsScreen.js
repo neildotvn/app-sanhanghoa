@@ -27,8 +27,8 @@ NewsScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
+        flex: 1
+        // marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     },
     webview: {
         flex: 1

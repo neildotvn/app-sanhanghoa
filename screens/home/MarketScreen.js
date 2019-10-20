@@ -1,5 +1,11 @@
 import React from "react";
-import { Platform, StyleSheet, StatusBar, View } from "react-native";
+import {
+    Platform,
+    StyleSheet,
+    StatusBar,
+    View,
+    SafeAreaView
+} from "react-native";
 import MarketTab from "../../components/market/MarketTab";
 import TopBar from "../../components/TopBar";
 import TopTabBar from "../../components/TopTabBar";
@@ -72,11 +78,13 @@ class MarketScreen extends React.Component {
             />
         );
         return (
-            <View style={styles.container}>
-                <TopBar {...this.topBarConfig} />
-                <TopTabBar onTabChanged={this.onTabChanged} />
-                {activeTab}
-            </View>
+            <SafeAreaView>
+                <View style={styles.container}>
+                    <TopBar {...this.topBarConfig} />
+                    <TopTabBar onTabChanged={this.onTabChanged} />
+                    {activeTab}
+                </View>
+            </SafeAreaView>
         );
     }
 }
@@ -87,8 +95,8 @@ MarketScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
+        flex: 1
+        // marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     }
 });
 

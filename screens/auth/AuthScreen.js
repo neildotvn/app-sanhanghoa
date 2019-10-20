@@ -36,7 +36,7 @@ class AuthScreen extends Component {
             },
             password: {
                 text: "",
-                config: { placeholder: "Mật khẩu" }
+                config: { placeholder: "Mật khẩu", secureTextEntry: true }
             }
         }
     };
@@ -212,8 +212,8 @@ class AuthScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
-        marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
+        backgroundColor: "#fff"
+        // marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     },
     secondaryContainer: {
         flex: 1,

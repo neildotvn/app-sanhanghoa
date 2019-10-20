@@ -1,11 +1,5 @@
 import React from "react";
-import {
-    ScrollView,
-    StyleSheet,
-    View,
-    Platform,
-    StatusBar
-} from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import TopBar from "../../components/TopBar";
 import Strings from "../../constants/Strings";
 import { connect } from "react-redux";
@@ -15,16 +9,6 @@ import { fetchAccountInfo } from "../../store/actions/Account";
 import { fetchOrderHistory } from "../../store/actions/Order";
 
 class OrderHistoryScreen extends React.Component {
-    state = {
-        balanceInfo: {
-            balance: 20000,
-            credit: 0,
-            residualDeposit: 19000,
-            leverage: "400%",
-            freeMargin: 21000
-        }
-    };
-
     onBackPressed = () => {
         this.props.navigation.pop();
     };
@@ -98,8 +82,8 @@ export default connect(
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
+        flex: 1
+        // marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     },
     scrollView: {
         paddingStart: 12,

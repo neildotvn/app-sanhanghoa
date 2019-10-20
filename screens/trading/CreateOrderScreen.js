@@ -525,8 +525,8 @@ CreateOrderScreen.navigationOptions = {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
-        paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
+        backgroundColor: "#fff"
+        // paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     },
     secondaryContainer: {
         padding: 20,

@@ -46,7 +46,7 @@ class AuthLoadingScreen extends React.Component {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
+        // paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     },
     statusBar: {
         height: 100,

@@ -1,13 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-    Platform,
-    StatusBar,
-    StyleSheet,
-    View,
-    Button,
-    Text
-} from "react-native";
+import { Platform, StatusBar, StyleSheet, View, Button } from "react-native";
 import OpenOrder from "../../components/trading/OpenOrder";
 import TopBar from "../../components/TopBar";
 import Colors from "../../constants/Colors";
@@ -82,8 +75,8 @@ class OrderDetailScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
-        paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
+        backgroundColor: "#fff"
+        // paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     },
     detailContainer: {
         padding: 20
