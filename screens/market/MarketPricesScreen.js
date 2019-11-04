@@ -1,78 +1,14 @@
 import React from "react";
-import {
-    Platform,
-    StatusBar,
-    StyleSheet,
-    View,
-    TouchableNativeFeedback,
-    Image
-} from "react-native";
+import { Platform, StatusBar, StyleSheet, View, TouchableNativeFeedback, Image } from "react-native";
 import { connect } from "react-redux";
 import TopBar from "../../components/TopBar";
 import Colors from "../../constants/Colors";
 import Strings, { priceColumns } from "../../constants/Strings";
-import { commodityMap } from "../../constants/CommodityMap";
-import {
-    RegularText,
-    MediumText,
-    LightText
-} from "../../components/common/StyledText";
+import { RegularText, MediumText, LightText } from "../../components/common/StyledText";
+
+const tradeableCommunities = ["robusta", "arabica", "cotton", "rubber", "cocoa"];
 
 class MarketPricesScreen extends React.Component {
-    // magic numbers: 1,2,6,7,11,13 - map data from tincaphe.com
-    magicNumbers = [1, 2, 6, 7, 11, 13];
-
-    mapData() {
-        const prices = this.props.pricesStore.prices;
-        const name = this.props.navigation.getParam("product_name");
-        let thisCom;
-        for (const commodity of commodityMap) {
-            if (commodity.name === name) {
-                thisCom = { ...commodity };
-                break;
-            }
-        }
-        let dataICE = [];
-        let dataNYB = [];
-        try {
-            dataICE = thisCom.ice.map((rowNumber, index) => {
-                const rawData = prices[rowNumber].vs;
-                const processedData = rawData.filter((data, index) =>
-                    this.magicNumbers.includes(index)
-                );
-                processedData.push(rawData[5] == "+");
-                let change = processedData[1];
-                if (!Number.isInteger(change)) {
-                    change = change.toFixed(2);
-                }
-                processedData[1] = `${rawData[5]}${change}`;
-                processedData.unshift(thisCom.iceTerms[index]);
-                return processedData;
-            });
-        } catch (err) {
-            console.log(err);
-        }
-        try {
-            dataNYB = thisCom.nyb.map((rowNumber, index) => {
-                const rawData = prices[rowNumber].vs;
-                const processedData = rawData.filter((data, index) =>
-                    this.magicNumbers.includes(index)
-                );
-                processedData.push(rawData[5] == "+");
-                let change = processedData[1];
-                if (!Number.isInteger(change)) {
-                    change = change.toFixed(2);
-                }
-                processedData[1] = `${rawData[5]}${change}`;
-                processedData.unshift(thisCom.nybTerms[index]);
-                return processedData;
-            });
-        } catch (err) {
-            console.log(err);
-        }
-        return { dataICE, dataNYB };
-    }
-
     onBackPressed = () => this.props.navigation.pop();
 
     onCreateAlarm = () => {
@@ -86,81 +22,80 @@ class MarketPricesScreen extends React.Component {
     };
 
     topBarConfig = {
-        title: this.props.navigation.getParam("product_name"),
+        title: this.props.navigation.getParam("product_name")[0],
         leftButtonLabel: Strings.HEADER_BUTTON_BACK,
         leftImageSource: require("../../assets/images/icons/ic-back.png"),
         onLeftButtonPress: this.onBackPressed
     };
 
     render() {
-        const data = this.mapData();
-        const iceRows = data.dataICE.map((data, index) => {
-            const temp = [...data];
-            temp.pop();
-            return (
-                <Row
-                    key={index}
-                    rowData={temp}
-                    changeTextStyle={styles.changeText}
-                    changeTextWrapperStyle={styles.changeTextWrapper}
-                    increaseStyle={
-                        data[7]
-                            ? styles.textWrapperIncrease
-                            : styles.textWrapperDecrease
-                    }
-                />
-            );
-        });
-        const nycRows = data.dataNYB.map((data, index) => {
-            const temp = [...data];
-            temp.pop();
-            return (
-                <Row
-                    key={index}
-                    rowData={temp}
-                    changeTextStyle={styles.changeText}
-                    changeTextWrapperStyle={styles.changeTextWrapper}
-                    increaseStyle={
-                        data[7]
-                            ? styles.textWrapperIncrease
-                            : styles.textWrapperDecrease
-                    }
-                />
-            );
-        });
+        const data = this.props.pricesStore.prices[this.props.navigation.getParam("product_name")[1]];
+        let iceRows;
+        try {
+            iceRows = data.ice.map((row, index) => {
+                const temp = [...row];
+                temp.pop();
+                if (!temp[2].toString().includes("+") && !temp[2].toString().includes("-")) {
+                    temp[2] = row[7] ? `+${temp[2]}` : `-${temp[2]}`;
+                }
+                return (
+                    <Row
+                        key={index}
+                        rowData={temp}
+                        changeTextStyle={styles.changeText}
+                        changeTextWrapperStyle={styles.changeTextWrapper}
+                        increaseStyle={row[7] ? styles.textWrapperIncrease : styles.textWrapperDecrease}
+                    />
+                );
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        let nybRows;
+        try {
+            nybRows = data.nyb.map((row, index) => {
+                let temp;
+                temp = [...row];
+                temp.pop();
+                if (!temp[2].toString().includes("+") && !temp[2].toString().includes("-")) {
+                    temp[2] = row[7] ? `+${temp[2]}` : `-${temp[2]}`;
+                }
+                return (
+                    <Row
+                        key={index}
+                        rowData={temp}
+                        changeTextStyle={styles.changeText}
+                        changeTextWrapperStyle={styles.changeTextWrapper}
+                        increaseStyle={row[7] ? styles.textWrapperIncrease : styles.textWrapperDecrease}
+                    />
+                );
+            });
+        } catch (error) {
+            console.log(error);
+        }
         return (
             <View style={styles.container}>
                 {Platform.OS === "ios" && <StatusBar barStyle="default" />}
                 <TopBar {...this.topBarConfig} />
-                {iceRows.length > 0 ? (
+                {iceRows ? (
                     <View style={styles.table}>
                         <MediumText style={styles.exchange}>London</MediumText>
-                        <Row
-                            rowData={priceColumns}
-                            firstRowStyle={styles.firstRow}
-                            firstTextStyle={styles.firstText}
-                        />
+                        <Row rowData={priceColumns} firstRowStyle={styles.firstRow} firstTextStyle={styles.firstText} />
                         {iceRows}
                     </View>
                 ) : null}
-                {nycRows.length > 0 ? (
+                {nybRows ? (
                     <View style={styles.table}>
-                        <MediumText style={styles.exchange}>
-                            New York
-                        </MediumText>
-                        <Row
-                            rowData={priceColumns}
-                            firstRowStyle={styles.firstRow}
-                            firstTextStyle={styles.firstText}
-                        />
-                        {nycRows}
+                        <MediumText style={styles.exchange}>New York</MediumText>
+                        <Row rowData={priceColumns} firstRowStyle={styles.firstRow} firstTextStyle={styles.firstText} />
+                        {nybRows}
                     </View>
                 ) : null}
-                {iceRows.length === 0 && nycRows.length === 0 ? (
+                {!iceRows && !nybRows ? (
                     <View style={styles.noDataWrapper}>
                         <RegularText>Đang cập nhật...</RegularText>
                     </View>
-                ) : (
+                ) : tradeableCommunities.includes(this.props.navigation.getParam("product_name")[1]) ? (
                     <View style={styles.bottomButtonsWrapper}>
                         <View style={styles.bottomButtons}>
                             {/* <TouchableNativeFeedback
@@ -176,22 +111,18 @@ class MarketPricesScreen extends React.Component {
                                     </LightText>
                                 </View>
                             </TouchableNativeFeedback> */}
-                            <TouchableNativeFeedback
-                                onPress={() => this.onCreateOrder()}
-                            >
+                            <TouchableNativeFeedback onPress={() => this.onCreateOrder()}>
                                 <View style={[styles.createOrderButton]}>
                                     <Image
                                         style={styles.bottomButtonImage}
                                         source={require("../../assets/images/icons/ic-place-order.png")}
                                     />
-                                    <LightText style={styles.buttonText}>
-                                        {Strings.PRICES_PLACE_ORDER}
-                                    </LightText>
+                                    <LightText style={styles.buttonText}>{Strings.PRICES_PLACE_ORDER}</LightText>
                                 </View>
                             </TouchableNativeFeedback>
                         </View>
                     </View>
-                )}
+                ) : null}
             </View>
         );
     }
@@ -218,22 +149,14 @@ const Row = props => {
               />
           ))
         : null;
-    return (
-        <View style={{ flexDirection: "row", marginBottom: 2 }}>{cells}</View>
-    );
+    return <View style={{ flexDirection: "row", marginBottom: 2 }}>{cells}</View>;
 };
 
 const Cell = props => {
     return (
         <View style={[styles.cell, props.firstRowStyle]}>
             <View style={[props.changeTextWrapperStyle, props.increaseStyle]}>
-                <RegularText
-                    style={[
-                        styles.text,
-                        props.firstTextStyle,
-                        props.changeTextStyle
-                    ]}
-                >
+                <RegularText style={[styles.text, props.firstTextStyle, props.changeTextStyle]}>
                     {props.data}
                 </RegularText>
             </View>

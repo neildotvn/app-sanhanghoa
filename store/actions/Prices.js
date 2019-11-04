@@ -8,10 +8,10 @@ export default fetchAllPrices = () => {
         axios
             .get("prices")
             .then(response => {
-                // console.log("PRICES_FETCH_SUCCESS!", response.data.result);
+                // console.log("PRICES_FETCH_SUCCESS!", response.data);
                 dispatch(
                     createAction(actionTypes.PRICES_FETCH_SUCCESS, {
-                        prices: response.data.result
+                        prices: response.data
                     })
                 );
             })

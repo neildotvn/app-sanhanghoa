@@ -16,6 +16,8 @@ class AuthLoadingScreen extends React.Component {
     componentDidUpdate() {
         if (this.props.user.user_uid) {
             this.props.navigation.navigate("Main");
+        } else if (this.props.auth.error) {
+            this.props.navigation.navigate("Auth");
         }
     }
 
@@ -56,7 +58,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        user: state.auth.user
+        user: state.auth.user,
+        auth: state.auth
     };
 };
 

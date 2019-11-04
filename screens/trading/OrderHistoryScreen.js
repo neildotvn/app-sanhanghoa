@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, View } from "react-native";
 import TopBar from "../../components/TopBar";
 import Strings from "../../constants/Strings";
 import { connect } from "react-redux";
-import OpenOrder from "../../components/trading/OpenOrder";
+import ClosedOrder from "../../components/trading/ClosedOrder";
 import Colors from "../../constants/Colors";
 import { fetchAccountInfo } from "../../store/actions/Account";
 import { fetchOrderHistory } from "../../store/actions/Order";
@@ -34,15 +34,9 @@ class OrderHistoryScreen extends React.Component {
 
     render() {
         const orders = this.props.orderStore.orderHistory;
+        console.log(orders);
         const orderList = orders.map((order, position) => (
-            <OpenOrder
-                key={position}
-                volume={order.volume}
-                createdAt={order.created_at}
-                orderType={order.order_type}
-                exchange={order.exchange}
-                placingPrice={order.placing_price}
-            />
+            <ClosedOrder key={position} order={order} />
         ));
 
         return (
@@ -87,7 +81,8 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         paddingStart: 12,
-        paddingEnd: 12
+        paddingEnd: 12,
+        marginTop: 12
     },
     balanceInfoContainer: {
         marginTop: 12

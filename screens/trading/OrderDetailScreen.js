@@ -6,7 +6,7 @@ import TopBar from "../../components/TopBar";
 import Colors from "../../constants/Colors";
 import Strings from "../../constants/Strings";
 import {
-    getRowDataWithCodeAndExchange,
+    getRowDataWithProductAndExchange,
     getProductNameFromCode
 } from "../../constants/CommodityMap";
 import { closeOrder, fetchAllActiveOrders } from "../../store/actions/Order";
@@ -28,7 +28,7 @@ class OrderDetailScreen extends React.Component {
         try {
             const order = this.props.navigation.getParam("order");
             productName = getProductNameFromCode(order.product);
-            rowData = getRowDataWithCodeAndExchange(
+            rowData = getRowDataWithProductAndExchange(
                 this.props.pricesStore.prices,
                 order.product,
                 order.exchange

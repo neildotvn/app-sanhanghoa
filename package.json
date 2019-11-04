@@ -47,5 +47,9 @@
         "react-devtools": "^3.6.3",
         "react-native-debugger-open": "^0.3.22"
     },
-    "private": true
+    "private": true,
+    "prettier": {
+        "printWidth": 120,
+        "tabWidth": 4
+    }
 }

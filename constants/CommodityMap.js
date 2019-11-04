@@ -121,51 +121,37 @@ export const commodityMap = [
     }
 ];
 
-export const orderProductMap = [
-    {
+export const orderProductMap = {
+    coffee: {
         name: commodityNames.CA_PHE,
+        key: "coffee",
         productCode: 5
     },
-    {
+    cotton: {
         name: commodityNames.COTTON,
+        key: "cotton",
         productCode: 9
     },
-    {
+    rubber: {
         name: commodityNames.CAO_SU,
+        key: "rubber",
         productCode: 10
     },
-    {
+    cocoa: {
         name: commodityNames.CA_CAO,
+        key: "cocoa",
         productCode: 11
     }
-];
-
-export const getRowDataWithCodeAndExchange = (prices, code, exchange) => {
-    let thisProduct;
-    for (const product of commodityMap) {
-        if (product.code == code) {
-            thisProduct = product;
-        }
-    }
-    let rowIndex = 0;
-    for (let index = 0; index < thisProduct.iceTerms.length; index++) {
-        const mappedTerm = `ICE ${thisProduct.iceTerms[index]}`;
-        if (mappedTerm.trim() === exchange.trim()) {
-            rowIndex = thisProduct.ice[index];
-        }
-    }
-    for (let index = 0; index < thisProduct.nybTerms.length; index++) {
-        const mappedTerm = `NYB ${thisProduct.iceTerms[index]}`;
-        if (mappedTerm.trim() === exchange.trim())
-            rowIndex = thisProduct.nyb[index];
-    }
-    return prices[rowIndex].vs;
 };
 
-export const getProductNameFromCode = code => {
-    for (const product of commodityMap) {
-        if (product.code == code) {
-            return product.name;
-        }
-    }
+export const getRowDataWithProductAndExchange = (prices, product, exchange) => {
+    const data = prices[product];
+    const trimmed = exchange.replace(/\s/g, "");
+    const exchangeName = trimmed.substring(0, 3).toLowerCase();
+    const term = trimmed.substring(3);
+    return data[exchangeName].filter(row => row[0] === term)[0];
+};
+
+export const getProductNameFromCode = product => {
+    return orderProductMap[product].name;
 };

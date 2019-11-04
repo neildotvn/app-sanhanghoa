@@ -11,6 +11,7 @@ const initialState = {
     },
     updateSuccess: false,
     loading: false,
+    updateError: null,
     error: null
 };
 
@@ -60,9 +61,13 @@ const updateSuccess = (state, payload) => {
 };
 
 const updateFail = (state, error) => {
-    return updateObject(state, { loading: false, updateSuccess: false, error });
+    return updateObject(state, {
+        loading: false,
+        updateSuccess: false,
+        updateError: error
+    });
 };
 
 const updateFinished = state => {
-    return updateObject(state, { updateSuccess: false, error: null });
+    return updateObject(state, { updateSuccess: false, updateError: null });
 };

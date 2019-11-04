@@ -47,6 +47,8 @@ class AuthScreen extends Component {
         if (this.props.auth.error) {
             let message = "";
             switch (this.props.auth.error.status) {
+                case 200:
+                    break;
                 case 406:
                     message = Strings.ERROR_INVALID_AUTH_INFO;
                     break;

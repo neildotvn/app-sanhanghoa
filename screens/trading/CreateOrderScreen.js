@@ -1,13 +1,5 @@
 import React from "react";
-import {
-    Platform,
-    StatusBar,
-    StyleSheet,
-    View,
-    Image,
-    TouchableNativeFeedback,
-    TextInput
-} from "react-native";
+import { Platform, StatusBar, StyleSheet, View, Image, TouchableNativeFeedback, TextInput } from "react-native";
 import TopBar from "../../components/TopBar";
 import { connect } from "react-redux";
 import LotChooser from "../../components/trading/LotChooser";
@@ -16,41 +8,41 @@ import { MediumText, RegularText } from "../../components/common/StyledText";
 import Strings, { commodityNames } from "../../constants/Strings";
 import Colors from "../../constants/Colors";
 import MultipleSelect from "../../components/common/MultipleSelect";
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp
-} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { createOrder } from "../../store/actions/Order";
 import Toast from "react-native-simple-toast";
 import Spinner from "react-native-loading-spinner-overlay";
-import { orderProductMap, commodityMap } from "../../constants/CommodityMap";
+import { orderProductMap } from "../../constants/CommodityMap";
 import _ from "lodash";
 
 class CreateOrderScreen extends React.Component {
     state = {
         orderTypes: [
             {
-                label: "Market Execution",
+                label: "Theo thị trường",
                 value: -1
             },
             {
-                label: "Buy Limit",
+                label: "Mua giới hạn",
                 value: 2
             },
             {
-                label: "Sell Limit",
+                label: "Bán giới hạn",
                 value: 3
             },
             {
-                label: "Buy Stop",
+                label: "Mua dừng",
                 value: 4
             },
             {
-                label: "Sell Stop",
+                label: "Bán dừng",
                 value: 5
             }
         ],
-        thisCom: {},
+        data: {
+            ice: [],
+            nyb: []
+        },
         termOptions: [],
         selectedTermOption: 0,
         selectedOptionType: 0,
@@ -66,28 +58,25 @@ class CreateOrderScreen extends React.Component {
     };
 
     componentDidMount() {
-        const name = this.props.navigation.getParam("product_name");
-        let thisCom;
-        for (const commodity of commodityMap) {
-            if (commodity.name === name) {
-                thisCom = { ...commodity };
-                break;
-            }
-        }
-        const iceTerms = thisCom.iceTerms
-            ? thisCom.iceTerms.map(term => {
-                  return { label: `ICE ${term}`, value: `ICE ${term}` };
+        const args = this.props.navigation.getParam("product_name");
+        const title = args[0];
+        const name = args[1];
+        const data = { ...this.state.data, ...this.props.pricesStore.prices[name] };
+
+        const iceTerms = data.ice
+            ? data.ice.map(row => {
+                  return { label: `ICE ${row[0]}`, value: `ICE ${row[0]}` };
               })
             : [];
-        const nybTerms = thisCom.nybTerms
-            ? thisCom.nybTerms.map(term => {
-                  return { label: `NYB ${term}`, value: `NYB ${term}` };
+        const nybTerms = data.nyb
+            ? data.nyb.map(row => {
+                  return { label: `NYB ${row[0]}`, value: `NYB ${row[0]}` };
               })
             : [];
         const termOptions = [...iceTerms, ...nybTerms];
         const order = { ...this.state.order };
         order.exchange = termOptions[0].value;
-        this.setState({ termOptions, thisCom, order });
+        this.setState({ termOptions, data, order });
     }
 
     componentDidUpdate() {
@@ -128,81 +117,70 @@ class CreateOrderScreen extends React.Component {
     };
 
     onPlaceOrderByMarket = isBuy => {
-        const checkResult = this.onCheckNumberInput(true, isBuy);
-        if (!checkResult.result) {
-            Toast.show(checkResult.message);
-            return;
-        }
-        const productName = this.props.navigation.getParam("product_name");
-        let productCode;
-        for (const product of orderProductMap) {
-            if (product.name === productName) {
-                productCode = product.productCode;
-            }
-        }
+        const product = this.props.navigation.getParam("product_name")[1];
         const { buyPrice, sellPrice } = this.mapPrice();
         const orderPrice = isBuy ? buyPrice : sellPrice;
+        const tpPrice = this.state.order.take_profit_price ? Number(this.state.order.take_profit_price) : null;
+        const slPrice = this.state.order.stop_loss_price ? Number(this.state.order.stop_loss_price) : null;
         const volume = _.round(this.state.order.volume, 1);
         const order = {
-            product: productCode,
+            product,
             exchange: this.state.order.exchange,
             order_status: 0,
             order_type: isBuy ? 0 : 1,
             placing_price: orderPrice,
             volume,
-            take_profit_price: this.state.order.take_profit_price,
-            stop_loss_price: this.state.order.stop_loss_price
+            take_profit_price: tpPrice,
+            stop_loss_price: slPrice
         };
-        console.log(order);
-        this.props.createOrder(order);
-    };
-
-    onPlaceOrder = () => {
-        const checkResult = this.onCheckNumberInput();
+        const checkResult = this.onCheckNumberInput(true, isBuy, order);
         if (!checkResult.result) {
             Toast.show(checkResult.message);
             return;
         }
-        const productName = this.props.navigation.getParam("product_name");
-        let productCode;
-        for (const product of orderProductMap) {
-            if (product.name === productName) {
-                productCode = product.productCode;
-            }
-        }
+        this.props.createOrder(order);
+    };
+
+    onPlaceOrder = () => {
+        const product = this.props.navigation.getParam("product_name")[1];
         const volume = _.round(this.state.order.volume, 1);
+        const tpPrice = this.state.order.take_profit_price ? Number(this.state.order.take_profit_price) : null;
+        const slPrice = this.state.order.stop_loss_price ? Number(this.state.order.stop_loss_price) : null;
         const order = {
-            product: productCode,
+            product,
             exchange: this.state.order.exchange,
             order_status: 0,
             order_type: this.state.orderType,
             placing_price: this.state.order.placing_price,
             volume,
-            take_profit_price: this.state.order.take_profit_price,
-            stop_loss_price: this.state.order.stop_loss_price
+            take_profit_price: tpPrice,
+            stop_loss_price: slPrice
         };
-        console.log(order);
+        const checkResult = this.onCheckNumberInput(false, false, order);
+        if (!checkResult.result) {
+            Toast.show(checkResult.message);
+            return;
+        }
         this.props.createOrder(order);
     };
 
-    onCheckNumberInput = (isByMarket = false, isBuyByMarket = false) => {
-        const order = _.omit(this.state.order, ["exchange"]);
+    onCheckNumberInput = (isByMarket = false, isBuyByMarket = false, orderObj) => {
+        const order = _.omit(orderObj, ["exchange", "product"]);
         for (const orderInput of Object.values(order)) {
             if (orderInput != null && isNaN(orderInput)) {
                 return { result: false, message: Strings.ERROR_NAN };
             }
         }
-        if (order.volume == 0) {
-            return { result: false, message: Strings.ERROR_LOT_ZERO };
-        }
         const { buyPrice, sellPrice } = this.mapPrice();
         const orderPrice = order.placing_price;
         const slPrice = order.stop_loss_price;
         const tpPrice = order.take_profit_price;
+        if (order.volume == 0) {
+            return { result: false, message: Strings.ERROR_LOT_ZERO };
+        }
         switch (this.state.orderType) {
             case 2: // buy limit
-                if (orderPrice >= buyPrice)
-                    return { result: false, message: Strings.ERROR_BUY_LIMIT };
+                if (orderPrice >= buyPrice) return { result: false, message: Strings.ERROR_BUY_LIMIT };
                 if (slPrice != null && slPrice >= orderPrice) {
                     return {
                         result: false,
@@ -217,8 +195,7 @@ class CreateOrderScreen extends React.Component {
                 }
                 break;
             case 3: // sell limit
-                if (orderPrice <= sellPrice)
-                    return { result: false, message: Strings.ERROR_SELL_LIMIT };
+                if (orderPrice <= sellPrice) return { result: false, message: Strings.ERROR_SELL_LIMIT };
                 if (slPrice != null && slPrice <= orderPrice) {
                     return {
                         result: false,
@@ -233,8 +210,7 @@ class CreateOrderScreen extends React.Component {
                 }
                 break;
             case 4: // buy stop
-                if (orderPrice <= buyPrice)
-                    return { result: false, message: Strings.ERROR_BUY_STOP };
+                if (orderPrice <= buyPrice) return { result: false, message: Strings.ERROR_BUY_STOP };
                 if (slPrice != null && slPrice >= orderPrice) {
                     return {
                         result: false,
@@ -249,8 +225,7 @@ class CreateOrderScreen extends React.Component {
                 }
                 break;
             case 5: // sell stop
-                if (orderPrice >= sellPrice)
-                    return { result: false, message: Strings.ERROR_SELL_STOP };
+                if (orderPrice >= sellPrice) return { result: false, message: Strings.ERROR_SELL_STOP };
                 if (slPrice != null && slPrice <= orderPrice) {
                     return {
                         result: false,
@@ -305,7 +280,7 @@ class CreateOrderScreen extends React.Component {
     };
 
     onTermSelect = (position, value) => {
-        order = { ...this.state.order };
+        const order = { ...this.state.order };
         order.exchange = value;
         this.setState({ selectedTermOption: position, order });
     };
@@ -314,17 +289,16 @@ class CreateOrderScreen extends React.Component {
         let buyPrice;
         let sellPrice;
         try {
-            const valueIndices = [
-                ...this.state.thisCom.ice,
-                ...this.state.thisCom.nyb
-            ];
-            const rowIndex = valueIndices[this.state.selectedTermOption];
-            const rowData = this.props.pricesStore.prices[rowIndex];
-            buyPrice = rowData.vs[11];
-            sellPrice = rowData.vs[13];
+            const data = [...this.state.data.ice, ...this.state.data.nyb];
+            const rowData = data[this.state.selectedTermOption];
+            console.log("rowData", rowData);
+            buyPrice = rowData[5];
+            sellPrice = rowData[6];
         } catch (err) {
-            console.log(err);
+            console.log("CreateOrderScreen", err);
         }
+        console.log(`buy = ${buyPrice}`);
+        console.log(`sell = ${sellPrice}`);
         return { buyPrice, sellPrice };
     };
 
@@ -333,7 +307,7 @@ class CreateOrderScreen extends React.Component {
     };
 
     topBarConfig = {
-        title: this.props.navigation.getParam("product_name"),
+        title: this.props.navigation.getParam("product_name")[0],
         leftButtonLabel: Strings.HEADER_BUTTON_BACK,
         leftImageSource: require("../../assets/images/icons/ic-back.png"),
         onLeftButtonPress: this.onBackPressed
@@ -341,23 +315,20 @@ class CreateOrderScreen extends React.Component {
 
     render() {
         const { buyPrice, sellPrice } = this.mapPrice();
+        console.log("CreateOrderScreen");
         return (
             <View style={styles.container}>
                 {Platform.OS === "ios" && <StatusBar barStyle="default" />}
                 <Spinner visible={this.props.orderStore.create_loading} />
                 <TopBar {...this.topBarConfig} />
                 <View style={styles.secondaryContainer}>
-                    <RegularText style={styles.titleText}>
-                        {Strings.ORDER_TERM}
-                    </RegularText>
+                    <RegularText style={styles.titleText}>{Strings.ORDER_TERM}</RegularText>
                     <MultipleSelect
                         values={this.state.termOptions}
                         selected={this.state.selectedTermOption}
                         onSelect={this.onTermSelect}
                     />
-                    <RegularText style={styles.titleText}>
-                        {Strings.ORDER_TYPE}
-                    </RegularText>
+                    <RegularText style={styles.titleText}>{Strings.ORDER_TYPE}</RegularText>
                     <MultipleSelect
                         values={this.state.orderTypes}
                         selected={this.state.selectedOptionType}
@@ -368,11 +339,7 @@ class CreateOrderScreen extends React.Component {
                         volume={this.state.order.volume}
                         onVolumeChange={this.onVolumeChange}
                     />
-                    <OrderPrices
-                        style={styles.orderPrices}
-                        sellPrice={sellPrice}
-                        buyPrice={buyPrice}
-                    />
+                    <OrderPrices style={styles.orderPrices} sellPrice={sellPrice} buyPrice={buyPrice} />
                     {this.state.selectedOptionType === 0 ? null : (
                         <View style={styles.orderPriceContainer}>
                             <View style={styles.orderPrice}>
@@ -385,9 +352,7 @@ class CreateOrderScreen extends React.Component {
                                 <TextInput
                                     value={this.state.order.placing_price.toString()}
                                     style={styles.input}
-                                    onChangeText={text =>
-                                        this.onOrderPriceChange(text)
-                                    }
+                                    onChangeText={text => this.onOrderPriceChange(text)}
                                 />
                                 <TouchableNativeFeedback>
                                     <Image
@@ -409,14 +374,10 @@ class CreateOrderScreen extends React.Component {
                             </TouchableNativeFeedback>
                             <TextInput
                                 value={
-                                    this.state.order.stop_loss_price
-                                        ? this.state.order.stop_loss_price.toString()
-                                        : "0"
+                                    this.state.order.stop_loss_price ? this.state.order.stop_loss_price.toString() : "0"
                                 }
                                 style={styles.input}
-                                onChangeText={text =>
-                                    this.onStopLossChange(text)
-                                }
+                                onChangeText={text => this.onStopLossChange(text)}
                             />
                             <TouchableNativeFeedback>
                                 <Image
@@ -439,9 +400,7 @@ class CreateOrderScreen extends React.Component {
                                         : "0"
                                 }
                                 style={styles.input}
-                                onChangeText={text =>
-                                    this.onTakeProfitChange(text)
-                                }
+                                onChangeText={text => this.onTakeProfitChange(text)}
                             />
                             <TouchableNativeFeedback>
                                 <Image
@@ -452,67 +411,43 @@ class CreateOrderScreen extends React.Component {
                         </View>
                     </View>
                 </View>
-                <View style={styles.orderButtonsContainer}>
-                    {this.state.selectedOptionType !== 0 ? (
-                        <TouchableNativeFeedback
-                            onPress={() => this.onPlaceOrder()}
-                        >
-                            <View style={styles.placeOrderButton}>
-                                <MediumText style={styles.placeOrderButtonText}>
-                                    {Strings.ORDER_PLACE_ORDER}
-                                </MediumText>
+                {buyPrice !== 0 || sellPrice !== 0 ? (
+                    <View style={styles.orderButtonsContainer}>
+                        {this.state.selectedOptionType !== 0 ? (
+                            <TouchableNativeFeedback onPress={() => this.onPlaceOrder()}>
+                                <View style={styles.placeOrderButton}>
+                                    <MediumText style={styles.placeOrderButtonText}>
+                                        {Strings.ORDER_PLACE_ORDER}
+                                    </MediumText>
+                                </View>
+                            </TouchableNativeFeedback>
+                        ) : (
+                            <View style={styles.byMarketButtons}>
+                                <TouchableNativeFeedback onPress={() => this.onPlaceOrderByMarket(false)}>
+                                    <View style={styles.byMarketButton}>
+                                        <MediumText style={[styles.byMarketActionText, styles.sellText]}>
+                                            {Strings.ORDER_SELL}
+                                        </MediumText>
+                                        <RegularText style={[styles.byMarketText, styles.sellText]}>
+                                            {Strings.ORDER_BY_MARKET}
+                                        </RegularText>
+                                    </View>
+                                </TouchableNativeFeedback>
+                                <View style={styles.divider} />
+                                <TouchableNativeFeedback onPress={() => this.onPlaceOrderByMarket(true)}>
+                                    <View style={[styles.byMarketButton]}>
+                                        <MediumText style={[styles.byMarketActionText, styles.buyText]}>
+                                            {Strings.ORDER_BUY}
+                                        </MediumText>
+                                        <RegularText style={[styles.byMarketText, styles.buyText]}>
+                                            {Strings.ORDER_BY_MARKET}
+                                        </RegularText>
+                                    </View>
+                                </TouchableNativeFeedback>
                             </View>
-                        </TouchableNativeFeedback>
-                    ) : (
-                        <View style={styles.byMarketButtons}>
-                            <TouchableNativeFeedback
-                                onPress={() => this.onPlaceOrderByMarket(false)}
-                            >
-                                <View style={styles.byMarketButton}>
-                                    <MediumText
-                                        style={[
-                                            styles.byMarketActionText,
-                                            styles.sellText
-                                        ]}
-                                    >
-                                        {Strings.ORDER_SELL}
-                                    </MediumText>
-                                    <RegularText
-                                        style={[
-                                            styles.byMarketText,
-                                            styles.sellText
-                                        ]}
-                                    >
-                                        {Strings.ORDER_BY_MARKET}
-                                    </RegularText>
-                                </View>
-                            </TouchableNativeFeedback>
-                            <View style={styles.divider} />
-                            <TouchableNativeFeedback
-                                onPress={() => this.onPlaceOrderByMarket(true)}
-                            >
-                                <View style={[styles.byMarketButton]}>
-                                    <MediumText
-                                        style={[
-                                            styles.byMarketActionText,
-                                            styles.buyText
-                                        ]}
-                                    >
-                                        {Strings.ORDER_BUY}
-                                    </MediumText>
-                                    <RegularText
-                                        style={[
-                                            styles.byMarketText,
-                                            styles.buyText
-                                        ]}
-                                    >
-                                        {Strings.ORDER_BY_MARKET}
-                                    </RegularText>
-                                </View>
-                            </TouchableNativeFeedback>
-                        </View>
-                    )}
-                </View>
+                        )}
+                    </View>
+                ) : null}
             </View>
         );
     }

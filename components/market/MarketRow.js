@@ -10,12 +10,12 @@ class MarketRow extends React.Component {
         const props = this.props;
         return !props.isTitle ? (
             <TouchableNativeFeedback
-                onPress={() => this.props.onOpenProductDetails(props.title)}
+                onPress={() => this.props.onOpenProductDetails(props.row)}
             >
                 <View style={styles.container}>
                     <View style={styles.first}>
                         <RegularText style={styles.title}>
-                            {props.title}
+                            {props.row[0]}
                         </RegularText>
                     </View>
                     <View style={styles.second}>

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-    Platform,
-    StyleSheet,
-    StatusBar,
-    View,
-    SafeAreaView
-} from "react-native";
+import { Platform, StyleSheet, StatusBar, View, SafeAreaView } from "react-native";
 import MarketTab from "../../components/market/MarketTab";
 import TopBar from "../../components/TopBar";
 import TopTabBar from "../../components/TopTabBar";
@@ -15,34 +9,34 @@ import getAllPrices from "../../store/actions/Prices";
 
 const tabs = [
     [
-        commodityNames.CA_PHE,
-        // commodityNames.CA_PHE_ROBUSTA,
-        // commodityNames.CA_PHE_ARABICA,
-        commodityNames.COTTON,
-        commodityNames.CAO_SU,
-        commodityNames.CA_CAO
+        [commodityNames.CA_PHE_ROBUSTA, "robusta"],
+        [commodityNames.CA_PHE_ARABICA, "arabica"],
+        [commodityNames.COTTON, "cotton"],
+        [commodityNames.CAO_SU, "rubber"],
+        [commodityNames.CA_CAO, "cocoa"]
         // commodityNames.DUONG
     ],
     [
-        // commodityNames.DAU_TUONG,
+        [commodityNames.DAU_TUONG, "us_soybeans"],
         // commodityNames.KHO_DAU_TUONG,
         // commodityNames.DAU_DAU_TUONG,
         // commodityNames.LUA_MI,
-        // commodityNames.NGO
+        [commodityNames.NGO, "us_corn"]
     ],
     [
         // commodityNames.QUANG_SAT,
-        // commodityNames.BACH_KIM,
-        // commodityNames.BAC,
-        // commodityNames.DONG
+        [commodityNames.BACH_KIM, "platinum"],
+        // [commodityNames.BAC, "silver"],
+        [commodityNames.PALLADIUM, "palladium"],
+        [commodityNames.DONG, "copper"]
     ],
     [
-        // commodityNames.DAU_WTI,
+        [commodityNames.DAU_WTI, "crude_oil_wti"],
         // commodityNames.DAU_LUU_HUYNH,
         // commodityNames.XANG_PHA_CHE,
-        // commodityNames.KHI_TU_NHIEN,
+        [commodityNames.KHI_TU_NHIEN, "natural_gas"],
         // commodityNames.DAU_THO,
-        // commodityNames.DAU_THO_BRENT
+        [commodityNames.DAU_THO_BRENT, "brent_oil"]
     ]
 ];
 
@@ -52,7 +46,13 @@ class MarketScreen extends React.Component {
     };
 
     componentDidMount() {
-        this.props.fetchPrices();
+        this.timer = setInterval(() => {
+            this.props.fetchPrices();
+        }, 3000)
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer)
     }
 
     onTabChanged = position => {
@@ -72,10 +72,7 @@ class MarketScreen extends React.Component {
 
     render() {
         const activeTab = (
-            <MarketTab
-                rows={tabs[this.state.activePosition]}
-                onOpenProductDetails={this.onOpenProductDetails}
-            />
+            <MarketTab rows={tabs[this.state.activePosition]} onOpenProductDetails={this.onOpenProductDetails} />
         );
         return (
             <SafeAreaView>

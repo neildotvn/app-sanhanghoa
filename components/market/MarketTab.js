@@ -6,7 +6,7 @@ export default function(props) {
     const rows = props.rows.map((row, index) => (
         <MarketRow
             key={index}
-            title={row}
+            row={row}
             price={1234.56}
             isIncrease={false}
             change={3}

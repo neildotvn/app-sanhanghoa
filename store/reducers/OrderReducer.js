@@ -24,6 +24,7 @@ const initialState = {
     create_success: false,
     close_loading: false,
     close_success: false,
+    fetch_error: null,
     error: null
 };
 
@@ -37,8 +38,10 @@ export default orderReducer = (state = initialState, action) => {
         case actionTypes.ORDER_FETCH_ALL_ACTIVE_FAIL:
             return updateObject(state, {
                 active_loading: false,
-                error: action.payload.error
+                fetch_error: action.payload.error
             });
+        case actionTypes.ORDER_FETCH_ALL_ACTIVE_FINISH:
+            return updateObject(state, { fetch_error: null });
         case actionTypes.ORDER_FETCH_ALL_HISTORY_START:
             return updateObject(state, { history_loading: true });
         case actionTypes.ORDER_FETCH_ALL_HISTORY_SUCCESS:
@@ -46,8 +49,10 @@ export default orderReducer = (state = initialState, action) => {
         case actionTypes.ORDER_FETCH_ALL_HISTORY_FAIL:
             return updateObject(state, {
                 history_loading: false,
-                error: action.payload.error
+                fetch_error: action.payload.error
             });
+        case actionTypes.ORDER_FETCH_ALL_HISTORY_FINISH:
+            return updateObject(state, { fetch_error: null });
         case actionTypes.ORDER_CREATE_START:
             return updateObject(state, { create_loading: true });
         case actionTypes.ORDER_CREATE_SUCCESS:
@@ -58,7 +63,7 @@ export default orderReducer = (state = initialState, action) => {
                 error: action.payload.error
             });
         case actionTypes.ORDER_CREATE_FINISH:
-            return updateObject(state, { create_success: false });
+            return updateObject(state, { create_success: false, error: null });
         case actionTypes.ORDER_CLOSE_START:
             return updateObject(state, { close_loading: true });
         case actionTypes.ORDER_CLOSE_SUCCESS:
@@ -72,7 +77,7 @@ export default orderReducer = (state = initialState, action) => {
                 error: action.payload.error
             });
         case actionTypes.ORDER_CLOSE_FINISH:
-            return updateObject(state, { close_success: false });
+            return updateObject(state, { close_success: false, error: null });
         default:
             return state;
     }

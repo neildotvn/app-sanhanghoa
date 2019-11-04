@@ -58,7 +58,7 @@ class UpdateProfileScreen extends React.Component {
         if (this.props.auth.updateSuccess) {
             Toast.show(Strings.SETTINGS_UPDATE_SUCCESS);
             this.props.navigation.pop();
-        } else if (this.props.auth.error) {
+        } else if (this.props.auth.updateError) {
             Toast.show(Strings.SETTINGS_UPDATE_FAIL);
         }
     }
