@@ -1,13 +1,5 @@
 import React from "react";
-import {
-    Platform,
-    StatusBar,
-    StyleSheet,
-    View,
-    Image,
-    Button,
-    AsyncStorage
-} from "react-native";
+import { Platform, StatusBar, StyleSheet, View, Image, Button, AsyncStorage } from "react-native";
 import TopBar from "../../components/TopBar";
 import PersonalInfo from "../../components/settings/PersonalInfo";
 import Strings from "../../constants/Strings";
@@ -18,8 +10,14 @@ import { BoldText, RegularText } from "../../components/common/StyledText";
 import * as StorageKeys from "../../store/storage/StorageKeys";
 import { connect } from "react-redux";
 import { TouchableNativeFeedback } from "react-native-gesture-handler";
+import Colors from "../../constants/Colors";
 
 class NotificationScreen extends React.Component {
+
+    openContactScreen = () => {
+        this.props.navigation.navigate("Contact")
+    }
+
     openEditProfile = () => {
         this.props.navigation.navigate("EditProfile");
     };
@@ -43,46 +41,24 @@ class NotificationScreen extends React.Component {
                 <View style={styles.infoContainer}>
                     <View style={styles.avatarContainer}>
                         <Image style={styles.avatar} source={imAvatar} />
-                        <TouchableNativeFeedback
-                            onPress={() => this.openEditProfile()}
-                        >
+                        <TouchableNativeFeedback onPress={() => this.openEditProfile()}>
                             <View style={styles.nameContainer}>
-                                <BoldText style={styles.name}>
-                                    {this.props.user.full_name}
-                                </BoldText>
+                                <BoldText style={styles.name}>{this.props.user.full_name}</BoldText>
                                 <View style={styles.editContainer}>
-                                    <RegularText style={styles.edit}>
-                                        {Strings.SETTINGS_EDIT_PROFILE}
-                                    </RegularText>
-                                    <Image
-                                        style={styles.icArrow}
-                                        source={icArrow}
-                                    />
+                                    <RegularText style={styles.edit}>{Strings.SETTINGS_EDIT_PROFILE}</RegularText>
+                                    <Image style={styles.icArrow} source={icArrow} />
                                 </View>
                             </View>
                         </TouchableNativeFeedback>
                     </View>
                     <View style={styles.detailsContainer}>
+                        <PersonalInfo title={Strings.SETTINGS_PHONE} value={this.props.user.phone} />
                         <PersonalInfo
-                            title={Strings.SETTINGS_PHONE}
-                            value={this.props.user.phone}
-                        />
-                        <PersonalInfo
-                            title={
-                                Strings.SETTINGS_NAME
-                                    ? Strings.SETTINGS_NAME
-                                    : Strings.SETTINGS_NOT_YET_UPDATED
-                            }
+                            title={Strings.SETTINGS_NAME ? Strings.SETTINGS_NAME : Strings.SETTINGS_NOT_YET_UPDATED}
                             value={this.props.user.full_name}
                         />
-                        <PersonalInfo
-                            title={Strings.SETTINGS_EMAIL}
-                            value={this.props.user.email}
-                        />
-                        <PersonalInfo
-                            title={Strings.SETTINGS_SEX}
-                            value={processGender(this.props.user.gender)}
-                        />
+                        <PersonalInfo title={Strings.SETTINGS_EMAIL} value={this.props.user.email} />
+                        <PersonalInfo title={Strings.SETTINGS_SEX} value={processGender(this.props.user.gender)} />
                         <PersonalInfo
                             title={Strings.SETTINGS_ADDRESS}
                             value={processAddress(this.props.user.address)}
@@ -92,12 +68,12 @@ class NotificationScreen extends React.Component {
                             value={this.props.user.date_of_birth}
                         /> */}
                         <View style={{ marginBottom: 10 }} />
-                        <Button
-                            style={{ marginTop: 20 }}
-                            onPress={() => this.logout()}
-                            title="Logout"
-                        />
+                        <Button title="Liên hệ" onPress={() => this.openContactScreen()} />
                     </View>
+                </View>
+
+                <View style={styles.logoutContainer}>
+                    <Button style={{ marginTop: 20 }} onPress={() => this.logout()} title="Logout" color={Colors.decrease} />
                 </View>
             </View>
         );
@@ -191,5 +167,13 @@ const styles = StyleSheet.create({
     },
     detailsContainer: {
         marginTop: 30
+    },
+    logoutContainer: {
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "flex-end",
+        paddingStart: 16,
+        paddingEnd: 16,
+        paddingBottom: 16
     }
 });

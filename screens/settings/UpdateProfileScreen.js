@@ -72,10 +72,7 @@ class UpdateProfileScreen extends React.Component {
             copiedState.genderOptions[0].selected = true;
         } else {
             for (let i = 0; i < 2; i++) {
-                if (
-                    copiedState.genderOptions[i].value ===
-                    this.props.user.gender
-                ) {
+                if (copiedState.genderOptions[i].value === this.props.user.gender) {
                     copiedState.genderOptions[i].selected = true;
                 } else {
                     copiedState.genderOptions[i].selected = false;
@@ -131,9 +128,7 @@ class UpdateProfileScreen extends React.Component {
                     config={input.config}
                     key={key}
                     title={key}
-                    onChangeText={(text, title) =>
-                        this.onTextChangedHandler(text, title)
-                    }
+                    onChangeText={(text, title) => this.onTextChangedHandler(text, title)}
                 />
             );
         }
@@ -141,10 +136,7 @@ class UpdateProfileScreen extends React.Component {
         return (
             <View style={styles.container}>
                 {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-                <TopBar
-                    {...this.topBarConfig}
-                    onLeftButtonPress={this.onBackPressed.bind(this)}
-                />
+                <TopBar {...this.topBarConfig} onLeftButtonPress={this.onBackPressed.bind(this)} />
                 <View style={styles.inputsContainer}>
                     {renderedInputs}
                     <RadioGroup
@@ -153,10 +145,7 @@ class UpdateProfileScreen extends React.Component {
                         onPress={this.onGenderChangedHandler}
                     />
                     <View style={{ marginBottom: 10 }} />
-                    <Button
-                        onPress={() => this.onUpdateProfile()}
-                        title={Strings.SETTINGS_FINISH_UPDATE}
-                    />
+                    <Button onPress={() => this.onUpdateProfile()} title={Strings.SETTINGS_FINISH_UPDATE} />
                 </View>
                 <Spinner visible={this.props.auth.loading} />
             </View>

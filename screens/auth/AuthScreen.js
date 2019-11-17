@@ -49,6 +49,9 @@ class AuthScreen extends Component {
             switch (this.props.auth.error.status) {
                 case 200:
                     break;
+                case 401:
+                    message = Strings.ERROR_WRONG_AUTH_INFO;
+                    break;
                 case 406:
                     message = Strings.ERROR_INVALID_AUTH_INFO;
                     break;

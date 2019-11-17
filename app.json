@@ -1,7 +1,7 @@
 {
     "expo": {
-        "name": "AppSAn",
-        "slug": "AppSan",
+        "name": "Sàn hàng hóa 24h",
+        "slug": "SanHangHoa24h",
         "privacy": "public",
         "sdkVersion": "34.0.0",
         "platforms": ["ios", "android", "web"],

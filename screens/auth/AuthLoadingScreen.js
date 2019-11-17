@@ -13,9 +13,14 @@ import * as actions from "../../store/actions/Auth";
 import * as storageKeys from "../../store/storage/StorageKeys";
 
 class AuthLoadingScreen extends React.Component {
+    state = {
+        isFirstTime: true
+    };
+
     componentDidUpdate() {
         if (this.props.user.user_uid) {
-            this.props.navigation.navigate("Main");
+            if (this.state.isFirstTime) this.props.navigation.navigate("Intro");
+            else this.props.navigation.navigate("Main");
         } else if (this.props.auth.error) {
             this.props.navigation.navigate("Auth");
         }

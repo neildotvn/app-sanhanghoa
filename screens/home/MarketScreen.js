@@ -48,11 +48,11 @@ class MarketScreen extends React.Component {
     componentDidMount() {
         this.timer = setInterval(() => {
             this.props.fetchPrices();
-        }, 3000)
+        }, 3000);
     }
 
     componentWillUnmount() {
-        clearInterval(this.timer)
+        clearInterval(this.timer);
     }
 
     onTabChanged = position => {
@@ -92,7 +92,7 @@ MarketScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
         // marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     }
 });
