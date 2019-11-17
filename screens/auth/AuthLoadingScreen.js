@@ -1,26 +1,19 @@
 import React from "react";
-import {
-    ActivityIndicator,
-    AsyncStorage,
-    StatusBar,
-    StyleSheet,
-    View,
-    Text,
-    Platform
-} from "react-native";
+import { ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Text, Platform } from "react-native";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/Auth";
 import * as storageKeys from "../../store/storage/StorageKeys";
 
 class AuthLoadingScreen extends React.Component {
     state = {
-        isFirstTime: true
+        isFirstTime: "true"
     };
 
     componentDidUpdate() {
         if (this.props.user.user_uid) {
-            if (this.state.isFirstTime) this.props.navigation.navigate("Intro");
+            if (this.state.isFirstTime === "true") this.props.navigation.navigate("Intro");
             else this.props.navigation.navigate("Main");
+            AsyncStorage.setItem(storageKeys.KEY_FIRST_OPEN_APP, "false", () => {});
         } else if (this.props.auth.error) {
             this.props.navigation.navigate("Auth");
         }
@@ -32,12 +25,11 @@ class AuthLoadingScreen extends React.Component {
 
     // Fetch the token from storage then navigate to our appropriate place
     _bootstrapAsync = async () => {
-        const userToken = await AsyncStorage.getItem(
-            storageKeys.KEY_USER_TOKEN
-        );
-        userToken
-            ? this.props.verifyMe()
-            : this.props.navigation.navigate("Auth");
+        const userToken = await AsyncStorage.getItem(storageKeys.KEY_USER_TOKEN);
+        const isFirstTime = await AsyncStorage.getItem(storageKeys.KEY_FIRST_OPEN_APP);
+        this.setState({ isFirstTime }, () => {
+            userToken ? this.props.verifyMe() : this.props.navigation.navigate("Auth");
+        });
     };
 
     // Render any loading content that you like here
