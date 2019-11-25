@@ -9,7 +9,8 @@
         "eject": "expo eject",
         "test": "jest --watchAll",
         "react-devtools": "react-devtools",
-        "postinstall": "rndebugger-open"
+        "postinstall": "rndebugger-open",
+        "build:android": "expo build:android"
     },
     "jest": {
         "preset": "jest-expo"

@@ -34,7 +34,8 @@ export default class IntroScreen extends React.Component {
             case 3:
                 intro = <Intro top={imgProductCategoryTop} bottom={imgNormalBottom} />;
                 break;
-            default:                break;
+            default:                
+            break;
         }
 
         return (

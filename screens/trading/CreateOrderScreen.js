@@ -104,16 +104,52 @@ class CreateOrderScreen extends React.Component {
         this.setState({ order: order });
     };
 
+    onOrderPriceChangeBit = isIncreased => {
+        try {
+            const order = { ...this.state.order };
+            let numericStopLoss = order.placing_price === null ? 0 : Number(order.placing_price);
+            let temp = isIncreased ? (numericStopLoss += 1) : (numericStopLoss -= 1);
+            order.placing_price = temp >= 0 ? temp.toString() : 0;
+            this.setState({ order: order });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     onStopLossChange = text => {
         const order = { ...this.state.order };
         order.stop_loss_price = text == 0 ? null : text;
         this.setState({ order: order });
     };
 
+    onStopLossChangeBit = isIncreased => {
+        try {
+            const order = { ...this.state.order };
+            let numericStopLoss = order.stop_loss_price === null ? 0 : Number(order.stop_loss_price);
+            let temp = isIncreased ? (numericStopLoss += 1) : (numericStopLoss -= 1);
+            order.stop_loss_price = temp >= 0 ? temp.toString() : 0;
+            this.setState({ order: order });
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     onTakeProfitChange = text => {
         const order = { ...this.state.order };
         order.take_profit_price = text == 0 ? null : text;
         this.setState({ order: order });
+    };
+
+    onTakeProfitChangeBit = isIncreased => {
+        try {
+            const order = { ...this.state.order };
+            let numericStopLoss = order.take_profit_price === null ? 0 : Number(order.take_profit_price);
+            let temp = isIncreased ? (numericStopLoss += 1) : (numericStopLoss -= 1);
+            order.take_profit_price = temp >= 0 ? temp.toString() : 0;
+            this.setState({ order: order });
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     onPlaceOrderByMarket = isBuy => {
@@ -343,7 +379,7 @@ class CreateOrderScreen extends React.Component {
                     {this.state.selectedOptionType === 0 ? null : (
                         <View style={styles.orderPriceContainer}>
                             <View style={styles.orderPrice}>
-                                <TouchableNativeFeedback>
+                                <TouchableNativeFeedback onPress={() => this.onOrderPriceChangeBit(false)}>
                                     <Image
                                         style={styles.volumnAdjustImage}
                                         source={require("../../assets/images/icons/ic-subtract.png")}
@@ -354,7 +390,7 @@ class CreateOrderScreen extends React.Component {
                                     style={styles.input}
                                     onChangeText={text => this.onOrderPriceChange(text)}
                                 />
-                                <TouchableNativeFeedback>
+                                <TouchableNativeFeedback onPress={() => this.onOrderPriceChangeBit(true)}>
                                     <Image
                                         style={styles.volumnAdjustImage}
                                         source={require("../../assets/images/icons/ic-add.png")}
@@ -366,7 +402,7 @@ class CreateOrderScreen extends React.Component {
                     )}
                     <View style={styles.slAndTpSection}>
                         <View style={[styles.slAndTp, styles.stopLoss]}>
-                            <TouchableNativeFeedback>
+                            <TouchableNativeFeedback onPress={() => this.onStopLossChangeBit(false)}>
                                 <Image
                                     style={styles.volumnAdjustImage}
                                     source={require("../../assets/images/icons/ic-subtract.png")}
@@ -379,7 +415,7 @@ class CreateOrderScreen extends React.Component {
                                 style={styles.input}
                                 onChangeText={text => this.onStopLossChange(text)}
                             />
-                            <TouchableNativeFeedback>
+                            <TouchableNativeFeedback onPress={() => this.onStopLossChangeBit(true)}>
                                 <Image
                                     style={styles.volumnAdjustImage}
                                     source={require("../../assets/images/icons/ic-add.png")}
@@ -387,7 +423,7 @@ class CreateOrderScreen extends React.Component {
                             </TouchableNativeFeedback>
                         </View>
                         <View style={[styles.slAndTp, styles.takeProfit]}>
-                            <TouchableNativeFeedback>
+                            <TouchableNativeFeedback onPress={() => this.onTakeProfitChangeBit(false)}>
                                 <Image
                                     style={styles.volumnAdjustImage}
                                     source={require("../../assets/images/icons/ic-subtract.png")}
@@ -402,7 +438,7 @@ class CreateOrderScreen extends React.Component {
                                 style={styles.input}
                                 onChangeText={text => this.onTakeProfitChange(text)}
                             />
-                            <TouchableNativeFeedback>
+                            <TouchableNativeFeedback onPress={() => this.onTakeProfitChangeBit(true)}>
                                 <Image
                                     style={styles.volumnAdjustImage}
                                     source={require("../../assets/images/icons/ic-add.png")}
@@ -584,7 +620,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CreateOrderScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateOrderScreen);
