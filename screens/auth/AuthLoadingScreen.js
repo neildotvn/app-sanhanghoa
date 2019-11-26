@@ -10,10 +10,15 @@ class AuthLoadingScreen extends React.Component {
     };
 
     componentDidUpdate() {
+        console.log(`Day co phai la lan dung app dau tien cua ban k? ${this.state.isFirstTime}`);
         if (this.props.user.user_uid) {
-            if (this.state.isFirstTime === "true") this.props.navigation.navigate("Intro");
-            else this.props.navigation.navigate("Main");
-            AsyncStorage.setItem(storageKeys.KEY_FIRST_OPEN_APP, "false", () => {});
+            if (this.state.isFirstTime === "true") {
+                this.props.navigation.navigate("Intro");
+                AsyncStorage.setItem(storageKeys.KEY_FIRST_OPEN_APP, "false", () => {});
+            } else {
+                this.props.navigation.navigate("Main");
+                // AsyncStorage.setItem(storageKeys.KEY_FIRST_OPEN_APP, "true", () => {});
+            }
         } else if (this.props.auth.error) {
             this.props.navigation.navigate("Auth");
         }
@@ -66,7 +71,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AuthLoadingScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthLoadingScreen);

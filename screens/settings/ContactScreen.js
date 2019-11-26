@@ -6,6 +6,8 @@ import { BoldText, LightText, RegularText } from "../../components/common/Styled
 import imgPhone from "../../assets/images/icons/ic-phone.png";
 import imgEmail from "../../assets/images/icons/ic-email.png";
 import imgZalo from "../../assets/images/icons/ic-zalo.png";
+import imgWeb from "../../assets/images/icons/ic-web.png";
+import imgYoutube from "../../assets/images/icons/ic-youtube.png";
 
 class ContactScreen extends React.Component {
     onBackPressed() {
@@ -43,6 +45,16 @@ class ContactScreen extends React.Component {
         Linking.openURL(email);
     };
 
+    website = () => {
+        let url = "https://sanhanghoa24h.com";
+        Linking.openURL(url);
+    };
+
+    youtube = () => {
+        let youtube = "https://www.youtube.com/channel/UCEUO-mQP4o1vwcl68hWZsGA?view_as=subscriber";
+        Linking.openURL(youtube);
+    };
+
     render() {
         return (
             <View>
@@ -73,6 +85,20 @@ class ContactScreen extends React.Component {
                         <Image style={styles.image} source={imgEmail} />
                         <TouchableNativeFeedback onPress={() => this.email()}>
                             <RegularText style={styles.text}>congtytvtgialai@gmail.com</RegularText>
+                        </TouchableNativeFeedback>
+                    </View>
+                    <BoldText>Website</BoldText>
+                    <View style={styles.infoContainer}>
+                        <Image style={styles.image} source={imgWeb} />
+                        <TouchableNativeFeedback onPress={() => this.website()}>
+                            <RegularText style={styles.text}>sanhanghoa24h.com</RegularText>
+                        </TouchableNativeFeedback>
+                    </View>
+                    <BoldText>Youtube</BoldText>
+                    <View style={styles.infoContainer}>
+                        <Image style={styles.image} source={imgYoutube} />
+                        <TouchableNativeFeedback onPress={() => this.youtube()}>
+                            <RegularText style={styles.text}>TVT Gia Lai</RegularText>
                         </TouchableNativeFeedback>
                     </View>
                 </View>

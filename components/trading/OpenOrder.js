@@ -7,26 +7,30 @@ import { orderTypes } from "../../constants/Strings";
 import OrderInfo from "./OrderInfo";
 import {
     getRowDataWithProductAndExchange,
-    getProductNameFromCode
+    getProductNameFromCode,
+    getLeverageFromCode
 } from "../../constants/CommodityMap";
 import { parseTime } from "../../utils/TimeUtils";
 
 class OpenOrder extends React.Component {
     render() {
         const order = this.props.order;
+        console.log(order);
         order.createdAt = parseTime(order.created_at);
         let rowData;
 
         try {
-            order.productName = getProductNameFromCode(
-                this.props.order.product
-            );
+            order.productName = getProductNameFromCode(this.props.order.product);
             rowData = getRowDataWithProductAndExchange(
                 this.props.pricesStore.prices,
                 this.props.order.product,
                 this.props.order.exchange
             );
-            order.currentPrice = rowData[1];
+            const currentPrice = rowData[1];
+            order.currentPrice = currentPrice;
+            const leverage = getLeverageFromCode(this.props.order.product);
+            const value = (currentPrice - this.props.order.placing_price) * leverage * this.props.order.volume;
+            order.value = value;
         } catch (err) {
             console.log(err);
         }
@@ -47,7 +51,4 @@ const mapDispatchToProps = dispatch => {
     return {};
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(OpenOrder);
+export default connect(mapStateToProps, mapDispatchToProps)(OpenOrder);

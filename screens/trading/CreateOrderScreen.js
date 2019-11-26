@@ -370,6 +370,7 @@ class CreateOrderScreen extends React.Component {
                         selected={this.state.selectedOptionType}
                         onSelect={this.onOptionSelect}
                     />
+                    <MediumText style={styles.lotTitle}>Lot</MediumText>
                     <LotChooser
                         style={styles.lotChooser}
                         volume={this.state.order.volume}
@@ -502,6 +503,10 @@ const styles = StyleSheet.create({
     secondaryContainer: {
         padding: 20,
         paddingTop: 10
+    },
+    lotTitle: {
+        marginTop: 20,
+        textAlign: "center"
     },
     lotChooser: {
         marginTop: 20,

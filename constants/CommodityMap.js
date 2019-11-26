@@ -122,25 +122,30 @@ export const commodityMap = [
 ];
 
 export const orderProductMap = {
-    coffee: {
-        name: commodityNames.CA_PHE,
-        key: "coffee",
-        productCode: 5
+    robusta: {
+        name: commodityNames.CA_PHE_ROBUSTA,
+        key: "robusta",
+        leverage: 10
+    },
+    arabica: {
+        name: commodityNames.CA_PHE_ARABICA,
+        key: "arabica",
+        leverage: 375
     },
     cotton: {
         name: commodityNames.COTTON,
         key: "cotton",
-        productCode: 9
+        leverage: 500
     },
     rubber: {
         name: commodityNames.CAO_SU,
         key: "rubber",
-        productCode: 10
+        leverage: 50
     },
     cocoa: {
         name: commodityNames.CA_CAO,
         key: "cocoa",
-        productCode: 11
+        leverage: 10
     }
 };
 
@@ -154,4 +159,8 @@ export const getRowDataWithProductAndExchange = (prices, product, exchange) => {
 
 export const getProductNameFromCode = product => {
     return orderProductMap[product].name;
+};
+
+export const getLeverageFromCode = product => {
+    return orderProductMap[product].leverage;
 };

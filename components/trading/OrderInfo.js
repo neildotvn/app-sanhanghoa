@@ -6,50 +6,44 @@ import { orderTypes } from "../../constants/Strings";
 
 export default function(props) {
     let typeStyle;
-    if (
-        props.order.type === 0 ||
-        props.order.type === 2 ||
-        props.order.type === 4
-    ) {
+    if (props.order.order_type === 0 || props.order.order_type === 2 || props.order.order_type === 4) {
         typeStyle = styles.buyText;
     } else {
         typeStyle = styles.sellText;
     }
 
     return (
-        <TouchableNativeFeedback
-            onPress={props.onPress ? () => props.onPress(props.order) : null}
-        >
+        <TouchableNativeFeedback onPress={props.onPress ? () => props.onPress(props.order) : null}>
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
-                    <BoldText style={styles.title}>
-                        {props.order.productName}
-                    </BoldText>
-                    <RegularText style={styles.date}>
-                        {props.order.createdAt}
-                    </RegularText>
+                    <BoldText style={styles.title}>{props.order.productName}</BoldText>
+                    <RegularText style={styles.date}>{props.order.createdAt}</RegularText>
                 </View>
                 <View style={styles.infoContainer}>
                     <View>
                         <View style={styles.exchangeContainer}>
-                            <BoldText style={styles.exchange}>
-                                {props.order.exchange}
-                            </BoldText>
+                            <BoldText style={styles.exchange}>{props.order.exchange}</BoldText>
                             <MediumText style={[styles.typeAndLot, typeStyle]}>
-                                {orderTypes[props.order.order_type]}{" "}
-                                {props.order.volume.toFixed(1)}
+                                {orderTypes[props.order.order_type]} {props.order.volume.toFixed(1)}
                             </MediumText>
                         </View>
                         <RegularText style={styles.range}>
                             {props.order.placing_price} ->{" "}
-                            {props.order.currentPrice
-                                ? props.order.currentPrice
-                                : props.order.closing_price}
+                            {props.order.currentPrice ? props.order.currentPrice : props.order.closing_price}
                         </RegularText>
                     </View>
                     <View style={styles.valueContainer}>
-                        <BoldText style={styles.value}>
-                            {props.order.currentPrice ? "open" : "close"}
+                        <BoldText
+                            style={[
+                                styles.value,
+                                props.order.value === null
+                                    ? null
+                                    : props.order.value >= 0
+                                    ? styles.buyText
+                                    : styles.sellText
+                            ]}
+                        >
+                            {props.order.value || props.order.value === 0 ? props.order.value.toFixed(2) : "..."}
                         </BoldText>
                     </View>
                 </View>
