@@ -6,17 +6,21 @@ import OrderHistoryScreen from "../screens/trading/OrderHistoryScreen";
 import UpdateProfileScreen from "../screens/settings/UpdateProfileScreen";
 import MarketPricesScreen from "../screens/market/MarketPricesScreen";
 import CreateOrderScreen from "../screens/trading/CreateOrderScreen";
+import CreateAlarmScreen from "../screens/trading/CreateAlarmScreen";
 import OrderDetailScreen from "../screens/trading/OrderDetailScreen";
-import ContactScreen from '../screens/settings/ContactScreen'
+import ContactScreen from "../screens/settings/ContactScreen";
+import AlarmListScreen from "../screens/trading/AlarmListScreen";
 
 const authNavigator = createStackNavigator(
     {
         MainTab: MainTabNavigator,
         OrderHistory: OrderHistoryScreen,
+        AlarmList: AlarmListScreen,
         EditProfile: UpdateProfileScreen,
         Contact: ContactScreen,
         PricesDetail: MarketPricesScreen,
         CreateOrder: CreateOrderScreen,
+        CreateAlarm: CreateAlarmScreen,
         OrderDetail: OrderDetailScreen
     },
     {

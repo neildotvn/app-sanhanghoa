@@ -16,6 +16,7 @@ import accountReduer from "./store/reducers/AccountReducer";
 import notificationReducer from "./store/reducers/NotificationReducer";
 import orderReducer from "./store/reducers/OrderReducer";
 import pricesReducer from "./store/reducers/PriceReducer";
+import alarmReducer from "./store/reducers/AlarmReducer";
 
 export default function App(props) {
     const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -27,11 +28,11 @@ export default function App(props) {
             loading: loadingReducer,
             notiStore: notificationReducer,
             orderStore: orderReducer,
-            pricesStore: pricesReducer
+            pricesStore: pricesReducer,
+            alarmStore: alarmReducer
         }),
         applyMiddleware(thunk),
-        window.__REDUX_DEVTOOLS_EXTENSION__ &&
-            window.__REDUX_DEVTOOLS_EXTENSION__()
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     );
 
     if (!isLoadingComplete && !props.skipLoadingScreen) {
@@ -56,10 +57,7 @@ export default function App(props) {
 
 async function loadResourcesAsync() {
     await Promise.all([
-        Asset.loadAsync([
-            require("./assets/images/robot-dev.png"),
-            require("./assets/images/robot-prod.png")
-        ]),
+        Asset.loadAsync([require("./assets/images/robot-dev.png"), require("./assets/images/robot-prod.png")]),
         Font.loadAsync({
             // This is the font that we are using for our tab bar
             ...Ionicons.font,

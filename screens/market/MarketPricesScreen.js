@@ -12,7 +12,9 @@ class MarketPricesScreen extends React.Component {
     onBackPressed = () => this.props.navigation.pop();
 
     onCreateAlarm = () => {
-        console.log("alarm");
+        this.props.navigation.push("CreateAlarm", {
+            product_name: this.props.navigation.getParam("product_name")
+        });
     };
 
     onCreateOrder = () => {
@@ -98,19 +100,15 @@ class MarketPricesScreen extends React.Component {
                 ) : tradeableCommunities.includes(this.props.navigation.getParam("product_name")[1]) ? (
                     <View style={styles.bottomButtonsWrapper}>
                         <View style={styles.bottomButtons}>
-                            {/* <TouchableNativeFeedback
-                                onPress={() => this.onCreateAlarm()}
-                            >
+                            <TouchableNativeFeedback onPress={() => this.onCreateAlarm()}>
                                 <View style={styles.alarmButton}>
                                     <Image
                                         style={styles.bottomButtonImage}
                                         source={require("../../assets/images/icons/ic-bottom-alarm.png")}
                                     />
-                                    <LightText style={styles.buttonText}>
-                                        {Strings.PRICES_PLACE_ALARM}
-                                    </LightText>
+                                    <LightText style={styles.buttonText}>{Strings.PRICES_PLACE_ALARM}</LightText>
                                 </View>
-                            </TouchableNativeFeedback> */}
+                            </TouchableNativeFeedback>
                             <TouchableNativeFeedback onPress={() => this.onCreateOrder()}>
                                 <View style={[styles.createOrderButton]}>
                                     <Image
@@ -275,7 +273,4 @@ const mapDispatchToProps = dispatch => {
     return {};
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MarketPricesScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MarketPricesScreen);

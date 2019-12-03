@@ -12,6 +12,13 @@ export default function(props) {
         typeStyle = styles.sellText;
     }
 
+    let value;
+    if (props.order.order_status === 1) {
+        if (props.order.value || props.order.value === 0) {
+            value = props.order.value.toFixed(2);
+        }
+    }
+
     return (
         <TouchableNativeFeedback onPress={props.onPress ? () => props.onPress(props.order) : null}>
             <View style={styles.container}>
@@ -43,7 +50,7 @@ export default function(props) {
                                     : styles.sellText
                             ]}
                         >
-                            {props.order.value || props.order.value === 0 ? props.order.value.toFixed(2) : "..."}
+                            {value}
                         </BoldText>
                     </View>
                 </View>

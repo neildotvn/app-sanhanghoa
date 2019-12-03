@@ -55,6 +55,8 @@ class MarketScreen extends React.Component {
         clearInterval(this.timer);
     }
 
+    onOpenAlarms = () => this.props.navigation.push("AlarmList");
+
     onTabChanged = position => {
         this.setState({ activePosition: position });
     };
@@ -65,9 +67,10 @@ class MarketScreen extends React.Component {
     };
 
     topBarConfig = {
-        title: Strings.HEADER_MARKET
-        // rightButtonLabel: Strings.HEADER_BUTTON_ALERT,
-        // rightImageSource: require("../../assets/images/icons/ic-alert.png")
+        title: Strings.HEADER_MARKET,
+        rightButtonLabel: Strings.HEADER_BUTTON_ALERT,
+        rightImageSource: require("../../assets/images/icons/ic-alert.png"),
+        onRightButtonPress: this.onOpenAlarms
     };
 
     render() {
@@ -92,7 +95,7 @@ MarketScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex: 1
         // marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     }
 });
@@ -109,7 +112,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MarketScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MarketScreen);
