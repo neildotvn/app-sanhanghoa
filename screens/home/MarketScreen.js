@@ -6,6 +6,7 @@ import TopTabBar from "../../components/TopTabBar";
 import Strings, { commodityNames } from "../../constants/Strings";
 import { connect } from "react-redux";
 import getAllPrices from "../../store/actions/Prices";
+import registerForPushNotificationsAsync from "../../notifications/NotificationsUtils";
 
 const tabs = [
     [
@@ -45,7 +46,8 @@ class MarketScreen extends React.Component {
         activePosition: 0
     };
 
-    componentDidMount() {
+    async componentDidMount() {
+        await registerForPushNotificationsAsync();
         this.timer = setInterval(() => {
             this.props.fetchPrices();
         }, 3000);

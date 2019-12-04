@@ -12,10 +12,12 @@ class AuthLoadingScreen extends React.Component {
     componentDidUpdate() {
         console.log(`Day co phai la lan dung app dau tien cua ban k? ${this.state.isFirstTime}`);
         if (this.props.user.user_uid) {
-            if (this.state.isFirstTime === "true") {
-                this.props.navigation.navigate("Intro");
+            if (this.state.isFirstTime === "true" || this.state.isFirstTime === null) {
+                console.log("Go to Intro");
                 AsyncStorage.setItem(storageKeys.KEY_FIRST_OPEN_APP, "false", () => {});
+                this.props.navigation.navigate("Intro");
             } else {
+                console.log("Go to main");
                 this.props.navigation.navigate("Main");
                 // AsyncStorage.setItem(storageKeys.KEY_FIRST_OPEN_APP, "true", () => {});
             }
