@@ -13,10 +13,19 @@ export default function(props) {
     }
 
     let value;
+    let valueStyle = [];
+    const isBuy = props.order.order_type % 2 === 0;
+    console.log(props.order);
     if (props.order.order_status === 1) {
-        if (props.order.value || props.order.value === 0) {
-            value = props.order.value.toFixed(2);
-        }
+        value = "Đợi khớp";
+        valueStyle = [styles.textValue];
+    } else {
+        value = props.order.value.toFixed(2);
+    }
+    if (isBuy) {
+        valueStyle.push(styles.buyText);
+    } else {
+        valueStyle.push(styles.sellText);
     }
 
     return (
@@ -40,18 +49,7 @@ export default function(props) {
                         </RegularText>
                     </View>
                     <View style={styles.valueContainer}>
-                        <BoldText
-                            style={[
-                                styles.value,
-                                props.order.value === null
-                                    ? null
-                                    : props.order.value >= 0
-                                    ? styles.buyText
-                                    : styles.sellText
-                            ]}
-                        >
-                            {value}
-                        </BoldText>
+                        <BoldText style={valueStyle}>{value}</BoldText>
                     </View>
                 </View>
             </View>
@@ -94,6 +92,7 @@ const styles = StyleSheet.create({
     },
     range: { fontSize: 14, color: Colors.black3 },
     value: { fontSize: 16, color: Colors.midBlue },
+    textValue: { fontSize: 14 },
     buyText: { color: Colors.midBlue },
     sellText: { color: Colors.sell }
 });

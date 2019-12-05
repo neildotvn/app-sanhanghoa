@@ -185,7 +185,7 @@ class CreateOrderScreen extends React.Component {
         const order = {
             product,
             exchange: this.state.order.exchange,
-            order_status: 0,
+            order_status: this.state.orderType < 2 ? 0 : 1,
             order_type: this.state.orderType,
             placing_price: this.state.order.placing_price,
             volume,
@@ -394,6 +394,7 @@ class CreateOrderScreen extends React.Component {
                                     />
                                 </TouchableNativeFeedback>
                                 <TextInput
+                                    keyboardType="numeric"
                                     value={this.state.order.placing_price.toString()}
                                     style={styles.input}
                                     onChangeText={text => this.onOrderPriceChange(text)}
@@ -417,6 +418,7 @@ class CreateOrderScreen extends React.Component {
                                 />
                             </TouchableNativeFeedback>
                             <TextInput
+                                keyboardType="numeric"
                                 value={
                                     this.state.order.stop_loss_price ? this.state.order.stop_loss_price.toString() : "0"
                                 }
@@ -438,6 +440,7 @@ class CreateOrderScreen extends React.Component {
                                 />
                             </TouchableNativeFeedback>
                             <TextInput
+                                keyboardType="numeric"
                                 value={
                                     this.state.order.take_profit_price
                                         ? this.state.order.take_profit_price.toString()
