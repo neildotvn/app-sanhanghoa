@@ -50,7 +50,7 @@ class MarketScreen extends React.Component {
         await registerForPushNotificationsAsync();
         this.timer = setInterval(() => {
             this.props.fetchPrices();
-        }, 3000);
+        }, 2000);
     }
 
     componentWillUnmount() {

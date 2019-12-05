@@ -77,7 +77,7 @@ export default orderReducer = (state = initialState, action) => {
                 error: action.payload.error
             });
         case actionTypes.ORDER_CLOSE_FINISH:
-            return updateObject(state, { close_success: false, error: null });
+            return updateObject(state, { close_loading: false, close_success: false, error: null });
         default:
             return state;
     }

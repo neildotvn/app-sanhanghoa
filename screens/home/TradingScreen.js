@@ -1,11 +1,5 @@
 import React from "react";
-import {
-    ScrollView,
-    StyleSheet,
-    View,
-    Platform,
-    StatusBar
-} from "react-native";
+import { ScrollView, StyleSheet, View, Platform, StatusBar } from "react-native";
 import TopBar from "../../components/TopBar";
 import BalanceInfo from "../../components/trading/BalanceInfo";
 import Strings from "../../constants/Strings";
@@ -53,6 +47,10 @@ class TradingScreen extends React.Component {
     componentDidMount() {
         this.props.fetchAccount();
         this.props.fetchAllActiveOrders();
+        this.timer = setInterval(() => {
+            this.props.fetchAccount();
+            this.props.fetchAllActiveOrders();
+        }, 2000);
     }
 
     render() {
@@ -60,35 +58,21 @@ class TradingScreen extends React.Component {
         const balanceInfo = [];
         for (key in account) {
             if (key === "account_uid") continue;
-            balanceInfo.push(
-                <BalanceInfo
-                    key={key}
-                    title={this.infoNames[key]}
-                    value={account[key]}
-                />
-            );
+            balanceInfo.push(<BalanceInfo key={key} title={this.infoNames[key]} value={account[key]} />);
         }
 
         const orders = this.props.orderStore.activeOrders;
         const orderList = orders.map((order, position) => (
-            <OpenOrder
-                key={position}
-                order={order}
-                onPress={this.onOrderPress}
-            />
+            <OpenOrder key={position} order={order} onPress={this.onOrderPress} />
         ));
 
         return (
             <View style={styles.container}>
                 <TopBar {...this.topBarConfig} />
                 <ScrollView style={styles.scrollView}>
-                    <View style={styles.balanceInfoContainer}>
-                        {balanceInfo}
-                    </View>
+                    <View style={styles.balanceInfoContainer}>{balanceInfo}</View>
                     <View style={styles.titleOpenOrderContainer}>
-                        <MediumText style={styles.titleOpenOrder}>
-                            {Strings.TRADING_OPEN_ORDER}
-                        </MediumText>
+                        <MediumText style={styles.titleOpenOrder}>{Strings.TRADING_OPEN_ORDER}</MediumText>
                     </View>
                     <View styles={styles.openOrderContainer}>{orderList}</View>
                 </ScrollView>
@@ -116,10 +100,7 @@ TradingScreen.navigationOptions = {
     header: null
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(TradingScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(TradingScreen);
 
 const styles = StyleSheet.create({
     container: {

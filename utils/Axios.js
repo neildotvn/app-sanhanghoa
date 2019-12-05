@@ -3,7 +3,7 @@ import { AsyncStorage } from "react-native";
 import * as storageKeys from "../store/storage/StorageKeys";
 
 const instance = axios.create({
-    baseURL: "http://c5133d01.ngrok.io/api/v1/",
+    baseURL: "http://192.168.1.3:3000/api/v1/",
     timeout: 5000
 });
 

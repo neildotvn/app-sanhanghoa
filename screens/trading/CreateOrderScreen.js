@@ -207,7 +207,7 @@ class CreateOrderScreen extends React.Component {
                 return { result: false, message: Strings.ERROR_NAN };
             }
         }
-        const { buyPrice, sellPrice } = this.mapPrice();
+        let { buyPrice, sellPrice, currentPrice } = this.mapPrice();
         const orderPrice = order.placing_price;
         const slPrice = order.stop_loss_price;
         const tpPrice = order.take_profit_price;
@@ -322,20 +322,27 @@ class CreateOrderScreen extends React.Component {
     };
 
     mapPrice = () => {
-        let buyPrice;
-        let sellPrice;
+        let buyPrice = 0;
+        let sellPrice = 0;
+        let currentPrice = 0;
+        let inTrading = true;
         try {
             const data = [...this.state.data.ice, ...this.state.data.nyb];
             const rowData = data[this.state.selectedTermOption];
             console.log("rowData", rowData);
-            buyPrice = rowData[5];
-            sellPrice = rowData[6];
+            currentPrice = rowData[1];
+            if (isNaN(Number(currentPrice))) {
+                currentPrice = Number(currentPrice.replace("s", "").replace(",", ""));
+            }
+            buyPrice = rowData[5] === 0 ? currentPrice : rowData[5];
+            sellPrice = rowData[6] === 0 ? currentPrice : rowData[6];
+            if (buyPrice === sellPrice) inTrading = false;
         } catch (err) {
             console.log("CreateOrderScreen", err);
         }
         console.log(`buy = ${buyPrice}`);
         console.log(`sell = ${sellPrice}`);
-        return { buyPrice, sellPrice };
+        return { buyPrice, sellPrice, currentPrice, inTrading };
     };
 
     onBackPressed = () => {
@@ -350,7 +357,7 @@ class CreateOrderScreen extends React.Component {
     };
 
     render() {
-        const { buyPrice, sellPrice } = this.mapPrice();
+        const { buyPrice, sellPrice, currentPrice, inTrading } = this.mapPrice();
         console.log("CreateOrderScreen");
         return (
             <View style={styles.container}>
@@ -448,43 +455,41 @@ class CreateOrderScreen extends React.Component {
                         </View>
                     </View>
                 </View>
-                {buyPrice !== 0 || sellPrice !== 0 ? (
-                    <View style={styles.orderButtonsContainer}>
-                        {this.state.selectedOptionType !== 0 ? (
-                            <TouchableNativeFeedback onPress={() => this.onPlaceOrder()}>
-                                <View style={styles.placeOrderButton}>
-                                    <MediumText style={styles.placeOrderButtonText}>
-                                        {Strings.ORDER_PLACE_ORDER}
+                {/* {buyPrice !== 0 || sellPrice !== 0 ? ( */}
+                <View style={styles.orderButtonsContainer}>
+                    {this.state.selectedOptionType !== 0 ? (
+                        <TouchableNativeFeedback onPress={() => this.onPlaceOrder()}>
+                            <View style={styles.placeOrderButton}>
+                                <MediumText style={styles.placeOrderButtonText}>{Strings.ORDER_PLACE_ORDER}</MediumText>
+                            </View>
+                        </TouchableNativeFeedback>
+                    ) : inTrading ? (
+                        <View style={styles.byMarketButtons}>
+                            <TouchableNativeFeedback onPress={() => this.onPlaceOrderByMarket(false)}>
+                                <View style={styles.byMarketButton}>
+                                    <MediumText style={[styles.byMarketActionText, styles.sellText]}>
+                                        {Strings.ORDER_SELL}
                                     </MediumText>
+                                    <RegularText style={[styles.byMarketText, styles.sellText]}>
+                                        {Strings.ORDER_BY_MARKET}
+                                    </RegularText>
                                 </View>
                             </TouchableNativeFeedback>
-                        ) : (
-                            <View style={styles.byMarketButtons}>
-                                <TouchableNativeFeedback onPress={() => this.onPlaceOrderByMarket(false)}>
-                                    <View style={styles.byMarketButton}>
-                                        <MediumText style={[styles.byMarketActionText, styles.sellText]}>
-                                            {Strings.ORDER_SELL}
-                                        </MediumText>
-                                        <RegularText style={[styles.byMarketText, styles.sellText]}>
-                                            {Strings.ORDER_BY_MARKET}
-                                        </RegularText>
-                                    </View>
-                                </TouchableNativeFeedback>
-                                <View style={styles.divider} />
-                                <TouchableNativeFeedback onPress={() => this.onPlaceOrderByMarket(true)}>
-                                    <View style={[styles.byMarketButton]}>
-                                        <MediumText style={[styles.byMarketActionText, styles.buyText]}>
-                                            {Strings.ORDER_BUY}
-                                        </MediumText>
-                                        <RegularText style={[styles.byMarketText, styles.buyText]}>
-                                            {Strings.ORDER_BY_MARKET}
-                                        </RegularText>
-                                    </View>
-                                </TouchableNativeFeedback>
-                            </View>
-                        )}
-                    </View>
-                ) : null}
+                            <View style={styles.divider} />
+                            <TouchableNativeFeedback onPress={() => this.onPlaceOrderByMarket(true)}>
+                                <View style={[styles.byMarketButton]}>
+                                    <MediumText style={[styles.byMarketActionText, styles.buyText]}>
+                                        {Strings.ORDER_BUY}
+                                    </MediumText>
+                                    <RegularText style={[styles.byMarketText, styles.buyText]}>
+                                        {Strings.ORDER_BY_MARKET}
+                                    </RegularText>
+                                </View>
+                            </TouchableNativeFeedback>
+                        </View>
+                    ) : null}
+                </View>
+                {/* ) : null} */}
             </View>
         );
     }
