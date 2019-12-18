@@ -36,7 +36,10 @@ class MarketPricesScreen extends React.Component {
         try {
             iceRows = data.ice.map((row, index) => {
                 const temp = [...row];
-                temp.pop();
+                const orderCount = temp.splice(7);
+                temp[5] = orderCount[1] ? `${temp[5]}(${orderCount[1]})` : `${temp[5]}(0)`;
+                temp[6] = orderCount[2] ? `${temp[6]}(${orderCount[2]})` : `${temp[6]}(0)`;
+
                 if (!temp[2].toString().includes("+") && !temp[2].toString().includes("-")) {
                     temp[2] = row[7] ? `+${temp[2]}` : `-${temp[2]}`;
                 }
@@ -58,7 +61,10 @@ class MarketPricesScreen extends React.Component {
             nybRows = data.nyb.map((row, index) => {
                 let temp;
                 temp = [...row];
-                temp.pop();
+                const orderCount = temp.splice(7);
+
+                temp[5] = orderCount[1] ? `${temp[5]}(${orderCount[1]})` : `${temp[5]}(0)`;
+                temp[6] = orderCount[2] ? `${temp[6]}(${orderCount[2]})` : `${temp[6]}(0)`;
                 if (!temp[2].toString().includes("+") && !temp[2].toString().includes("-")) {
                     temp[2] = row[7] ? `+${temp[2]}` : `-${temp[2]}`;
                 }
