@@ -73,7 +73,7 @@ class NotificationScreen extends React.Component {
                 </View>
 
                 <View style={styles.logoutContainer}>
-                    <Button style={{ marginTop: 20 }} onPress={() => this.logout()} title="Logout" color={Colors.decrease} />
+                    <Button style={{ marginTop: 20 }} onPress={() => this.logout()} title="Đăng xuất" color={Colors.decrease} />
                 </View>
             </View>
         );

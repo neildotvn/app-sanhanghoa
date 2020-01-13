@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import TopBar from "../../components/TopBar";
 import NotificationRow from "../../components/noti/NotificationRow";
+import Loading from '../../components/common/Loading';
+import NoData from '../../components/common/NoData';
 import * as actions from "../../store/actions/Notifications";
 import Strings from "../../constants/Strings";
 import { connect } from "react-redux";
@@ -36,11 +38,11 @@ class NotificationScreen extends React.Component {
             <View style={styles.container}>
                 <TopBar title={Strings.HEADER_NOTI} />
                 {/* <ScrollView style={styles.notiContainer}>{notiRows}</ScrollView> */}
-                <View style={styles.textContainer}>
-                    <RegularText style={styles.text}>
-                        Chưa có thông báo!
-                    </RegularText>
-                </View>
+                {(() => {
+                    if (this.props.notiStore.loading) return <Loading />
+                    if (this.props.notiStore.error) return <NoData />
+                    if (this.props.notiStore.notifications.length === 0) return <NoData text="Bạn chưa có thông báo!" />
+                })()}
             </View>
         );
     }
@@ -70,7 +72,6 @@ export default connect(
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight,
         backgroundColor: "#fff"
     },
     notiContainer: {

@@ -27,7 +27,7 @@ export default authReducer = (state = initialState, action) => {
 };
 
 const fetchAccountSuccess = (state, payload) => {
-    console.log(actionTypes.AUTH_SUCCESS, updateObject(state, payload));
+    // console.log(actionTypes.AUTH_SUCCESS, updateObject(state, payload));
     return updateObject(state, { loading: false, account: payload });
 };
 

@@ -1,8 +1,10 @@
 import React from "react";
 import { ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Text, Platform } from "react-native";
 import { connect } from "react-redux";
+import Loading from '../../components/common/Loading';
 import * as actions from "../../store/actions/Auth";
 import * as storageKeys from "../../store/storage/StorageKeys";
+import Colors from "../../constants/Colors";
 
 class AuthLoadingScreen extends React.Component {
     state = {
@@ -43,8 +45,7 @@ class AuthLoadingScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <ActivityIndicator />
-                <StatusBar style={styles.statusBar} barStyle="default" />
+                <Loading text="" />
             </View>
         );
     }
@@ -53,11 +54,15 @@ class AuthLoadingScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         // paddingTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
-    },
-    statusBar: {
-        height: 100,
-        width: 100
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1
     }
+    // statusBar: {
+    //     height: 100,
+    //     width: 100
+    // }
 });
 
 const mapStateToProps = state => {

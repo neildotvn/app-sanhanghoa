@@ -6,7 +6,7 @@ import Colors from "../../constants/Colors";
 import Strings, { priceColumns } from "../../constants/Strings";
 import { RegularText, MediumText, LightText } from "../../components/common/StyledText";
 
-const tradeableCommunities = ["robusta", "arabica", "cotton", "rubber", "cocoa"];
+const tradeableCommodities = ["robusta", "arabica", "cotton", "rubber", "cocoa", "us_soybean_oil"];
 
 class MarketPricesScreen extends React.Component {
     onBackPressed = () => this.props.navigation.pop();
@@ -103,7 +103,7 @@ class MarketPricesScreen extends React.Component {
                     <View style={styles.noDataWrapper}>
                         <RegularText>Đang cập nhật...</RegularText>
                     </View>
-                ) : tradeableCommunities.includes(this.props.navigation.getParam("product_name")[1]) ? (
+                ) : (
                     <View style={styles.bottomButtonsWrapper}>
                         <View style={styles.bottomButtons}>
                             <TouchableNativeFeedback onPress={() => this.onCreateAlarm()}>
@@ -115,18 +115,20 @@ class MarketPricesScreen extends React.Component {
                                     <LightText style={styles.buttonText}>{Strings.PRICES_PLACE_ALARM}</LightText>
                                 </View>
                             </TouchableNativeFeedback>
-                            <TouchableNativeFeedback onPress={() => this.onCreateOrder()}>
-                                <View style={[styles.createOrderButton]}>
-                                    <Image
-                                        style={styles.bottomButtonImage}
-                                        source={require("../../assets/images/icons/ic-place-order.png")}
-                                    />
-                                    <LightText style={styles.buttonText}>{Strings.PRICES_PLACE_ORDER}</LightText>
-                                </View>
-                            </TouchableNativeFeedback>
+                            {/* {tradeableCommodities.includes(this.props.navigation.getParam("product_name")[1]) ? (
+                                <TouchableNativeFeedback onPress={() => this.onCreateOrder()}>
+                                    <View style={[styles.createOrderButton]}>
+                                        <Image
+                                            style={styles.bottomButtonImage}
+                                            source={require("../../assets/images/icons/ic-place-order.png")}
+                                        />
+                                        <LightText style={styles.buttonText}>{Strings.PRICES_PLACE_ORDER}</LightText>
+                                    </View>
+                                </TouchableNativeFeedback>
+                            ) : null} */}
                         </View>
                     </View>
-                ) : null}
+                )}
             </View>
         );
     }

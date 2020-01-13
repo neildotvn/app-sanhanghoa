@@ -10,6 +10,7 @@ import CreateAlarmScreen from "../screens/trading/CreateAlarmScreen";
 import OrderDetailScreen from "../screens/trading/OrderDetailScreen";
 import ContactScreen from "../screens/settings/ContactScreen";
 import AlarmListScreen from "../screens/trading/AlarmListScreen";
+import NewsArticleScreen from '../screens/news/NewsArticleScreen';
 
 const authNavigator = createStackNavigator(
     {
@@ -21,7 +22,8 @@ const authNavigator = createStackNavigator(
         PricesDetail: MarketPricesScreen,
         CreateOrder: CreateOrderScreen,
         CreateAlarm: CreateAlarmScreen,
-        OrderDetail: OrderDetailScreen
+        OrderDetail: OrderDetailScreen,
+        NewsArticle: NewsArticleScreen
     },
     {
         initialRouteName: "MainTab",

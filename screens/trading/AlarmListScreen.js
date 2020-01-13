@@ -5,6 +5,8 @@ import Strings from "../../constants/Strings";
 import { connect } from "react-redux";
 import AlarmInfo from "../../components/trading/AlarmInfo";
 import ClosedOrder from "../../components/trading/ClosedOrder";
+import Loading from "../../components/common/Loading";
+import NoData from "../../components/common/NoData";
 import YesNoPopup from "../../components//common/YesNoPopup";
 import Colors from "../../constants/Colors";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -76,12 +78,9 @@ class AlarmListScreen extends React.Component {
             />
         ));
 
-        console.log(this.props.alarmStore.alarms);
-
-        return (
-            <View style={styles.container}>
-                <Spinner visible={this.props.alarmStore.fetch_loading || this.props.alarmStore.delete_loading} />
-                <TopBar {...this.topBarConfig} />
+        const main = (
+            alarms.length === 0 ? <NoData text="Bạn chưa cài đặt tin báo!{{br}}Vui lòng cài đặt trong chi tiết mặt hàng!" /> :
+            <React.Fragment>
                 <YesNoPopup
                     config={{
                         animationType: "fade",
@@ -95,6 +94,14 @@ class AlarmListScreen extends React.Component {
                 <ScrollView style={styles.scrollView}>
                     <View styles={styles.openOrderContainer}>{alarms}</View>
                 </ScrollView>
+            </React.Fragment>
+        );
+
+        return (
+            <View style={styles.container}>
+                <TopBar {...this.topBarConfig} />
+                <Spinner visible={this.props.alarmStore.delete_loading} />
+                {this.props.alarmStore.fetch_loading ? <Loading /> : main}
             </View>
         );
     }

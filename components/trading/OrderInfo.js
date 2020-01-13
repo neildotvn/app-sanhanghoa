@@ -20,7 +20,7 @@ export default function(props) {
         value = "Đợi khớp";
         valueStyle = [styles.textValue];
     } else {
-        value = props.order.value.toFixed(2);
+        value = props.order.value; //.toFixed(2);
     }
     if (isBuy) {
         valueStyle.push(styles.buyText);

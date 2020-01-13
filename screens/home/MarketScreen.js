@@ -20,7 +20,7 @@ const tabs = [
     [
         [commodityNames.DAU_TUONG, "us_soybeans"],
         // commodityNames.KHO_DAU_TUONG,
-        // commodityNames.DAU_DAU_TUONG,
+        [commodityNames.DAU_DAU_TUONG, "us_soybean_oil"],
         // commodityNames.LUA_MI,
         [commodityNames.NGO, "us_corn"]
     ],
@@ -43,11 +43,33 @@ const tabs = [
 
 class MarketScreen extends React.Component {
     state = {
+        tabButtons: [
+            // {
+            //     title: Strings.TAB_FAVORITE,
+            //     isActive: true
+            // },
+            {
+                title: Strings.TAB_FUEL,
+                isActive: true
+            },
+            {
+                title: Strings.TAB_AGRICULTURE,
+                isActive: false
+            },
+            {
+                title: Strings.TAB_METAL,
+                isActive: false
+            },
+            {
+                title: Strings.TAB_ENERGY,
+                isActive: false
+            }
+        ],
         activePosition: 0
     };
 
     async componentDidMount() {
-        await registerForPushNotificationsAsync();
+        // await registerForPushNotificationsAsync();
         this.timer = setInterval(() => {
             this.props.fetchPrices();
         }, 2000);
@@ -60,7 +82,12 @@ class MarketScreen extends React.Component {
     onOpenAlarms = () => this.props.navigation.push("AlarmList");
 
     onTabChanged = position => {
-        this.setState({ activePosition: position });
+        const cState = { ...this.state };
+        for (let i = 0; i < cState.tabButtons.length; ++i) {
+            cState.tabButtons[i].isActive = i === position;
+        }
+        cState.activePosition = position;
+        this.setState(cState);
     };
 
     onOpenProductDetails = name => {
@@ -83,7 +110,7 @@ class MarketScreen extends React.Component {
             <SafeAreaView>
                 <View style={styles.container}>
                     <TopBar {...this.topBarConfig} />
-                    <TopTabBar onTabChanged={this.onTabChanged} />
+                    <TopTabBar onTabChanged={this.onTabChanged} tabButtons={this.state.tabButtons} />
                     {activeTab}
                 </View>
             </SafeAreaView>

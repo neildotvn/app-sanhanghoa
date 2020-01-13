@@ -7,7 +7,6 @@ import { Provider } from "react-redux";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { Ionicons } from "@expo/vector-icons";
-
 import authReducer from "./store/reducers/AuthReducer";
 
 import AppNavigator from "./navigation/AppNavigator";
