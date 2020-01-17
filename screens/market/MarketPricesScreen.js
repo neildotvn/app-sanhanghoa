@@ -31,7 +31,8 @@ class MarketPricesScreen extends React.Component {
     };
 
     render() {
-        const data = this.props.pricesStore.prices[this.props.navigation.getParam("product_name")[1]];
+        const productName = this.props.navigation.getParam("product_name")[1];
+        const data = this.props.pricesStore.prices[productName];
         let iceRows;
         try {
             iceRows = data.ice.map((row, index) => {
@@ -42,6 +43,9 @@ class MarketPricesScreen extends React.Component {
 
                 if (!temp[2].toString().includes("+") && !temp[2].toString().includes("-")) {
                     temp[2] = row[7] ? `+${temp[2]}` : `-${temp[2]}`;
+                }
+                if (productName === "cotton") {
+                    console.log(row[7])
                 }
                 return (
                     <Row
@@ -67,6 +71,9 @@ class MarketPricesScreen extends React.Component {
                 temp[6] = orderCount[2] ? `${temp[6]}(${orderCount[2]})` : `${temp[6]}(0)`;
                 if (!temp[2].toString().includes("+") && !temp[2].toString().includes("-")) {
                     temp[2] = row[7] ? `+${temp[2]}` : `-${temp[2]}`;
+                }
+                if (productName === "cotton") {
+                    console.log(row[7])
                 }
                 return (
                     <Row

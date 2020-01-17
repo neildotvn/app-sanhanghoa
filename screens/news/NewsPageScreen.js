@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Platform, Image, View } from "react-native";
+import { StyleSheet, Platform, Image, View, WebView } from "react-native";
 import { MediumText, RegularText } from "../../components/common/StyledText";
 import { FlatList, TouchableNativeFeedback } from "react-native-gesture-handler";
 import NavigationService from "../../navigation/NavigationService";

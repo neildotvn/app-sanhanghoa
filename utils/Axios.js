@@ -3,7 +3,7 @@ import { AsyncStorage } from "react-native";
 import * as storageKeys from "../store/storage/StorageKeys";
 
 const instance = axios.create({
-    baseURL: "http://178.128.121.141:3000/api/v1/", //192.168.1.3
+    baseURL: "https://server.pharmacistdeveloper.com/api/v1/", //192.168.1.3
     timeout: 5000
 });
 

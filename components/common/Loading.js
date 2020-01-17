@@ -19,7 +19,7 @@ export default function(props) {
               </MediumText>
           ];
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, props.style]}>
             <ActivityIndicator style={styles.spinner} size="large" color={Colors.midBlue} />
             {textViews}
         </View>
