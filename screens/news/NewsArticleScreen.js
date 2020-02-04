@@ -15,23 +15,26 @@ class NewsArticleScreen extends React.Component {
 
     state = {
         backButtonEnabled: true,
-        loading: true
+        loading: true,
+        loadingCount: 0
     };
 
     componentDidMount() {
         // BackHandler.addEventListener("hardwareBackPress", this.backHandler);
         this._mounted = true;
         setTimeout(() => {
-            this.setState({loading: false})
+            this.setState({ loading: false });
         }, 2000);
+        console.log("componentDidMount");
     }
 
     componentDidUpdate() {
         if (!this.state.loading) {
             setTimeout(() => {
-                if (this._mounted) this.setState({loading: false})
+                if (this._mounted) this.setState({ loading: false });
             }, 2000);
         }
+        console.log("componentDidUpdate");
     }
 
     componentWillUnmount() {
@@ -62,12 +65,15 @@ class NewsArticleScreen extends React.Component {
     };
 
     onShouldStartLoadWithRequest = navigator => {
-        console.log(navigator.url.indexOf(this.props.navigation.getParam("uri")))
+        console.log(navigator.url.indexOf(this.props.navigation.getParam("uri")));
         if (navigator.url.indexOf(this.props.navigation.getParam("uri")) !== -1) {
-            this.setState({
-                loading: true
-            })
-            return true;
+            if (this.state.loadingCount !== 0) {
+                this.setState({
+                    loading: true,
+                    loadingCount: this.state.loadingCount + 1
+                });
+                return true;
+            } else return false;
         } else {
             this.WEBVIEW_REF.current.stopLoading(); //Some reference to your WebView to make it stop loading that URL
             return false;
@@ -131,7 +137,7 @@ const styles = StyleSheet.create({
         position: "relative"
     },
     loading: {
-        position: 'absolute',
+        position: "absolute",
         top: 0,
         left: 0,
         right: 0,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, StyleSheet, StatusBar, View, SafeAreaView } from "react-native";
+import { Platform, StyleSheet, ScrollView, View, SafeAreaView } from "react-native";
 import MarketTab from "../../components/market/MarketTab";
 import TopBar from "../../components/TopBar";
 import TopTabBar from "../../components/TopTabBar";
@@ -7,6 +7,11 @@ import Strings, { commodityNames } from "../../constants/Strings";
 import { connect } from "react-redux";
 import getAllPrices from "../../store/actions/Prices";
 import registerForPushNotificationsAsync from "../../notifications/NotificationsUtils";
+import { MediumText } from "../../components/common/StyledText";
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 
 const tabs = [
     [
@@ -110,7 +115,11 @@ class MarketScreen extends React.Component {
             <SafeAreaView>
                 <View style={styles.container}>
                     <TopBar {...this.topBarConfig} />
-                    <TopTabBar onTabChanged={this.onTabChanged} tabButtons={this.state.tabButtons} />
+                    <TopTabBar
+                        onTabChanged={this.onTabChanged}
+                        tabButtons={this.state.tabButtons}
+                        buttonStyle={{ width: wp(25) }}
+                    />
                     {activeTab}
                 </View>
             </SafeAreaView>
@@ -124,7 +133,7 @@ MarketScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        // flex: 1
         // marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     }
 });

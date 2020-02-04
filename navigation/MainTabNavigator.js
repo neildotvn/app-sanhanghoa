@@ -107,8 +107,8 @@ SettingsStack.navigationOptions = {
 SettingsStack.path = "";
 
 const tabNavigator = createBottomTabNavigator({
-    NewsStack,
     MarketStack,
+    NewsStack,
     // TradingStack,
     NotificationStack,
     SettingsStack

@@ -61,10 +61,18 @@ class ContactScreen extends React.Component {
                 <TopBar {...this.topBarConfig} onLeftButtonPress={this.onBackPressed.bind(this)} />
                 <View style={styles.container}>
                     <BoldText style={{ marginBottom: 8 }}>Công Ty TNHH Thương Mại TVT Gia Lai</BoldText>
+                    <LightText style={{ marginBottom: 4 }}>
+                        Sàn giao dịch hàng hóa TVT Chúng tôi là thành viên kinh doanh của Sở giao dịch hàng hóa Việt
+                        Nam, với tiêu chí "Không để khách hàng đắn đo về uy tín - chất lượng, mà đó là trách nhiệm của
+                        mỗi mắt xích TVT".
+                    </LightText>
+                    <LightText style={{ marginBottom: 4 }}>
+                        Chúng tôi tự tin mình đang là một trong những công ty hàng đầu của Việt Nam trong lĩnh vực giao
+                        dịch hàng hóa phái sinh.
+                    </LightText>
+                    <LightText style={{ marginBottom: 4 }}>- Trụ sở chính: 12/01 Trần Hưng Đạo, Pleiku, Gia Lai </LightText>
                     <LightText style={{ marginBottom: 16 }}>
-                        Là thành viên kinh doanh của Sở Giao Dịch Hàng Hoá Việt Nam, với tiêu chí “Không để khách hàng
-                        đắn đo về uy tín – chất lượng, mà đó là trách nhiệm của mỗi mắt xích TVT” đang là một trong
-                        những công ty hàng đầu của Việt Nam trong lĩnh vực giao dịch hàng hoá phái sinh.
+                        - Chi nhánh Đà Nẵng: Tầng 1 tòa nhà Đường Việt, số 30 Nguyễn Hữu Thọ, Hải Châu, Đà Nẵng
                     </LightText>
                     <BoldText>Hotline</BoldText>
                     <View style={styles.infoContainer}>
@@ -98,7 +106,7 @@ class ContactScreen extends React.Component {
                     <View style={styles.infoContainer}>
                         <Image style={styles.image} source={imgYoutube} />
                         <TouchableNativeFeedback onPress={() => this.youtube()}>
-                            <RegularText style={styles.text}>TVT Gia Lai</RegularText>
+                            <RegularText style={styles.text}>Hướng dẫn giao dịch từ TVT</RegularText>
                         </TouchableNativeFeedback>
                     </View>
                 </View>
@@ -117,7 +125,7 @@ const styles = StyleSheet.create({
         flexWrap: "wrap",
         alignItems: "center",
         height: 40,
-        marginBottom: 12
+        marginBottom: 8
     },
     image: {
         height: 30,

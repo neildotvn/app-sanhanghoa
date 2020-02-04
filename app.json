@@ -31,7 +31,12 @@
       "backgroundColor": "#0f455E"
     },
     "android": {
-      "package": "com.sanhanghoa24h.trading"
+      "package": "com.sanhanghoa24h.trading",
+      "permissions": [
+        "INTERNET",
+        "NOTIFICATIONS"
+      ],
+      "versionCode": 2
     }
   },
   "name": "app"

@@ -10,11 +10,16 @@ import NoData from "../../components/common/NoData";
 import YesNoPopup from "../../components//common/YesNoPopup";
 import Colors from "../../constants/Colors";
 import Spinner from "react-native-loading-spinner-overlay";
-import Toast from "react-native-simple-toast";
+import Toast from "react-native-easy-toast";
 import * as actions from "../../store/actions/Alarm";
 import { TouchableNativeFeedback } from "react-native-gesture-handler";
 
 class AlarmListScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.toast = React.createRef();
+    }
+    
     state = {
         modalVisible: false,
         selectedAlarmUid: ""
@@ -26,10 +31,10 @@ class AlarmListScreen extends React.Component {
 
     componentDidUpdate() {
         if (this.props.alarmStore.delete_success) {
-            Toast.show("Xoá tin báo thành công");
+            this.toast.current.show("Xoá tin báo thành công");
         }
         if (this.props.alarmStore.delete_error) {
-            Toast.show("Xoá tin báo thất bại");
+            this.toast.current.show("Xoá tin báo thất bại");
         }
     }
 
@@ -102,6 +107,7 @@ class AlarmListScreen extends React.Component {
                 <TopBar {...this.topBarConfig} />
                 <Spinner visible={this.props.alarmStore.delete_loading} />
                 {this.props.alarmStore.fetch_loading ? <Loading /> : main}
+                <Toast ref={this.toast} />
             </View>
         );
     }

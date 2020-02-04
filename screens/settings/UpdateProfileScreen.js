@@ -4,13 +4,18 @@ import TopBar from "../../components/TopBar";
 import Input from "../../components/common/Input";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/Auth";
-import Toast from "react-native-simple-toast";
+import Toast from "react-native-easy-toast";
 import Spinner from "react-native-loading-spinner-overlay";
 import Strings from "../../constants/Strings";
 import Colors from "../../constants/Colors";
 import RadioGroup from "react-native-radio-buttons-group";
 
 class UpdateProfileScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.toast = React.createRef();
+    }
+
     state = {
         inputs: {
             full_name: {
@@ -31,12 +36,6 @@ class UpdateProfileScreen extends React.Component {
                     placeholder: Strings.SETTINGS_ADDRESS
                 }
             }
-            // date_of_birth: {
-            //     config: {
-            //         value: "",
-            //         placeholder: Strings.SETTINGS_DATE_OF_BIRTH
-            //     }
-            // }
         },
         genderOptions: [
             {
@@ -56,10 +55,10 @@ class UpdateProfileScreen extends React.Component {
 
     componentDidUpdate() {
         if (this.props.auth.updateSuccess) {
-            Toast.show(Strings.SETTINGS_UPDATE_SUCCESS);
+            this.toast.current.show(Strings.SETTINGS_UPDATE_SUCCESS);
             this.props.navigation.pop();
         } else if (this.props.auth.updateError) {
-            Toast.show(Strings.SETTINGS_UPDATE_FAIL);
+            this.toast.current.show(Strings.SETTINGS_UPDATE_FAIL);
         }
     }
 
@@ -148,6 +147,7 @@ class UpdateProfileScreen extends React.Component {
                     <Button onPress={() => this.onUpdateProfile()} title={Strings.SETTINGS_FINISH_UPDATE} />
                 </View>
                 <Spinner visible={this.props.auth.loading} />
+                <Toast ref={this.toast} />
             </View>
         );
     }

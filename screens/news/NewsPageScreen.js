@@ -6,6 +6,10 @@ import NavigationService from "../../navigation/NavigationService";
 import Loading from "../../components/common/Loading";
 import Colors from "../../constants/Colors";
 import axios from "../../utils/AxiosS";
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp
+} from "react-native-responsive-screen";
 
 function Article(props) {
     const article = props.data.item;
@@ -61,15 +65,14 @@ export default class NewsPageScreen extends React.Component {
 
     render() {
         return this.state.loading ? (
-            <Loading text="Đang tải bài viết" />
+            <Loading style={styles.loading} text="Đang tải bài viết" />
         ) : (
-            <View style={styles.container}>
-                <FlatList
-                    data={this.state.data}
-                    renderItem={data => <Article data={data} onArticlePressed={this.onArticlePressed} />}
-                    keyExtractor={item => item.id.toString()}
-                />
-            </View>
+            <FlatList
+                style={styles.container}
+                data={this.state.data}
+                renderItem={data => <Article data={data} onArticlePressed={this.onArticlePressed} />}
+                keyExtractor={item => item.id.toString()}
+            />
         );
     }
 }
@@ -78,8 +81,10 @@ const styles = StyleSheet.create({
     container: {
         paddingStart: 12,
         paddingEnd: 12,
-        paddingTop: 20,
-        paddingBottom: 12
+        paddingTop: 12,
+        paddingBottom: 12,
+        marginTop: 12,
+        marginBottom: 36
     },
     articleContainer: {
         marginBottom: 12
@@ -99,5 +104,14 @@ const styles = StyleSheet.create({
     excerpt: {
         fontSize: 12,
         color: Colors.black3
+    },
+    loading: {
+        marginTop: hp(35)
+        // position: "absolute",
+        // top: 0,
+        // bottom: 0,
+        // left: 0,
+        // right: 0
+        // flex: 1
     }
 });

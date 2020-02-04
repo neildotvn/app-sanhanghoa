@@ -4,7 +4,7 @@ import TopBar from "../../components/TopBar";
 import PersonalInfo from "../../components/settings/PersonalInfo";
 import Strings from "../../constants/Strings";
 import imAvatar from "../../assets/images/images/im-default-avatar.png";
-import Toast from "react-native-simple-toast";
+import Toast from "react-native-easy-toast";
 import icArrow from "../../assets/images/icons/ic-arrow-forward.png";
 import { BoldText, RegularText } from "../../components/common/StyledText";
 import * as StorageKeys from "../../store/storage/StorageKeys";
@@ -13,10 +13,14 @@ import { TouchableNativeFeedback } from "react-native-gesture-handler";
 import Colors from "../../constants/Colors";
 
 class NotificationScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.toast = React.createRef();
+    }
 
     openContactScreen = () => {
-        this.props.navigation.navigate("Contact")
-    }
+        this.props.navigation.navigate("Contact");
+    };
 
     openEditProfile = () => {
         this.props.navigation.navigate("EditProfile");
@@ -29,7 +33,7 @@ class NotificationScreen extends React.Component {
             })
             .catch(err => {
                 console.log(err);
-                Toast.show(Strings.AUTH_LOGOUT_FAIL);
+                this.toast.current.show(Strings.AUTH_LOGOUT_FAIL);
             });
     };
 
@@ -73,8 +77,14 @@ class NotificationScreen extends React.Component {
                 </View>
 
                 <View style={styles.logoutContainer}>
-                    <Button style={{ marginTop: 20 }} onPress={() => this.logout()} title="Đăng xuất" color={Colors.decrease} />
+                    <Button
+                        style={{ marginTop: 20 }}
+                        onPress={() => this.logout()}
+                        title="Đăng xuất"
+                        color={Colors.decrease}
+                    />
                 </View>
+                <Toast ref={this.toast} />
             </View>
         );
     }
@@ -121,10 +131,7 @@ const mapDispatchToProps = dispatch => {
     return {};
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(NotificationScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(NotificationScreen);
 
 const styles = StyleSheet.create({
     container: {

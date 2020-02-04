@@ -10,12 +10,9 @@ import {
     TouchableWithoutFeedback,
     ImageBackground
 } from "react-native";
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp
-} from "react-native-responsive-screen";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { connect } from "react-redux";
-import Toast from "react-native-simple-toast";
+import Toast from "react-native-easy-toast";
 import Input from "../../components/common/Input";
 import { LinearGradient } from "expo-linear-gradient";
 import backgroundSource from "../../assets/images/auth-background.jpg";
@@ -25,6 +22,11 @@ import * as actions from "../../store/actions/Auth";
 import Strings from "../../constants/Strings";
 
 class AuthScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.toast = React.createRef();
+    }
+
     state = {
         isSignup: false,
         inputs: {
@@ -62,12 +64,12 @@ class AuthScreen extends Component {
                     message = Strings.ERROR_DEFAULT_TRY_AGAIN;
                     break;
             }
-            Toast.show(message);
+            this.toast.current.show(message);
         }
 
         const that = this;
         if (props.auth.user.token) {
-            Toast.show(Strings.AUTH_SUCCESS);
+            this.toast.current.show(Strings.AUTH_SUCCESS);
             setTimeout(function() {
                 that.onAuthSuccess();
             }, 0);
@@ -95,9 +97,7 @@ class AuthScreen extends Component {
             phone: this.state.inputs.phone.text,
             password: this.state.inputs.password.text
         };
-        this.state.isSignup
-            ? this.props.register(payload)
-            : this.props.login(payload);
+        this.state.isSignup ? this.props.register(payload) : this.props.login(payload);
     }
 
     render() {
@@ -110,34 +110,20 @@ class AuthScreen extends Component {
                     config={input.config}
                     key={key}
                     title={key}
-                    onChangeText={(text, title) =>
-                        this.onTextChangedHandler(text, title)
-                    }
+                    onChangeText={(text, title) => this.onTextChangedHandler(text, title)}
                 />
             );
         }
 
         return (
-            <ImageBackground
-                source={backgroundSource}
-                style={styles.container}
-                blurRadius={2}
-            >
+            <ImageBackground source={backgroundSource} style={styles.container} blurRadius={2}>
                 <View style={styles.secondaryContainer}>
                     {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-                    {/* <Toast ref={c => (this.toastify = c)} /> */}
                     <View style={[styles.logoAndInformation]}>
                         <View style={{ flex: 1 }}>
                             <View style={[styles.logoContainer]}>
-                                <Image
-                                    style={styles.logo}
-                                    source={logoSource}
-                                />
-                                <Text style={styles.title}>
-                                    {this.state.isSignup
-                                        ? "Đăng ký"
-                                        : "Đăng nhập"}
-                                </Text>
+                                <Image style={styles.logo} source={logoSource} />
+                                <Text style={styles.title}>{this.state.isSignup ? "Đăng ký" : "Đăng nhập"}</Text>
                             </View>
                         </View>
                         <View style={styles.infoContainer}>
@@ -149,18 +135,13 @@ class AuthScreen extends Component {
                                 onPress={() => this.onAuth()}
                             >
                                 <LinearGradient
-                                    colors={[
-                                        "#0F455E",
-                                        "rgba(73,180,203,0.46)"
-                                    ]}
+                                    colors={["#0F455E", "rgba(73,180,203,0.46)"]}
                                     start={[0, 0.5]}
                                     end={[1, 0.5]}
                                     style={styles.mainButtonBackground}
                                 >
                                     <Text style={styles.mainButtonText}>
-                                        {this.state.isSignup
-                                            ? "Đăng ký"
-                                            : "Đăng nhập"}
+                                        {this.state.isSignup ? "Đăng ký" : "Đăng nhập"}
                                     </Text>
                                 </LinearGradient>
                             </TouchableOpacity>
@@ -174,40 +155,29 @@ class AuthScreen extends Component {
                         }}
                     >
                         <View style={styles.buttonsContainer}>
-                            <TouchableWithoutFeedback
-                                onPress={() => this.setIsSignUp(false)}
-                            >
+                            <TouchableWithoutFeedback onPress={() => this.setIsSignUp(false)}>
                                 <View
                                     style={[
                                         styles.bottomButton,
-                                        this.state.isSignup
-                                            ? styles.bottomButtonInactive
-                                            : styles.bottomButtonActive
+                                        this.state.isSignup ? styles.bottomButtonInactive : styles.bottomButtonActive
                                     ]}
                                 >
-                                    <Text style={styles.bottomButtonText}>
-                                        Đăng nhập
-                                    </Text>
+                                    <Text style={styles.bottomButtonText}>Đăng nhập</Text>
                                 </View>
                             </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback
-                                onPress={() => this.setIsSignUp(true)}
-                            >
+                            <TouchableWithoutFeedback onPress={() => this.setIsSignUp(true)}>
                                 <View
                                     style={[
                                         styles.bottomButton,
-                                        this.state.isSignup
-                                            ? styles.bottomButtonActive
-                                            : styles.bottomButtonInactive
+                                        this.state.isSignup ? styles.bottomButtonActive : styles.bottomButtonInactive
                                     ]}
                                 >
-                                    <Text style={styles.bottomButtonText}>
-                                        Đăng ký
-                                    </Text>
+                                    <Text style={styles.bottomButtonText}>Đăng ký</Text>
                                 </View>
                             </TouchableWithoutFeedback>
                         </View>
                     </View>
+                    <Toast ref={this.toast} />
                 </View>
             </ImageBackground>
         );
@@ -324,7 +294,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AuthScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthScreen);

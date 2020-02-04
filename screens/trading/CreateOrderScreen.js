@@ -10,12 +10,17 @@ import Colors from "../../constants/Colors";
 import MultipleSelect from "../../components/common/MultipleSelect";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { createOrder } from "../../store/actions/Order";
-import Toast from "react-native-simple-toast";
+import Toast from "react-native-easy-toast";
 import Spinner from "react-native-loading-spinner-overlay";
 import { orderProductMap } from "../../constants/CommodityMap";
 import _ from "lodash";
 
 class CreateOrderScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.toast = React.createRef();
+    }
+
     state = {
         orderTypes: [
             {
@@ -81,11 +86,11 @@ class CreateOrderScreen extends React.Component {
 
     componentDidUpdate() {
         if (this.props.orderStore.create_success) {
-            Toast.show(Strings.ORDER_CREATE_SUCESS);
+            this.toast.current.show(Strings.ORDER_CREATE_SUCESS);
             this.props.navigation.pop();
         }
         if (this.props.orderStore.error) {
-            Toast.show(Strings.ORDER_CREATE_FAIL);
+            this.toast.current.show(Strings.ORDER_CREATE_FAIL);
         }
     }
 
@@ -171,7 +176,7 @@ class CreateOrderScreen extends React.Component {
         };
         const checkResult = this.onCheckNumberInput(true, isBuy, order);
         if (!checkResult.result) {
-            Toast.show(checkResult.message);
+            this.toast.current.show(checkResult.message);
             return;
         }
         this.props.createOrder(order);
@@ -194,7 +199,7 @@ class CreateOrderScreen extends React.Component {
         };
         const checkResult = this.onCheckNumberInput(false, false, order);
         if (!checkResult.result) {
-            Toast.show(checkResult.message);
+            this.toast.current.show(checkResult.message);
             return;
         }
         this.props.createOrder(order);
@@ -493,6 +498,7 @@ class CreateOrderScreen extends React.Component {
                     ) : null}
                 </View>
                 {/* ) : null} */}
+                <Toast ref={this.toast} />
             </View>
         );
     }

@@ -9,6 +9,7 @@ export default function(props) {
             style={props.style}
             onChangeText={text => props.onChangeText(text, props.title)}
             {...config}
+            placeholderTextColor="#bbb"
         />
     );
 }

@@ -8,10 +8,15 @@ import { RegularText, MediumText } from "../../components/common/StyledText";
 import MultipleSelect from "../../components/common/MultipleSelect";
 import Colors from "../../constants/Colors";
 import { TextInput } from "react-native-gesture-handler";
-import Toast from "react-native-simple-toast";
+import Toast from "react-native-easy-toast";
 import * as actions from "../../store/actions/Alarm";
 
 class CreateAlarmScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.toast = React.createRef();
+    }
+
     state = {
         termOptions: [],
         data: {
@@ -52,11 +57,11 @@ class CreateAlarmScreen extends React.Component {
 
     componentDidUpdate() {
         if (this.props.alarmStore.create_success) {
-            Toast.show("Tạo tin báo thành công");
+            this.toast.current.show("Tạo tin báo thành công");
             this.props.navigation.pop();
         }
         if (this.props.alarmStore.create_error) {
-            Toast.show("Tạo tin báo thất bại");
+            this.toast.current.show("Tạo tin báo thất bại");
         }
     }
 
@@ -161,6 +166,7 @@ class CreateAlarmScreen extends React.Component {
                         </View>
                     </TouchableNativeFeedback>
                 </View>
+                <Toast ref={this.toast} />
             </View>
         );
     }

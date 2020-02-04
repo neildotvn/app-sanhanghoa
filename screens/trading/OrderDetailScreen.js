@@ -10,17 +10,22 @@ import {
     getProductNameFromCode
 } from "../../constants/CommodityMap";
 import { closeOrder, fetchAllActiveOrders } from "../../store/actions/Order";
-import Toast from "react-native-simple-toast";
+import Toast from "react-native-easy-toast";
 import Spinner from "react-native-loading-spinner-overlay";
 
 class OrderDetailScreen extends React.Component {
+    constructor(props) {
+        super(props);
+        this.toast = React.createRef();
+    }
+    
     componentDidUpdate() {
         if (this.props.orderStore.close_success) {
-            Toast.show(Strings.ORDER_CLOSE_SUCCESS);
+            this.toast.current.show(Strings.ORDER_CLOSE_SUCCESS);
             this.props.navigation.pop();
         }
         if (this.props.orderStore.error) {
-            Toast.show(Strings.ORDER_CLOSE_FAIL);
+            this.toast.current.show(Strings.ORDER_CLOSE_FAIL);
         }
     }
 
@@ -67,6 +72,7 @@ class OrderDetailScreen extends React.Component {
                         title={Strings.ORDER_CLOSE}
                     />
                 </View>
+                <Toast ref={this.toast} />
             </View>
         );
     }

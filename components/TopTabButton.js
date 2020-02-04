@@ -16,7 +16,8 @@ export default function(props) {
         <View
             style={[
                 styles.container,
-                props.isActive ? styles.active : styles.inActive
+                props.isActive ? styles.active : styles.inActive,
+                props.buttonStyle
             ]}
         >
             <TouchableWithoutFeedback
@@ -41,11 +42,10 @@ export default function(props) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems: "stretch",
         justifyContent: "center",
         borderBottomWidth: 2,
-        height: 27
+        height: 27,
     },
     inActive: {
         borderBottomColor: "white"
