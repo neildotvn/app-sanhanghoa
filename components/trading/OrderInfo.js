@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, View, TouchableNativeFeedback } from "react-native";
+import { StyleSheet, View } from "react-native";
+import Touchable from '../common/Touchable';
 import { RegularText, MediumText, BoldText } from "../common/StyledText";
 import Colors from "../../constants/Colors";
 import { orderTypes } from "../../constants/Strings";
@@ -29,7 +30,7 @@ export default function(props) {
     }
 
     return (
-        <TouchableNativeFeedback onPress={props.onPress ? () => props.onPress(props.order) : null}>
+        <Touchable onPress={props.onPress ? () => props.onPress(props.order) : null}>
             <View style={styles.container}>
                 <View style={styles.titleContainer}>
                     <BoldText style={styles.title}>{props.order.productName}</BoldText>
@@ -53,7 +54,7 @@ export default function(props) {
                     </View>
                 </View>
             </View>
-        </TouchableNativeFeedback>
+        </Touchable>
     );
 }
 

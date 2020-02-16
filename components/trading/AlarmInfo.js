@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, View, TouchableNativeFeedback, Switch } from "react-native";
+import { StyleSheet, View, Switch } from "react-native";
+import Touchable from "../common/Touchable";
 import { RegularText, MediumText, BoldText } from "../common/StyledText";
 import Colors from "../../constants/Colors";
 import { parseTime } from "../../utils/TimeUtils";
@@ -21,7 +22,7 @@ export default class AlarmInfo extends React.Component {
 
     render() {
         return (
-            <TouchableNativeFeedback onLongPress={() => this.props.onAlarmLongPress(this.props.alarm.alarm_uid)}>
+            <Touchable onLongPress={() => this.props.onAlarmLongPress(this.props.alarm.alarm_uid)}>
                 <View style={styles.container}>
                     <View style={styles.secondaryContainer}>
                         <View styles={styles.leftContainer}>
@@ -49,7 +50,7 @@ export default class AlarmInfo extends React.Component {
                         <RegularText style={styles.description}>{this.props.alarm.description}</RegularText>
                     ) : null}
                 </View>
-            </TouchableNativeFeedback>
+            </Touchable>
         );
     }
 }

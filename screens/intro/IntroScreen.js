@@ -1,5 +1,6 @@
 import React from "react";
-import { View, StyleSheet, TouchableNativeFeedback } from "react-native";
+import { View, StyleSheet } from "react-native";
+import Touchable from '../../components/common/Touchable';
 import imgNormalTop from "../../assets/images/images/intro-normal-top.png";
 import imgNormalBottom from "../../assets/images/images/intro-normal-bottom.png";
 import imgMainNavigationBot from "../../assets/images/images/intro-main-navigation-bottom.png";
@@ -41,11 +42,11 @@ export default class IntroScreen extends React.Component {
         return (
             <View style={styles.container}>
                 {intro}
-                <TouchableNativeFeedback onPress={() => this.next()}>
+                <Touchable onPress={() => this.next()}>
                     <View style={styles.btNext}>
                         <RegularText style={styles.text}>Tiếp theo</RegularText>
                     </View>
-                </TouchableNativeFeedback>
+                </Touchable>
             </View>
         );
     }

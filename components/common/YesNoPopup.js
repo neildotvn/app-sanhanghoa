@@ -1,5 +1,6 @@
 import React from "react";
-import { Modal, View, TouchableNativeFeedback, StyleSheet } from "react-native";
+import { Modal, View, StyleSheet } from "react-native";
+import Touchable from '../common/Touchable'
 import { MediumText } from "./StyledText";
 import Colors from "../../constants/Colors";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -7,27 +8,27 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-nat
 export default function(props) {
     return (
         <Modal {...props.config}>
-            <TouchableNativeFeedback onPress={() => props.onPopupCancel()}>
+            <Touchable onPress={() => props.onPopupCancel()}>
                 <View style={styles.container}>
                     <View style={styles.modal}>
                         <View style={styles.description}>
                             <MediumText style={styles.descriptionText}>{props.description}</MediumText>
                         </View>
                         <View style={styles.buttonsContainer}>
-                            <TouchableNativeFeedback onPress={() => props.onPopupOk()}>
+                            <Touchable onPress={() => props.onPopupOk()}>
                                 <View style={styles.button}>
                                     <MediumText style={styles.okText}>Đồng ý</MediumText>
                                 </View>
-                            </TouchableNativeFeedback>
-                            <TouchableNativeFeedback onPress={() => props.onPopupCancel()}>
+                            </Touchable>
+                            <Touchable onPress={() => props.onPopupCancel()}>
                                 <View style={styles.button}>
                                     <MediumText style={styles.cancelText}>Huỷ</MediumText>
                                 </View>
-                            </TouchableNativeFeedback>
+                            </Touchable>
                         </View>
                     </View>
                 </View>
-            </TouchableNativeFeedback>
+            </Touchable>
         </Modal>
     );
 }

@@ -1,9 +1,6 @@
 import React from "react";
 import { Platform } from "react-native";
-import {
-    createStackNavigator,
-    createBottomTabNavigator
-} from "react-navigation";
+import { createStackNavigator, createBottomTabNavigator } from "react-navigation";
 
 import TabBarIcon, { iconTypes } from "../components/TabBarIcon";
 import MarketScreen from "../screens/home/MarketScreen";
@@ -14,6 +11,7 @@ import NewsScreen from "../screens/home/NewsScreen";
 import NotificationScreen from "../screens/home/NotificationScreen";
 import SettingsScreen from "../screens/home/SettingsScreen";
 import TabBarLabel from "../components/TabBarLabel";
+import NewsArticleScreen from "../screens/news/NewsArticleScreen";
 
 const config = Platform.select({
     web: { headerMode: "screen" },
@@ -28,12 +26,8 @@ const MarketStack = createStackNavigator(
 );
 
 MarketStack.navigationOptions = {
-    tabBarLabel: ({ focused }) => (
-        <TabBarLabel focused={focused} label={"Thị trường"} />
-    ),
-    tabBarIcon: ({ focused }) => (
-        <TabBarIcon focused={focused} type={iconTypes.TYPE_MARKET} />
-    )
+    tabBarLabel: ({ focused }) => <TabBarLabel focused={focused} label={"Thị trường"} />,
+    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} type={iconTypes.TYPE_MARKET} />
 };
 
 MarketStack.path = "";
@@ -46,12 +40,8 @@ const TradingStack = createStackNavigator(
 );
 
 TradingStack.navigationOptions = {
-    tabBarLabel: ({ focused }) => (
-        <TabBarLabel focused={focused} label={"Giao dịch"} />
-    ),
-    tabBarIcon: ({ focused }) => (
-        <TabBarIcon focused={focused} type={iconTypes.TYPE_TRADE} />
-    )
+    tabBarLabel: ({ focused }) => <TabBarLabel focused={focused} label={"Giao dịch"} />,
+    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} type={iconTypes.TYPE_TRADE} />
 };
 
 TradingStack.path = "";
@@ -64,12 +54,8 @@ const NewsStack = createStackNavigator(
 );
 
 NewsStack.navigationOptions = {
-    tabBarLabel: ({ focused }) => (
-        <TabBarLabel focused={focused} label={"Tin tức"} />
-    ),
-    tabBarIcon: ({ focused }) => (
-        <TabBarIcon focused={focused} type={iconTypes.TYPE_NEWS} />
-    )
+    tabBarLabel: ({ focused }) => <TabBarLabel focused={focused} label={"Tin tức"} />,
+    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} type={iconTypes.TYPE_NEWS} />
 };
 
 const NotificationStack = createStackNavigator(
@@ -80,12 +66,8 @@ const NotificationStack = createStackNavigator(
 );
 
 NotificationStack.navigationOptions = {
-    tabBarLabel: ({ focused }) => (
-        <TabBarLabel focused={focused} label={"Thông báo"} />
-    ),
-    tabBarIcon: ({ focused }) => (
-        <TabBarIcon focused={focused} type={iconTypes.TYPE_NOTI} />
-    )
+    tabBarLabel: ({ focused }) => <TabBarLabel focused={focused} label={"Thông báo"} />,
+    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} type={iconTypes.TYPE_NOTI} />
 };
 
 const SettingsStack = createStackNavigator(
@@ -96,12 +78,8 @@ const SettingsStack = createStackNavigator(
 );
 
 SettingsStack.navigationOptions = {
-    tabBarLabel: ({ focused }) => (
-        <TabBarLabel focused={focused} label={"Cá nhân"} />
-    ),
-    tabBarIcon: ({ focused }) => (
-        <TabBarIcon focused={focused} type={iconTypes.TYPE_SETTINGS} />
-    )
+    tabBarLabel: ({ focused }) => <TabBarLabel focused={focused} label={"Cá nhân"} />,
+    tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} type={iconTypes.TYPE_SETTINGS} />
 };
 
 SettingsStack.path = "";

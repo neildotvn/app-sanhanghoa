@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, TouchableNativeFeedback } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { RegularText, MediumText, BoldText } from "../common/StyledText";
 import { connect } from "react-redux";
 import Colors from "../../constants/Colors";

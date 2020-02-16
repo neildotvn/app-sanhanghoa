@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, StatusBar, StyleSheet, View, Image, Button, AsyncStorage } from "react-native";
+import { Platform, StatusBar, StyleSheet, View, Image, Button, AsyncStorage, SafeAreaView } from "react-native";
 import TopBar from "../../components/TopBar";
 import PersonalInfo from "../../components/settings/PersonalInfo";
 import Strings from "../../constants/Strings";
@@ -9,7 +9,7 @@ import icArrow from "../../assets/images/icons/ic-arrow-forward.png";
 import { BoldText, RegularText } from "../../components/common/StyledText";
 import * as StorageKeys from "../../store/storage/StorageKeys";
 import { connect } from "react-redux";
-import { TouchableNativeFeedback } from "react-native-gesture-handler";
+import Touchable from '../../components/common/Touchable';
 import Colors from "../../constants/Colors";
 
 class NotificationScreen extends React.Component {
@@ -39,13 +39,13 @@ class NotificationScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 {Platform.OS === "ios" && <StatusBar barStyle="default" />}
                 <TopBar title={Strings.HEADER_SETTINGS} />
                 <View style={styles.infoContainer}>
                     <View style={styles.avatarContainer}>
                         <Image style={styles.avatar} source={imAvatar} />
-                        <TouchableNativeFeedback onPress={() => this.openEditProfile()}>
+                        <Touchable onPress={() => this.openEditProfile()}>
                             <View style={styles.nameContainer}>
                                 <BoldText style={styles.name}>{this.props.user.full_name}</BoldText>
                                 <View style={styles.editContainer}>
@@ -53,7 +53,7 @@ class NotificationScreen extends React.Component {
                                     <Image style={styles.icArrow} source={icArrow} />
                                 </View>
                             </View>
-                        </TouchableNativeFeedback>
+                        </Touchable>
                     </View>
                     <View style={styles.detailsContainer}>
                         <PersonalInfo title={Strings.SETTINGS_PHONE} value={this.props.user.phone} />
@@ -85,7 +85,7 @@ class NotificationScreen extends React.Component {
                     />
                 </View>
                 <Toast ref={this.toast} />
-            </View>
+            </SafeAreaView>
         );
     }
 }

@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, View, Image, TouchableNativeFeedback, Linking, Platform } from "react-native";
+import { StyleSheet, View, Image, Linking, Platform, SafeAreaView } from "react-native";
+import Touchable from '../../components/common/Touchable';
 import TopBar from "../../components/TopBar";
 import Strings from "../../constants/Strings";
 import { BoldText, LightText, RegularText } from "../../components/common/StyledText";
@@ -27,7 +28,7 @@ class ContactScreen extends React.Component {
         } else {
             phoneNumber = "telprompt:${02696286111}";
         }
-        Linking.openURL(phoneNumber);
+        Linking.openURL(phoneNumber).catch(err => console.log(err));
     };
 
     zalo = () => {
@@ -57,7 +58,7 @@ class ContactScreen extends React.Component {
 
     render() {
         return (
-            <View>
+            <SafeAreaView>
                 <TopBar {...this.topBarConfig} onLeftButtonPress={this.onBackPressed.bind(this)} />
                 <View style={styles.container}>
                     <BoldText style={{ marginBottom: 8 }}>Công Ty TNHH Thương Mại TVT Gia Lai</BoldText>
@@ -77,47 +78,47 @@ class ContactScreen extends React.Component {
                     <BoldText>Hotline</BoldText>
                     <View style={styles.infoContainer}>
                         <Image style={styles.image} source={imgPhone} />
-                        <TouchableNativeFeedback onPress={() => this.call()}>
+                        <Touchable onPress={() => this.call()}>
                             <RegularText style={styles.text}>026 9628 6111</RegularText>
-                        </TouchableNativeFeedback>
+                        </Touchable>
                     </View>
                     <BoldText>Zalo</BoldText>
                     <View style={styles.infoContainer}>
                         <Image style={styles.image} source={imgZalo} />
-                        <TouchableNativeFeedback onPress={() => this.call()}>
+                        <Touchable onPress={() => this.call()}>
                             <RegularText style={styles.text}>090 654 3852</RegularText>
-                        </TouchableNativeFeedback>
+                        </Touchable>
                     </View>
                     <BoldText>Email</BoldText>
                     <View style={styles.infoContainer}>
                         <Image style={styles.image} source={imgEmail} />
-                        <TouchableNativeFeedback onPress={() => this.email()}>
+                        <Touchable onPress={() => this.email()}>
                             <RegularText style={styles.text}>congtytvtgialai@gmail.com</RegularText>
-                        </TouchableNativeFeedback>
+                        </Touchable>
                     </View>
                     <BoldText>Website</BoldText>
                     <View style={styles.infoContainer}>
                         <Image style={styles.image} source={imgWeb} />
-                        <TouchableNativeFeedback onPress={() => this.website()}>
+                        <Touchable onPress={() => this.website()}>
                             <RegularText style={styles.text}>sanhanghoa24h.com</RegularText>
-                        </TouchableNativeFeedback>
+                        </Touchable>
                     </View>
                     <BoldText>Youtube</BoldText>
                     <View style={styles.infoContainer}>
                         <Image style={styles.image} source={imgYoutube} />
-                        <TouchableNativeFeedback onPress={() => this.youtube()}>
+                        <Touchable onPress={() => this.youtube()}>
                             <RegularText style={styles.text}>Hướng dẫn giao dịch từ TVT</RegularText>
-                        </TouchableNativeFeedback>
+                        </Touchable>
                     </View>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
         padding: 16
     },
     infoContainer: {

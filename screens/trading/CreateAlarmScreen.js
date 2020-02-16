@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Image, TouchableNativeFeedback } from "react-native";
+import { View, StyleSheet, Image, Platform, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import TopBar from "../../components/TopBar";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -10,6 +10,7 @@ import Colors from "../../constants/Colors";
 import { TextInput } from "react-native-gesture-handler";
 import Toast from "react-native-easy-toast";
 import * as actions from "../../store/actions/Alarm";
+import Touchable from "../../components/common/Touchable";
 
 class CreateAlarmScreen extends React.Component {
     constructor(props) {
@@ -119,7 +120,7 @@ class CreateAlarmScreen extends React.Component {
         const currentPrice = this.mapPrice();
 
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Spinner visible={this.props.alarmStore.create_loading} />
                 <TopBar {...this.topBarConfig} />
                 <View style={styles.secondaryContainer}>
@@ -143,7 +144,7 @@ class CreateAlarmScreen extends React.Component {
                         />
                         <TextInput
                             keyboardType="numeric"
-                            fontFamily="medium"
+                            fontFamily={Platform.OS === "android" ? "medium" : null}
                             style={styles.alarmPriceInput}
                             onChangeText={text => this.onAlarmPriceChange(text)}
                             value={this.state.alarm.price.toString()}
@@ -160,14 +161,14 @@ class CreateAlarmScreen extends React.Component {
                         maxLength={70}
                     />
                     <View style={styles.descriptionBottomLine}></View>
-                    <TouchableNativeFeedback onPress={() => this.onCreateAlarm()}>
+                    <Touchable onPress={() => this.onCreateAlarm()}>
                         <View style={styles.createAlarmButton}>
                             <MediumText style={styles.buttonText}>Tạo tin báo</MediumText>
                         </View>
-                    </TouchableNativeFeedback>
+                    </Touchable>
                 </View>
                 <Toast ref={this.toast} />
-            </View>
+            </SafeAreaView>
         );
     }
 }

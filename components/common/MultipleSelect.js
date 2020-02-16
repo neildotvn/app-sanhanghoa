@@ -6,7 +6,7 @@ import {
 } from "react-native-responsive-screen";
 import Colors from "../../constants/Colors";
 import { MediumText, RegularText } from "./StyledText";
-import { TouchableNativeFeedback } from "react-native-gesture-handler";
+import Touchable from '../common/Touchable'
 
 export default class MultipleSelect extends React.Component {
     state = {
@@ -49,7 +49,7 @@ export default class MultipleSelect extends React.Component {
 
         return (
             <View style={styles.container}>
-                <TouchableNativeFeedback onPress={() => this.toggleOptions()}>
+                <Touchable onPress={() => this.toggleOptions()}>
                     <View
                         style={{
                             ...styles.selected
@@ -63,7 +63,7 @@ export default class MultipleSelect extends React.Component {
                             source={require("../../assets/images/images/img-multiple-sign.png")}
                         />
                     </View>
-                </TouchableNativeFeedback>
+                </Touchable>
                 <View style={styles.popup}>
                     {this.state.isOptionsShowed ? items : null}
                 </View>
@@ -74,13 +74,13 @@ export default class MultipleSelect extends React.Component {
 
 const SelectItem = props => {
     return (
-        <TouchableNativeFeedback
+        <Touchable
             onPress={() => props.onSelect(props.position, props.value)}
         >
             <View style={styles.item}>
                 <RegularText style={styles.itemText}>{props.label}</RegularText>
             </View>
-        </TouchableNativeFeedback>
+        </Touchable>
     );
 };
 

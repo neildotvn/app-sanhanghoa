@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View, Modal, Text, Alert } from "react-native";
+import { ScrollView, StyleSheet, View, SafeAreaView, Text, Alert } from "react-native";
 import TopBar from "../../components/TopBar";
 import Strings from "../../constants/Strings";
 import { connect } from "react-redux";
@@ -12,7 +12,6 @@ import Colors from "../../constants/Colors";
 import Spinner from "react-native-loading-spinner-overlay";
 import Toast from "react-native-easy-toast";
 import * as actions from "../../store/actions/Alarm";
-import { TouchableNativeFeedback } from "react-native-gesture-handler";
 
 class AlarmListScreen extends React.Component {
     constructor(props) {
@@ -103,12 +102,12 @@ class AlarmListScreen extends React.Component {
         );
 
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <TopBar {...this.topBarConfig} />
                 <Spinner visible={this.props.alarmStore.delete_loading} />
                 {this.props.alarmStore.fetch_loading ? <Loading /> : main}
                 <Toast ref={this.toast} />
-            </View>
+            </SafeAreaView>
         );
     }
 }

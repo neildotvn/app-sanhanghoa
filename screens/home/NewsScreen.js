@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, WebView, Platform, StatusBar, View, BackHandler } from "react-native";
+import { StyleSheet, SafeAreaView, View } from "react-native";
 import NewsPageScreen from "../news/NewsPageScreen";
 import TopBar from "../../components/TopBar";
 import TopTabBar from "../../components/TopTabBar";
@@ -66,7 +66,7 @@ export default class NewsScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <TopBar title={Strings.HEADER_NEWS} />
                 <View style={{height: 28}}>
                 <TopTabBar onTabChanged={this.onTabChanged} tabButtons={this.state.tabButtons} buttonStyle={{paddingStart: 12, paddingEnd: 12}} />
@@ -76,7 +76,7 @@ export default class NewsScreen extends React.Component {
                         <NewsPageScreen key={index} tab={tab} />
                     ) : null;
                 })}
-            </View>
+            </SafeAreaView>
         );
     }
 }

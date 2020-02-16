@@ -1,5 +1,6 @@
 import React from "react";
-import { Platform, StatusBar, StyleSheet, View, TouchableNativeFeedback, Image } from "react-native";
+import { Platform, StatusBar, StyleSheet, View, Image, SafeAreaView } from "react-native";
+import Touchable from '../../components/common/Touchable'
 import { connect } from "react-redux";
 import TopBar from "../../components/TopBar";
 import Colors from "../../constants/Colors";
@@ -89,7 +90,7 @@ class MarketPricesScreen extends React.Component {
             console.log(error);
         }
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 {Platform.OS === "ios" && <StatusBar barStyle="default" />}
                 <TopBar {...this.topBarConfig} />
                 {iceRows ? (
@@ -113,7 +114,7 @@ class MarketPricesScreen extends React.Component {
                 ) : (
                     <View style={styles.bottomButtonsWrapper}>
                         <View style={styles.bottomButtons}>
-                            <TouchableNativeFeedback onPress={() => this.onCreateAlarm()}>
+                            <Touchable onPress={() => this.onCreateAlarm()}>
                                 <View style={styles.alarmButton}>
                                     <Image
                                         style={styles.bottomButtonImage}
@@ -121,9 +122,9 @@ class MarketPricesScreen extends React.Component {
                                     />
                                     <LightText style={styles.buttonText}>{Strings.PRICES_PLACE_ALARM}</LightText>
                                 </View>
-                            </TouchableNativeFeedback>
+                            </Touchable>
                             {/* {tradeableCommodities.includes(this.props.navigation.getParam("product_name")[1]) ? (
-                                <TouchableNativeFeedback onPress={() => this.onCreateOrder()}>
+                                <Touchable onPress={() => this.onCreateOrder()}>
                                     <View style={[styles.createOrderButton]}>
                                         <Image
                                             style={styles.bottomButtonImage}
@@ -131,12 +132,12 @@ class MarketPricesScreen extends React.Component {
                                         />
                                         <LightText style={styles.buttonText}>{Strings.PRICES_PLACE_ORDER}</LightText>
                                     </View>
-                                </TouchableNativeFeedback>
+                                </Touchable>
                             ) : null} */}
                         </View>
                     </View>
                 )}
-            </View>
+            </SafeAreaView>
         );
     }
 }
@@ -250,7 +251,7 @@ const styles = StyleSheet.create({
         height: 48,
         backgroundColor: Colors.grey,
         flexDirection: "row",
-        justifyContent: "flex-start"
+        justifyContent: "center"
     },
     alarmButton: {
         flex: 1,

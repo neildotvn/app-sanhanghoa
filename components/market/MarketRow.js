@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet, TouchableNativeFeedback } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { RegularText, LightText } from "../common/StyledText";
 import ChangeCell from "../market/ChangeCell";
+import Touchable from '../../components/common/Touchable';
 import Colors from "../../constants/Colors";
 import Strings from "../../constants/Strings";
 
@@ -9,7 +10,7 @@ class MarketRow extends React.Component {
     render() {
         const props = this.props;
         return !props.isTitle ? (
-            <TouchableNativeFeedback
+            <Touchable
                 onPress={() => this.props.onOpenProductDetails(props.row)}
             >
                 <View style={styles.container}>
@@ -30,7 +31,7 @@ class MarketRow extends React.Component {
                         /> */}
                     </View>
                 </View>
-            </TouchableNativeFeedback>
+            </Touchable>
         ) : (
             <View style={styles.titleContainer}>
                 <View style={styles.first}>

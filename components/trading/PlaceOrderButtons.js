@@ -3,20 +3,20 @@ import { StyleSheet, View, Text } from "react-native";
 import { MediumText, RegularText } from "../common/StyledText";
 import Colors from "../../constants/Colors";
 import {
-    TouchableNativeFeedback,
     TouchableWithoutFeedback
 } from "react-native-gesture-handler";
+import Touchable from '../common/Touchable';
 import Strings from "../../constants/Strings";
 
 export default function(props) {
     const placeOrderButton = (
-        <TouchableNativeFeedback>
+        <Touchable>
             <View style={styles.placeOrderButton}>
                 <MediumText style={styles.placeOrderButtonText}>
                     {Strings.ORDER_PLACE_ORDER}
                 </MediumText>
             </View>
-        </TouchableNativeFeedback>
+        </Touchable>
     );
 
     const byMarketButtons = (

@@ -1,27 +1,17 @@
 import React from "react";
-import { View, Image, TouchableNativeFeedback, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, Platform } from "react-native";
 import { RegularText } from "./common/StyledText";
+import Touchable from "./common/Touchable";
 import Colors from "../constants/Colors";
 
 class TouchableImageButton extends React.Component {
     render() {
         return (
-            <View style={styles.button}>
-                <TouchableNativeFeedback
-                    onPress={
-                        this.props.onPress ? () => this.props.onPress() : null
-                    }
-                >
-                    <Image
-                        style={styles.image}
-                        source={this.props.imageSource}
-                    />
-                </TouchableNativeFeedback>
-                {this.props.label ? (
-                    <RegularText style={styles.label}>
-                        {this.props.label}
-                    </RegularText>
-                ) : null}
+            <View style={Platform.OS === "ios" ? styles.buttonIos : styles.button}>
+                <Touchable onPress={this.props.onPress ? () => this.props.onPress() : null}>
+                    <Image style={styles.image} source={this.props.imageSource} />
+                </Touchable>
+                {this.props.label ? <RegularText style={styles.label}>{this.props.label}</RegularText> : null}
             </View>
         );
     }
@@ -33,6 +23,14 @@ styles = StyleSheet.create({
         width: 36,
         flexDirection: "column",
         alignItems: "center"
+        // backgroundColor: "red"
+    },
+    buttonIos: {
+        height: 28,
+        width: 28,
+        flexDirection: "column",
+        alignItems: "center",
+        marginBottom: 8
         // backgroundColor: "red"
     },
     image: {

@@ -2,29 +2,29 @@ import React from "react";
 import { Platform, StatusBar, StyleSheet, View } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { RegularText, MediumText } from "../common/StyledText";
-import { TextInput, TouchableNativeFeedback } from "react-native-gesture-handler";
 import Colors from "../../constants/Colors";
+import Touchable from "../common/Touchable";
 
 export default class LotChooser extends React.Component {
     render() {
         return (
             <View style={[styles.container, this.props.style]}>
                 <View style={styles.lotContainer}>
-                    <TouchableNativeFeedback onPress={() => this.props.onVolumeChange(-10)}>
+                    <Touchable onPress={() => this.props.onVolumeChange(-10)}>
                         <RegularText style={styles.modifier}>-10</RegularText>
-                    </TouchableNativeFeedback>
-                    <TouchableNativeFeedback onPress={() => this.props.onVolumeChange(-1)}>
+                    </Touchable>
+                    <Touchable onPress={() => this.props.onVolumeChange(-1)}>
                         <RegularText style={styles.modifier}>-1</RegularText>
-                    </TouchableNativeFeedback>
+                    </Touchable>
                     <RegularText autoCompleteType="off" keyboardType="numeric" type style={styles.lot}>
                         {this.props.volume.toFixed(1)}
                     </RegularText>
-                    <TouchableNativeFeedback onPress={() => this.props.onVolumeChange(1)}>
+                    <Touchable onPress={() => this.props.onVolumeChange(1)}>
                         <RegularText style={styles.modifier}>+1</RegularText>
-                    </TouchableNativeFeedback>
-                    <TouchableNativeFeedback onPress={() => this.props.onVolumeChange(10)}>
+                    </Touchable>
+                    <Touchable onPress={() => this.props.onVolumeChange(10)}>
                         <RegularText style={styles.modifier}>+10</RegularText>
-                    </TouchableNativeFeedback>
+                    </Touchable>
                 </View>
                 <View style={styles.bottomLine} />
             </View>

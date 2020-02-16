@@ -1,10 +1,7 @@
 import React from "react";
 import {
-    Platform,
-    StatusBar,
-    ScrollView,
     StyleSheet,
-    View
+    SafeAreaView
 } from "react-native";
 import TopBar from "../../components/TopBar";
 import NotificationRow from "../../components/noti/NotificationRow";
@@ -35,7 +32,7 @@ class NotificationScreen extends React.Component {
         ));
 
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <TopBar title={Strings.HEADER_NOTI} />
                 {/* <ScrollView style={styles.notiContainer}>{notiRows}</ScrollView> */}
                 {(() => {
@@ -43,7 +40,7 @@ class NotificationScreen extends React.Component {
                     if (this.props.notiStore.error) return <NoData />
                     if (this.props.notiStore.notifications.length === 0) return <NoData text="Bạn chưa có thông báo!" />
                 })()}
-            </View>
+            </SafeAreaView>
         );
     }
 }

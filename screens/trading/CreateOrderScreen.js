@@ -1,5 +1,6 @@
 import React from "react";
-import { Platform, StatusBar, StyleSheet, View, Image, TouchableNativeFeedback, TextInput } from "react-native";
+import { Platform, StatusBar, StyleSheet, View, Image, TextInput, SafeAreaView } from "react-native";
+import Touchable from "../../components/common/Touchable";
 import TopBar from "../../components/TopBar";
 import { connect } from "react-redux";
 import LotChooser from "../../components/trading/LotChooser";
@@ -365,7 +366,7 @@ class CreateOrderScreen extends React.Component {
         const { buyPrice, sellPrice, currentPrice, inTrading } = this.mapPrice();
         console.log("CreateOrderScreen");
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 {Platform.OS === "ios" && <StatusBar barStyle="default" />}
                 <Spinner visible={this.props.orderStore.create_loading} />
                 <TopBar {...this.topBarConfig} />
@@ -392,36 +393,36 @@ class CreateOrderScreen extends React.Component {
                     {this.state.selectedOptionType === 0 ? null : (
                         <View style={styles.orderPriceContainer}>
                             <View style={styles.orderPrice}>
-                                <TouchableNativeFeedback onPress={() => this.onOrderPriceChangeBit(false)}>
+                                <Touchable onPress={() => this.onOrderPriceChangeBit(false)}>
                                     <Image
                                         style={styles.volumnAdjustImage}
                                         source={require("../../assets/images/icons/ic-subtract.png")}
                                     />
-                                </TouchableNativeFeedback>
+                                </Touchable>
                                 <TextInput
                                     keyboardType="numeric"
                                     value={this.state.order.placing_price.toString()}
                                     style={styles.input}
                                     onChangeText={text => this.onOrderPriceChange(text)}
                                 />
-                                <TouchableNativeFeedback onPress={() => this.onOrderPriceChangeBit(true)}>
+                                <Touchable onPress={() => this.onOrderPriceChangeBit(true)}>
                                     <Image
                                         style={styles.volumnAdjustImage}
                                         source={require("../../assets/images/icons/ic-add.png")}
                                     />
-                                </TouchableNativeFeedback>
+                                </Touchable>
                             </View>
                             <View style={styles.bottomLine} />
                         </View>
                     )}
                     <View style={styles.slAndTpSection}>
                         <View style={[styles.slAndTp, styles.stopLoss]}>
-                            <TouchableNativeFeedback onPress={() => this.onStopLossChangeBit(false)}>
+                            <Touchable onPress={() => this.onStopLossChangeBit(false)}>
                                 <Image
                                     style={styles.volumnAdjustImage}
                                     source={require("../../assets/images/icons/ic-subtract.png")}
                                 />
-                            </TouchableNativeFeedback>
+                            </Touchable>
                             <TextInput
                                 keyboardType="numeric"
                                 value={
@@ -430,20 +431,20 @@ class CreateOrderScreen extends React.Component {
                                 style={styles.input}
                                 onChangeText={text => this.onStopLossChange(text)}
                             />
-                            <TouchableNativeFeedback onPress={() => this.onStopLossChangeBit(true)}>
+                            <Touchable onPress={() => this.onStopLossChangeBit(true)}>
                                 <Image
                                     style={styles.volumnAdjustImage}
                                     source={require("../../assets/images/icons/ic-add.png")}
                                 />
-                            </TouchableNativeFeedback>
+                            </Touchable>
                         </View>
                         <View style={[styles.slAndTp, styles.takeProfit]}>
-                            <TouchableNativeFeedback onPress={() => this.onTakeProfitChangeBit(false)}>
+                            <Touchable onPress={() => this.onTakeProfitChangeBit(false)}>
                                 <Image
                                     style={styles.volumnAdjustImage}
                                     source={require("../../assets/images/icons/ic-subtract.png")}
                                 />
-                            </TouchableNativeFeedback>
+                            </Touchable>
                             <TextInput
                                 keyboardType="numeric"
                                 value={
@@ -454,26 +455,26 @@ class CreateOrderScreen extends React.Component {
                                 style={styles.input}
                                 onChangeText={text => this.onTakeProfitChange(text)}
                             />
-                            <TouchableNativeFeedback onPress={() => this.onTakeProfitChangeBit(true)}>
+                            <Touchable onPress={() => this.onTakeProfitChangeBit(true)}>
                                 <Image
                                     style={styles.volumnAdjustImage}
                                     source={require("../../assets/images/icons/ic-add.png")}
                                 />
-                            </TouchableNativeFeedback>
+                            </Touchable>
                         </View>
                     </View>
                 </View>
                 {/* {buyPrice !== 0 || sellPrice !== 0 ? ( */}
                 <View style={styles.orderButtonsContainer}>
                     {this.state.selectedOptionType !== 0 ? (
-                        <TouchableNativeFeedback onPress={() => this.onPlaceOrder()}>
+                        <Touchable onPress={() => this.onPlaceOrder()}>
                             <View style={styles.placeOrderButton}>
                                 <MediumText style={styles.placeOrderButtonText}>{Strings.ORDER_PLACE_ORDER}</MediumText>
                             </View>
-                        </TouchableNativeFeedback>
+                        </Touchable>
                     ) : inTrading ? (
                         <View style={styles.byMarketButtons}>
-                            <TouchableNativeFeedback onPress={() => this.onPlaceOrderByMarket(false)}>
+                            <Touchable onPress={() => this.onPlaceOrderByMarket(false)}>
                                 <View style={styles.byMarketButton}>
                                     <MediumText style={[styles.byMarketActionText, styles.sellText]}>
                                         {Strings.ORDER_SELL}
@@ -482,9 +483,9 @@ class CreateOrderScreen extends React.Component {
                                         {Strings.ORDER_BY_MARKET}
                                     </RegularText>
                                 </View>
-                            </TouchableNativeFeedback>
+                            </Touchable>
                             <View style={styles.divider} />
-                            <TouchableNativeFeedback onPress={() => this.onPlaceOrderByMarket(true)}>
+                            <Touchable onPress={() => this.onPlaceOrderByMarket(true)}>
                                 <View style={[styles.byMarketButton]}>
                                     <MediumText style={[styles.byMarketActionText, styles.buyText]}>
                                         {Strings.ORDER_BUY}
@@ -493,13 +494,13 @@ class CreateOrderScreen extends React.Component {
                                         {Strings.ORDER_BY_MARKET}
                                     </RegularText>
                                 </View>
-                            </TouchableNativeFeedback>
+                            </Touchable>
                         </View>
                     ) : null}
                 </View>
                 {/* ) : null} */}
                 <Toast ref={this.toast} />
-            </View>
+            </SafeAreaView>
         );
     }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Platform, StatusBar, StyleSheet, View, Button } from "react-native";
+import { Platform, StatusBar, StyleSheet, View, Button, SafeAreaView } from "react-native";
 import OpenOrder from "../../components/trading/OpenOrder";
 import TopBar from "../../components/TopBar";
 import Colors from "../../constants/Colors";
@@ -57,7 +57,7 @@ class OrderDetailScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Spinner visible={this.props.orderStore.close_loading} />
                 {Platform.OS === "ios" && <StatusBar barStyle="default" />}
                 <TopBar {...this.topBarConfig} />
@@ -73,7 +73,7 @@ class OrderDetailScreen extends React.Component {
                     />
                 </View>
                 <Toast ref={this.toast} />
-            </View>
+            </SafeAreaView>
         );
     }
 }

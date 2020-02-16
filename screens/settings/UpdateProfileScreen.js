@@ -1,5 +1,5 @@
 import React from "react";
-import { Platform, StatusBar, StyleSheet, View, Button } from "react-native";
+import { Platform, StatusBar, StyleSheet, View, Button, SafeAreaView } from "react-native";
 import TopBar from "../../components/TopBar";
 import Input from "../../components/common/Input";
 import { connect } from "react-redux";
@@ -133,7 +133,7 @@ class UpdateProfileScreen extends React.Component {
         }
 
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 {Platform.OS === "ios" && <StatusBar barStyle="default" />}
                 <TopBar {...this.topBarConfig} onLeftButtonPress={this.onBackPressed.bind(this)} />
                 <View style={styles.inputsContainer}>
@@ -148,7 +148,7 @@ class UpdateProfileScreen extends React.Component {
                 </View>
                 <Spinner visible={this.props.auth.loading} />
                 <Toast ref={this.toast} />
-            </View>
+            </SafeAreaView>
         );
     }
 }

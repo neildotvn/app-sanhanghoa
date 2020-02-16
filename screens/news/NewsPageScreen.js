@@ -1,10 +1,11 @@
 import React from "react";
 import { StyleSheet, Platform, Image, View, WebView } from "react-native";
 import { MediumText, RegularText } from "../../components/common/StyledText";
-import { FlatList, TouchableNativeFeedback } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import NavigationService from "../../navigation/NavigationService";
 import Loading from "../../components/common/Loading";
 import Colors from "../../constants/Colors";
+import Touchable from '../../components/common/Touchable'
 import axios from "../../utils/AxiosS";
 import {
     widthPercentageToDP as wp,
@@ -20,7 +21,7 @@ function Article(props) {
         console.log("There's no featured image!");
     }
     return (
-        <TouchableNativeFeedback onPress={() => props.onArticlePressed(article)}>
+        <Touchable onPress={() => props.onArticlePressed(article)}>
             <View style={styles.articleContainer}>
                 <View style={styles.imageContainer}>
                     <Image style={{ flex: 1 }} source={{ uri: imageUrl }} />
@@ -30,7 +31,7 @@ function Article(props) {
                     {article.excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, "")}
                 </RegularText>
             </View>
-        </TouchableNativeFeedback>
+        </Touchable>
     );
 }
 
