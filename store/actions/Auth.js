@@ -10,16 +10,12 @@ export const verify = () => {
         axios
             .get("users/me")
             .then(res => {
-                console.log(this, res.data);
-                dispatch(
-                    createAction(actionTypes.AUTH_SUCCESS, { user: res.data })
-                );
+                dispatch(createAction(actionTypes.AUTH_SUCCESS, { user: res.data }));
             })
-            .catch(err =>
-                dispatch(
-                    createAction(actionTypes.AUTH_FAIL, { error: err.response })
-                )
-            );
+            .catch(err => {
+                console.log(err);
+                dispatch(createAction(actionTypes.AUTH_FAIL, { error: err.response }));
+            });
     };
 };
 
@@ -40,15 +36,11 @@ export const register = (dispatch, payload) => {
                 })
                 .catch(err => {
                     console.log(err);
-                    dispatch(
-                        createAction(actionTypes.AUTH_FAIL, { error: err })
-                    );
+                    dispatch(createAction(actionTypes.AUTH_FAIL, { error: err }));
                 });
         })
         .catch(err => {
-            dispatch(
-                createAction(actionTypes.AUTH_FAIL, { error: err.response })
-            );
+            dispatch(createAction(actionTypes.AUTH_FAIL, { error: err.response }));
             console.log(err);
         })
         .finally(() => dispatch(createAction(actionTypes.LOADING_OFF)));
@@ -71,15 +63,11 @@ export const login = (dispatch, payload) => {
                 })
                 .catch(err => {
                     console.log(err);
-                    dispatch(
-                        createAction(actionTypes.AUTH_FAIL, { error: err })
-                    );
+                    dispatch(createAction(actionTypes.AUTH_FAIL, { error: err }));
                 });
         })
         .catch(err => {
-            dispatch(
-                createAction(actionTypes.AUTH_FAIL, { error: err.response })
-            );
+            dispatch(createAction(actionTypes.AUTH_FAIL, { error: err.response }));
             console.log(err);
         })
         .finally(() => dispatch(createAction(actionTypes.LOADING_OFF)));
@@ -102,9 +90,7 @@ export const updateProfile = user => {
                 console.log(error);
                 dispatch(createAction(actionTypes.AUTH_UPDATE_FAIL, { error }));
             })
-            .finally(() =>
-                dispatch(createAction(actionTypes.AUTH_UPDATE_FINISH))
-            );
+            .finally(() => dispatch(createAction(actionTypes.AUTH_UPDATE_FINISH)));
     };
 };
 

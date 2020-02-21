@@ -1,10 +1,9 @@
 import React from "react";
-import { ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Text, Platform } from "react-native";
+import { AsyncStorage, StyleSheet, View } from "react-native";
 import { connect } from "react-redux";
 import Loading from '../../components/common/Loading';
 import * as actions from "../../store/actions/Auth";
 import * as storageKeys from "../../store/storage/StorageKeys";
-import Colors from "../../constants/Colors";
 
 class AuthLoadingScreen extends React.Component {
     state = {
@@ -13,7 +12,9 @@ class AuthLoadingScreen extends React.Component {
 
     componentDidUpdate() {
         console.log(`Day co phai la lan dung app dau tien cua ban k? ${this.state.isFirstTime}`);
-        if (this.props.user.user_uid) {
+        if (this.props.auth.error) {
+            this.props.navigation.navigate("Auth");
+        } else if (this.props.user.user_uid) {
             if (this.state.isFirstTime === "true" || this.state.isFirstTime === null) {
                 console.log("Go to Intro");
                 AsyncStorage.setItem(storageKeys.KEY_FIRST_OPEN_APP, "false", () => {});
@@ -23,8 +24,6 @@ class AuthLoadingScreen extends React.Component {
                 this.props.navigation.navigate("Main");
                 // AsyncStorage.setItem(storageKeys.KEY_FIRST_OPEN_APP, "true", () => {});
             }
-        } else if (this.props.auth.error) {
-            this.props.navigation.navigate("Auth");
         }
     }
 

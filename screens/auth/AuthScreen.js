@@ -45,7 +45,6 @@ class AuthScreen extends Component {
 
     componentWillReceiveProps(props) {
         console.log("From AuthScreen");
-        console.log(props.auth);
         if (this.props.auth.error) {
             let message = "";
             switch (this.props.auth.error.status) {

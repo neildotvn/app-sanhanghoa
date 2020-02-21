@@ -1,14 +1,12 @@
 import React from "react";
-import { Platform, StyleSheet, FlatList, View, SafeAreaView } from "react-native";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 import MarketTab from "../../components/market/MarketTab";
-import MarketRow from "../../components/market/MarketRow";
 import TopBar from "../../components/TopBar";
 import TopTabBar from "../../components/TopTabBar";
 import Strings, { commodityNames } from "../../constants/Strings";
 import { connect } from "react-redux";
 import getAllPrices from "../../store/actions/Prices";
 import registerForPushNotificationsAsync from "../../notifications/NotificationsUtils";
-import { MediumText } from "../../components/common/StyledText";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 const tabs = [
@@ -72,7 +70,7 @@ class MarketScreen extends React.Component {
     };
 
     async componentDidMount() {
-        // await registerForPushNotificationsAsync();
+        await registerForPushNotificationsAsync();
         this.timer = setInterval(() => {
             this.props.fetchPrices();
         }, 2000);
@@ -132,7 +130,6 @@ MarketScreen.navigationOptions = {
 const styles = StyleSheet.create({
     container: {
         flex: 1
-        // marginTop: Platform.OS === "ios" ? 0 : StatusBar.currentHeight
     }
 });
 

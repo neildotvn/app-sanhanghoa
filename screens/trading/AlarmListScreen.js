@@ -4,7 +4,6 @@ import TopBar from "../../components/TopBar";
 import Strings from "../../constants/Strings";
 import { connect } from "react-redux";
 import AlarmInfo from "../../components/trading/AlarmInfo";
-import ClosedOrder from "../../components/trading/ClosedOrder";
 import Loading from "../../components/common/Loading";
 import NoData from "../../components/common/NoData";
 import YesNoPopup from "../../components//common/YesNoPopup";

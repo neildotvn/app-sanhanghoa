@@ -6,7 +6,6 @@ import Colors from "../../constants/Colors";
 import Loading from "../../components/common/Loading";
 
 class NewsArticleScreen extends React.Component {
-    // onBackPressed = () => this.props.navigation.pop();
 
     constructor(props) {
         super(props);
@@ -20,7 +19,6 @@ class NewsArticleScreen extends React.Component {
     };
 
     componentDidMount() {
-        // BackHandler.addEventListener("hardwareBackPress", this.backHandler);
         this._mounted = true;
         setTimeout(() => {
             if (this._mounted) this.setState({ loading: false });
@@ -38,7 +36,6 @@ class NewsArticleScreen extends React.Component {
     }
 
     componentWillUnmount() {
-        // BackHandler.removeEventListener("hardwareBackPress", this.backHandler);
         this._mounted = false;
     }
 
@@ -49,13 +46,6 @@ class NewsArticleScreen extends React.Component {
 
     backHandler = () => {
         this.props.navigation.pop();
-        // if (this.state.backButtonEnabled) {
-        //     this.WEBVIEW_REF.current.goBack();
-        //     return true;
-        // } else {
-        //     this.props.navigation.pop();
-        //     return true;
-        // }
     };
 
     onNavigationStateChange = navState => {
@@ -97,24 +87,6 @@ class NewsArticleScreen extends React.Component {
         };
 
         return (
-            // <SafeAreaView style={styles.container}>
-            //     <TopBar {...topBarAllowBackConfig} />
-            //     {/* <View style={styles.webViewContainer}> */}
-            //     <WebView
-            //         ref={this.WEBVIEW_REF}
-            //         useWebKit={true}
-            //         javaScriptEnabled={true}
-            //         domStorageEnabled={true}
-            //         injectedJavaScript={injectedJs}
-            //         source={{ uri: this.props.navigation.getParam("uri") }}
-            //         style={styles.webView}
-            //         startInLoadingState={true}
-            //         onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest} //for iOS
-            //         onNavigationStateChange={this.onShouldStartLoadWithRequest} //for Android
-            //     />
-            //     {this.state.loading ? <Loading style={styles.loading} text="Đang tải bài viết" /> : null}
-            //     {/* </View> */}
-            // </SafeAreaView>
             <SafeAreaView style={styles.container}>
                 <TopBar {...topBarAllowBackConfig} />
                 <WebView
@@ -129,6 +101,7 @@ class NewsArticleScreen extends React.Component {
                     onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequestIos} //for iOS
                     onNavigationStateChange={this.onShouldStartLoadWithRequestAndroid} //for Android
                 />
+                {this.state.loading ? <Loading style={styles.loading} text="Đang tải bài viết" /> : null}
             </SafeAreaView>
         );
     }

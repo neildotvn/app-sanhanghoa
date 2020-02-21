@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Switch } from "react-native";
+import { StyleSheet, View, Switch, Platform } from "react-native";
 import Touchable from "../common/Touchable";
 import { RegularText, MediumText, BoldText } from "../common/StyledText";
 import Colors from "../../constants/Colors";
@@ -38,6 +38,9 @@ export default class AlarmInfo extends React.Component {
                             </View>
                             <View style={styles.switchContainer}>
                                 <Switch
+                                    style={
+                                        Platform.OS === "ios" ? { transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }] } : null
+                                    }
                                     trackColor={{ false: "#8c8c8c", true: Colors.midBlue }}
                                     thumbColor={"#fff"}
                                     value={this.state.isActive}

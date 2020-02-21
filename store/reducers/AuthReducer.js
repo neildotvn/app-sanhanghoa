@@ -38,12 +38,12 @@ export default authReducer = (state = initialState, action) => {
 };
 
 const authSuccess = (state, payload) => {
-    console.log(actionTypes.AUTH_SUCCESS, updateObject(state, payload));
+    // console.log(actionTypes.AUTH_SUCCESS, updateObject(state, payload));
     return updateObject(state, payload);
 };
 
 const authFail = (state, error) => {
-    console.log("From reducer", error);
+    // if (error) console.log("From auth reducer", error);
     return updateObject(state, { loading: false, error });
 };
 
@@ -52,7 +52,7 @@ const updateStart = state => {
 };
 
 const updateSuccess = (state, payload) => {
-    console.log("UPDATE SUCCESS!", payload);
+    // console.log("UPDATE SUCCESS!", payload);
     return updateObject(state, {
         ...payload,
         updateSuccess: true,

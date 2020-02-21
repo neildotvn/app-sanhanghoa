@@ -158,7 +158,12 @@ export const getRowDataWithProductAndExchange = (prices, product, exchange) => {
 };
 
 export const getProductNameFromCode = product => {
-    return orderProductMap[product].name;
+    try {
+        return orderProductMap.filter(obj => obj.key === product)[0].name
+    } catch (err) {
+        console.log(err)
+    }
+    // return orderProductMap[product].name;
 };
 
 export const getLeverageFromCode = product => {
