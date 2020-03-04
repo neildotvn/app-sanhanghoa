@@ -12,6 +12,8 @@
         "postinstall": "rndebugger-open",
         "build:android": "expo build:android",
         "build:ios": "expo build:ios",
+        "upload:ios": "expo upload:ios",
+        "upload:android": "expo upload:android --key /Users/neilann/dev/projects/app-sanhanghoa/google-api.json --track production",
         "build:android-bundle": "expo build:android -t app-bundle"
     },
     "jest": {

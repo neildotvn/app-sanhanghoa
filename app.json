@@ -24,7 +24,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "bundleIdentifier": "com.sanhanghoa24h",
+      "buildNumber": "1.0.0"
     },
     "androidStatusBar": {
       "barStyle": "dark-content",
@@ -36,7 +38,7 @@
         "INTERNET",
         "NOTIFICATIONS"
       ],
-      "versionCode": 2
+      "versionCode": 3
     }
   },
   "name": "app"
