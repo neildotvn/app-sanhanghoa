@@ -78,7 +78,7 @@ class CreateAlarmScreen extends React.Component {
 
     onAlarmPriceChange = price => {
         const alarm = { ...this.state.alarm };
-        alarm.price = Number(price);
+        alarm.price = price;
         this.setState({ alarm });
     };
 
@@ -90,10 +90,18 @@ class CreateAlarmScreen extends React.Component {
 
     onCreateAlarm = () => {
         const alarm = { ...this.state.alarm };
-        const currentPrice = this.mapPrice();
-        alarm.alarm_type = alarm.price < currentPrice ? 1 : 0;
-        console.log(alarm);
-        this.props.onCreateAlarm(alarm);
+        try {
+            if (isNaN(alarm.price)) {
+                this.toast.current.show("Giá đặt không hợp lệ");
+            } else {
+                const currentPrice = this.mapPrice();
+                alarm.alarm_type = alarm.price < currentPrice ? 1 : 0;
+                console.log(alarm);
+                this.props.onCreateAlarm(alarm);
+            }
+        } catch (err) {
+            this.toast.current.show("Giá đặt không hợp lệ");
+        }
     };
 
     mapPrice = () => {

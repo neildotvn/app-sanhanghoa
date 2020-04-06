@@ -12,7 +12,7 @@ export default {
     TAB_FAVORITE: "Ưa thích",
     TAB_AGRICULTURE: "Nông sản",
     TAB_METAL: "Kim loại",
-    TAB_FUEL: "Nhiên liệu",
+    TAB_FUEL: "Nguyên liệu",
     TAB_ENERGY: "Năng lượng",
     MARKTET_TITLE: "Mặt hàng",
     MARKET_PRICE: "Giá khớp",
@@ -117,8 +117,9 @@ export const priceColumns = [
     "Thay đổi",
     "Cao nhất",
     "Thấp nhất",
-    "Đặt mua",
-    "Đặt bán"
+    "Bid",
+    "Ask",
+    "OpInt"
 ];
 
 export const priceTermsICE = ["11/19", "01/20", "03/20", "05/20"];

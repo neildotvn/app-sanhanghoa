@@ -22,7 +22,7 @@ const tabs = [
         [commodityNames.DAU_TUONG, "us_soybeans"],
         // commodityNames.KHO_DAU_TUONG,
         [commodityNames.DAU_DAU_TUONG, "us_soybean_oil"],
-        // commodityNames.LUA_MI,
+        [commodityNames.LUA_MI, "us_wheat"],
         [commodityNames.NGO, "us_corn"]
     ],
     [
@@ -70,7 +70,7 @@ class MarketScreen extends React.Component {
     };
 
     async componentDidMount() {
-        await registerForPushNotificationsAsync();
+        // await registerForPushNotificationsAsync();
         this.timer = setInterval(() => {
             this.props.fetchPrices();
         }, 2000);
@@ -79,7 +79,7 @@ class MarketScreen extends React.Component {
     componentWillUnmount() {
         clearInterval(this.timer);
     }
-
+ol
     onOpenAlarms = () => this.props.navigation.push("AlarmList");
 
     onTabChanged = position => {

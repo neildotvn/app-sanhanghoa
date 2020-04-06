@@ -1,6 +1,6 @@
 import React from "react";
 import { Platform, StatusBar, StyleSheet, View, Image, SafeAreaView } from "react-native";
-import Touchable from '../../components/common/Touchable'
+import Touchable from "../../components/common/Touchable";
 import { connect } from "react-redux";
 import TopBar from "../../components/TopBar";
 import Colors from "../../constants/Colors";
@@ -36,56 +36,50 @@ class MarketPricesScreen extends React.Component {
         const data = this.props.pricesStore.prices[productName];
         let iceRows;
         try {
-            iceRows = data.ice.map((row, index) => {
-                const temp = [...row];
-                const orderCount = temp.splice(7);
-                temp[5] = orderCount[1] ? `${temp[5]}(${orderCount[1]})` : `${temp[5]}(0)`;
-                temp[6] = orderCount[2] ? `${temp[6]}(${orderCount[2]})` : `${temp[6]}(0)`;
+            if (data.ice) {
+                iceRows = data.ice.map((row, index) => {
+                    const temp = [...row];
 
-                if (!temp[2].toString().includes("+") && !temp[2].toString().includes("-")) {
-                    temp[2] = row[7] ? `+${temp[2]}` : `-${temp[2]}`;
-                }
-                if (productName === "cotton") {
-                    console.log(row[7])
-                }
-                return (
-                    <Row
-                        key={index}
-                        rowData={temp}
-                        changeTextStyle={styles.changeText}
-                        changeTextWrapperStyle={styles.changeTextWrapper}
-                        increaseStyle={row[7] ? styles.textWrapperIncrease : styles.textWrapperDecrease}
-                    />
-                );
-            });
+                    if (!temp[2].toString().includes("+") && !temp[2].toString().includes("-")) {
+                        temp[2] = row[6] ? `+${temp[2]}` : `-${temp[2]}`;
+                    }
+                    temp.splice(8);
+                    return (
+                        <Row
+                            key={index}
+                            rowData={temp}
+                            changeTextStyle={styles.changeText}
+                            changeTextWrapperStyle={styles.changeTextWrapper}
+                            increaseStyle={row[6] ? styles.textWrapperIncrease : styles.textWrapperDecrease}
+                        />
+                    );
+                });
+            }
         } catch (error) {
             console.log(error);
         }
         let nybRows;
         try {
-            nybRows = data.nyb.map((row, index) => {
-                let temp;
-                temp = [...row];
-                const orderCount = temp.splice(7);
+            if (data.nyb) {
+                nybRows = data.nyb.map((row, index) => {
+                    let temp;
+                    temp = [...row];
 
-                temp[5] = orderCount[1] ? `${temp[5]}(${orderCount[1]})` : `${temp[5]}(0)`;
-                temp[6] = orderCount[2] ? `${temp[6]}(${orderCount[2]})` : `${temp[6]}(0)`;
-                if (!temp[2].toString().includes("+") && !temp[2].toString().includes("-")) {
-                    temp[2] = row[7] ? `+${temp[2]}` : `-${temp[2]}`;
-                }
-                if (productName === "cotton") {
-                    console.log(row[7])
-                }
-                return (
-                    <Row
-                        key={index}
-                        rowData={temp}
-                        changeTextStyle={styles.changeText}
-                        changeTextWrapperStyle={styles.changeTextWrapper}
-                        increaseStyle={row[7] ? styles.textWrapperIncrease : styles.textWrapperDecrease}
-                    />
-                );
-            });
+                    if (!temp[2].toString().includes("+") && !temp[2].toString().includes("-")) {
+                        temp[2] = row[6] ? `+${temp[2]}` : `-${temp[2]}`;
+                    }
+                    temp.splice(8);
+                    return (
+                        <Row
+                            key={index}
+                            rowData={temp}
+                            changeTextStyle={styles.changeText}
+                            changeTextWrapperStyle={styles.changeTextWrapper}
+                            increaseStyle={row[6] ? styles.textWrapperIncrease : styles.textWrapperDecrease}
+                        />
+                    );
+                });
+            }
         } catch (error) {
             console.log(error);
         }
@@ -199,14 +193,18 @@ const styles = StyleSheet.create({
     cell: {
         flex: 1,
         height: 40,
+        textAlign: "center",
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#fbfbfb"
     },
-    text: { fontSize: 12 },
+    text: {
+        fontSize: 12,
+        textAlign: "center"
+    },
     firstRow: {
-        height: 24,
+        minHeight: 24,
         backgroundColor: "white"
     },
     firstText: {
